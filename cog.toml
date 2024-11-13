@@ -19,13 +19,14 @@ skip_untracked = false
 [commit_types]
 
 [changelog]
-authors = [] 
-path = "CHANGELOG.md" 
-template = "default" # to change to remote uncomment repository and owner owner and set remote to repository name
-# repository = "repo-template-ansible-role"
-# remote = "github.com"
-# owner = "wittdennis"
+authors = []
+path = "CHANGELOG.md"
+template = "remote" # to change to remote uncomment repository and owner owner and set remote to repository name
+repository = "charts"
+remote = "github.com"
+owner = "wittdennis"
 
 [bump_profiles]
 
 [packages]
+foundryvtt = { path = "foundryvtt" }

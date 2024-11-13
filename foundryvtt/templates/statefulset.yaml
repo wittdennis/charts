@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "foundryvtt.fullname" . }}
+  labels:
+    {{- include "foundryvtt.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: {{ include "foundryvtt.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "foundryvtt.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "foundryvtt.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      hostname: {{ include "foundryvtt.fullname" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "foundryvtt.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: CONTAINER_URL_FETCH_RETRY
+              value: {{ .Values.config.downloadRetries | quote }}
+            - name: FOUNDRY_MINIFY_STATIC_FILES
+              value: {{ .Values.config.minifyStaticFiles | quote }}
+            - name: FOUNDRY_TELEMETRY
+              value: {{ .Values.config.enableTelemetry | quote }}
+            - name: FOUNDRY_LOCAL_HOSTNAME
+              value: {{ include "foundryvtt.fullname" . }}.{{ .Release.Namespace }}.svc
+            - name: FOUNDRY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: foundry-username
+                  name: {{ include "foundryvtt.secretName" . }}
+            - name: FOUNDRY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: foundry-password
+                  name: {{ include "foundryvtt.secretName" . }}
+            - name: FOUNDRY_ADMIN_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: admin-key
+                  name: {{ include "foundryvtt.secretName" . }}
+            {{- if .Values.existingSecret.containsLicenseKey }}
+            - name: FOUNDRY_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: foundry-license-key
+                  name: {{ include "foundryvtt.secretName" . }}
+            {{- end }}
+            {{- if .Values.existingSecret.containsAwsConfig }}
+            - name: FOUNDRY_AWS_CONFIG
+              value: "/home/foundry/aws/awsConfig.json"
+            {{- end }}
+            {{- if .Values.ingress.enabled }}
+            {{- with (first .Values.ingress.hosts)}}
+            - name: FOUNDRY_HOSTNAME
+              value: {{ .host }}
+            {{- end }}
+            {{- with (first .Values.ingress.tls) }}
+            - name: FOUNDRY_PROXY_SSL
+              value: "true"
+            - name: FOUNDRY_PROXY_PORT
+              value: "443"
+            {{- end }}
+            {{- end }}
+            {{- with .Values.config.defaultWorld }}
+            - name: FOUNDRY_WORLD
+              value: {{ . | quote }}
+            {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 30000
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+            {{- if .Values.existingSecret.containsAwsConfig }}
+            - name: aws-config
+              mountPath: /home/foundry/aws
+            {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        {{- if .Values.existingSecret.containsAwsConfig }}
+        - name: aws-config
+          secret:
+            secretName: {{ include "foundryvtt.secretName" . }}
+            items:
+              - key: awsConfig.json
+                path: awsConfig.json
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          {{- include "foundryvtt.labels" . | nindent 11 }}
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          {{- with .Values.storage.className }}
+          storageClassName: {{ . }}
+          {{- end }}
+          resources:
+            requests:
+              storage: {{ .Values.storage.size }}
