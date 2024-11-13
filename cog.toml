@@ -1,0 +1,31 @@
+branch_whitelist = []
+disable_bump_commit = false
+disable_changelog = false
+from_latest_tag = false
+generate_mono_repository_global_tag = true
+ignore_merge_commits = false
+post_bump_hooks = [
+  "git push",
+  "git push origin {{version}}",
+]
+post_package_bump_hooks = []
+pre_bump_hooks = []
+pre_package_bump_hooks = []
+skip_ci = "[skip ci]"
+skip_untracked = false
+
+[git_hooks]
+
+[commit_types]
+
+[changelog]
+authors = [] 
+path = "CHANGELOG.md" 
+template = "default" # to change to remote uncomment repository and owner owner and set remote to repository name
+# repository = "repo-template-ansible-role"
+# remote = "github.com"
+# owner = "wittdennis"
+
+[bump_profiles]
+
+[packages]

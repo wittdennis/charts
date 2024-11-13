@@ -1,0 +1,37 @@
+name: gihub-release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: setup git config
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: bump version
+        id: release
+        uses: oknozor/cocogitto-action@v3.8
+        with:
+          release: true
+          check-latest-tag-only: true
+          git-user: github-actions
+          git-user-email: github-actions@github.com
+
+      - name: generate changelog
+        run: cog changelog --at ${{ steps.release.outputs.version }} > GITHUB_CHANGELOG.md
+
+      - uses: softprops/action-gh-release@v2.0.6
+        name: create release
+        with:
+          body_path: GITHUB_CHANGELOG.md
+          tag_name: ${{ steps.release.outputs.version }}
+          token: ${{ secrets.RELEASE_TOKEN }}
