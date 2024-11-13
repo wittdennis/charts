@@ -1,0 +1,133 @@
+config:
+  # Number of times the container will try to download the foundry binary
+  downloadRetries: 3
+  # Defines if telemetry data are allowed to be tracked
+  enableTelemetry: false
+  # Defines if static files should be minified
+  minifyStaticFiles: true
+  # The default world to load when the server has started
+  defaultWorld: ~
+
+# Config for the existing secret that will be referenced by the container
+# By default the name of the secret that is looked for is the name of the release
+# The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version
+# Also a "admin-key" must be provided in the secret
+existingSecret:
+  # overrides the name of the secret that is referenced
+  name: ~
+  # Set to true if the secret contains a license key to use. The key that is uses is foundry-license-key
+  containsLicenseKey: false
+  # Set tot true if the secret contains an awsConfig.json key
+  containsAwsConfig: false
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: felddy/foundryvtt
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ~
+
+# This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This configures the storage for the data drive
+storage:
+  size: 10Gi
+  # The storage class name to use
+  className: ~
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ~
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 421
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  seccompProfile:
+    type: RuntimeDefault
+  runAsUser: 0
+  runAsGroup: 0
+  runAsNonRoot: false
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  initialDelaySeconds: 600
+  failureThreshold: 10
+  periodSeconds: 300
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  initialDelaySeconds: 30
+  httpGet:
+    path: /
+    port: http
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
