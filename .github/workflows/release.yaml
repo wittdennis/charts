@@ -2,6 +2,13 @@ name: gihub-release
 
 on:
   workflow_dispatch:
+    inputs:
+      chart:
+        description: The chart to release
+        required: true
+        type: choice
+        options:
+          - foundryvtt
 
 jobs:
   release:
