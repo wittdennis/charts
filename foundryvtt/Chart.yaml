@@ -21,4 +21,4 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "12.331.0" # renovate: datasource=docker depName=felddy/foundryvtt versioning=docker
+appVersion: "13.332.0" # renovate: datasource=docker depName=felddy/foundryvtt versioning=docker
