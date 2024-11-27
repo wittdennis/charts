@@ -36,6 +36,7 @@ fullnameOverride: ""
 
 # -- This configures the storage for the data drive
 storage:
+  # -- The size the pv should have
   size: 10Gi
   # -- The storage class name to use
   className: ~
