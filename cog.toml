@@ -8,9 +8,16 @@ post_bump_hooks = [
   "git push",
   "git push origin {{version}}",
 ]
-post_package_bump_hooks = []
+post_package_bump_hooks = [
+  "git push",
+  "git push origin {{package}}-{{version}}",
+]
 pre_bump_hooks = []
-pre_package_bump_hooks = []
+pre_package_bump_hooks = [
+  "yq -i '.version = \"{{version}}\"' Chart.yaml",
+  "helm-docs",
+  "{{package}} > ../last_released_chart",
+]
 skip_ci = "[skip ci]"
 skip_untracked = false
 
@@ -21,7 +28,7 @@ skip_untracked = false
 [changelog]
 authors = []
 path = "CHANGELOG.md"
-template = "remote" # to change to remote uncomment repository and owner owner and set remote to repository name
+template = "remote"
 repository = "charts"
 remote = "github.com"
 owner = "wittdennis"
