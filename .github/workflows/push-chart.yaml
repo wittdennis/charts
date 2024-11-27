@@ -20,7 +20,7 @@ jobs:
         run: |
           cd output
           FILE=$(ls)
-          curl -u "$AUTH" --data-binary "@$FILE" $CHARTMUSEUM_URL/api/charts
+          curl --fail-with-body -u "$AUTH" --data-binary "@$FILE" $CHARTMUSEUM_URL/api/charts
         env:
           AUTH: ${{ secrets.CHARTMUSEUM_AUTH }}
           CHARTMUSEUM_URL: ${{ vars.CHARTMUSEUM_URL }}
