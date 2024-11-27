@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-0.1.1 - 2024-11-27
+#### Bug Fixes
+- **(foundryvtt)** use correct indentation for volumeClaimTemplate - (c5e6411) - Dennis Witt
+
+- - -
+
 ## foundryvtt-0.1.0 - 2024-11-27
 #### Continuous Integration
 - upload chart via workflow - (0096fde) - Dennis Witt
