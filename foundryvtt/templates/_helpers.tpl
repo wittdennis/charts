@@ -30,7 +30,7 @@ Set the secret name to reference
 {{- if .Values.existingSecret.name }}
 {{- .Values.existingSecret.name }}
 {{- else }}
-{{- .Release.Name }}
+{{- include "foundryvtt.fullname" . }}
 {{- end }}
 {{- end }}
 
