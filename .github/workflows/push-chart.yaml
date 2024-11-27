@@ -1,0 +1,26 @@
+name: push-chart
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.2.0
+
+      - name: package chart
+        run: |
+          CHART=$(cat last_released_chart)
+          helm package $CHART -d output
+
+      - name: push chart
+        run: |
+          cd output
+          FILE=$(ls)
+          curl -u "$AUTH" --data-binary "@$FILE" $CHARTMUSEUM_URL/api/charts
+        env:
+          AUTH: ${{ secrets.CHARTMUSEUM_AUTH }}
+          CHARTMUSEUM_URL: ${{ vars.CHARTMUSEUM_URL }}
