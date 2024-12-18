@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-12.0.1 - 2024-12-18
+#### Bug Fixes
+- **(foundryvtt)** add icon to chart - (8011de6) - Dennis Witt
+#### Documentation
+- set multiline comments for values.yaml correctly - (9238432) - Dennis Witt
+#### Miscellaneous Chores
+- **(foundryvtt)** add more metadata to chart yaml - (20d2671) - Dennis Witt
+- add artifacthub annotations - (39163d3) - Dennis Witt
+
+- - -
+
 ## foundryvtt-12.0.0 - 2024-12-18
 #### Miscellaneous Chores
 - **(foundryvtt)** set chart major version to match foundry major version - (1fd94ee) - Dennis Witt
