@@ -13,7 +13,7 @@ A Helm chart for Foundry VTT
 | config.downloadRetries | int | `3` | Number of times the container will try to download the foundry binary |
 | config.enableTelemetry | bool | `false` | Defines if telemetry data are allowed to be tracked |
 | config.minifyStaticFiles | bool | `true` | Defines if static files should be minified |
-| existingSecret | object | `{"containsAwsConfig":false,"containsLicenseKey":false,"name":null}` | Also a "admin-key" must be provided in the secret |
+| existingSecret | object | `{"containsAwsConfig":false,"containsLicenseKey":false,"name":null}` | Config for the existing secret that will be referenced by the container. By default the name of the secret that is looked for is the name of the release. The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version. Also a "admin-key" must be provided in the secret. |
 | existingSecret.containsAwsConfig | bool | `false` | Set tot true if the secret contains an awsConfig.json key |
 | existingSecret.containsLicenseKey | bool | `false` | Set to true if the secret contains a license key to use. The key that is uses is foundry-license-key |
 | existingSecret.name | string | `nil` | overrides the name of the secret that is referenced |
@@ -26,8 +26,8 @@ A Helm chart for Foundry VTT
 | livenessProbe | object | `{"failureThreshold":10,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":600,"periodSeconds":300}` | This is to setup the liveness probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | nameOverride | string | `""` | This is to override the chart name. |
 | nodeSelector | object | `{}` |  |
-| podAnnotations | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
-| podLabels | object | `{}` | For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
+| podAnnotations | object | `{}` | This is for setting Kubernetes Annotations to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
+| podLabels | object | `{}` | This is for setting Kubernetes Labels to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
 | podSecurityContext.fsGroup | int | `421` |  |
 | podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
 | podSecurityContext.runAsGroup | int | `1000` |  |
@@ -49,7 +49,7 @@ A Helm chart for Foundry VTT
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.automount | bool | `false` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
-| serviceAccount.name | string | `nil` | If not set and create is true, a name is generated using the fullname template |
+| serviceAccount.name | string | `nil` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
 | storage | object | `{"className":null,"size":"10Gi"}` | This configures the storage for the data drive |
 | storage.className | string | `nil` | The storage class name to use |
 | storage.size | string | `"10Gi"` | The size the pv should have |

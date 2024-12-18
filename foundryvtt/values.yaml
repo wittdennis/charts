@@ -8,10 +8,10 @@ config:
   # --The default world to load when the server has started
   defaultWorld: ~
 
-# -- Config for the existing secret that will be referenced by the container
-# -- By default the name of the secret that is looked for is the name of the release
-# -- The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version
-# -- Also a "admin-key" must be provided in the secret
+# -- Config for the existing secret that will be referenced by the container.
+# By default the name of the secret that is looked for is the name of the release.
+# The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version.
+# Also a "admin-key" must be provided in the secret.
 existingSecret:
   # -- overrides the name of the secret that is referenced
   name: ~
@@ -50,14 +50,14 @@ serviceAccount:
   # -- Annotations to add to the service account
   annotations: {}
   # -- The name of the service account to use.
-  # -- If not set and create is true, a name is generated using the fullname template
+  # If not set and create is true, a name is generated using the fullname template.
   name: ~
 
 # -- This is for setting Kubernetes Annotations to a Pod.
-# -- For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 # -- This is for setting Kubernetes Labels to a Pod.
-# -- For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
 podSecurityContext:
