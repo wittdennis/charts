@@ -19,3 +19,7 @@ version: 12.0.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "12.331.0" # renovate: datasource=docker depName=felddy/foundryvtt versioning=docker
+
+annotations:
+  artifacthub.io/alternativeName: foundry
+  artifacthub.io/license: MIT
