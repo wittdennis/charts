@@ -27,6 +27,7 @@ keywords:
   - ttrpg
   - virtual tabletop
   - tabletop roleplaying game
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/foundryvtt/assets/fvtt.png
 
 annotations:
   artifacthub.io/alternativeName: foundry
