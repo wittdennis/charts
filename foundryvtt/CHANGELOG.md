@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-12.0.0 - 2024-12-18
+#### Miscellaneous Chores
+- **(foundryvtt)** set chart major version to match foundry major version - (1fd94ee) - Dennis Witt
+
+- - -
+
 ## foundryvtt-0.1.2 - 2024-11-27
 #### Bug Fixes
 - **(foundryvtt)** use correct name for secretName - (c58d2ef) - Dennis Witt
