@@ -4,6 +4,10 @@
 
 A Helm chart for Foundry VTT
 
+## Source Code
+
+* <https://github.com/wittdennis/charts/tree/master/foundryvtt>
+
 ## Values
 
 | Key | Type | Default | Description |
