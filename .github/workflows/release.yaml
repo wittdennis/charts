@@ -9,6 +9,7 @@ on:
         type: choice
         options:
           - foundryvtt
+          - ddb-proxy
 
 jobs:
   release:
