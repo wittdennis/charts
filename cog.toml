@@ -37,3 +37,4 @@ owner = "wittdennis"
 
 [packages]
 foundryvtt = { path = "foundryvtt" }
+ddb-proxy = { path = "ddb-proxy"}
