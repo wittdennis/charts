@@ -6,6 +6,10 @@
     {
       "matchFileNames": ["foundryvtt/Chart.yaml"],
       "semanticCommitType": "fix"
+    },
+    {
+      "matchFileNames": ["ddb-proxy/Chart.yaml"],
+      "semanticCommitType": "fix"
     }
   ]
 }
