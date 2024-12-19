@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-12.0.2 - 2024-12-19
+#### Bug Fixes
+- **(foundryvtt)** don't set labels of volumeClaimTemplate with values that change on version update - (5e29992) - Dennis Witt
+
+- - -
+
 ## foundryvtt-12.0.1 - 2024-12-18
 #### Bug Fixes
 - **(foundryvtt)** add icon to chart - (8011de6) - Dennis Witt
