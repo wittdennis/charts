@@ -133,7 +133,8 @@ spec:
     - metadata:
         name: data
         labels:
-          {{- include "foundryvtt.labels" . | nindent 11 }}
+          {{- include "foundryvtt.selectorLabels" . | nindent 10 }}
+          app.kubernetes.io/managed-by: {{ .Release.Service }}
       spec:
         accessModes: ["ReadWriteOnce"]
         {{- with .Values.storage.className }}
