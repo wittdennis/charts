@@ -1,6 +1,10 @@
 apiVersion: v2
 name: node-red
-description: A Helm chart for Kubernetes
+description: |
+  A Helm chart for node-red.
+  Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
+
+  It provides a browser-based editor that makes it easy to wire together flows using the wide range of nodes in the palette that can be deployed to its runtime in a single-click.
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
@@ -19,3 +23,12 @@ version: 1.0.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "4.0.8" # renovate: datasource=docker depName=node-red/node-red versioning=semver
+sources:
+  - https://github.com/wittdennis/charts/tree/master/node-red
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/node-red/assets/icon.png
+keywords:
+  - low-code
+  - flows
+  - node-red
+  - nodered
+  - graphical programming
