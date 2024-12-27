@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## ddb-proxy-1.0.1 - 2024-12-27
+#### Bug Fixes
+- **(ddb-proxy)** don't automount service account token - (b4d9b56) - Dennis Witt
+
+- - -
+
 ## ddb-proxy-1.0.0 - 2024-12-19
 #### Features
 - **(ddb-proxy)** add helm chart for ddb-proxy - (30df443) - Dennis Witt
