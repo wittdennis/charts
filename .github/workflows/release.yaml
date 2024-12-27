@@ -10,6 +10,7 @@ on:
         options:
           - foundryvtt
           - ddb-proxy
+          - node-red
       preview:
         description: Suffix for a preview version
         default: ""
