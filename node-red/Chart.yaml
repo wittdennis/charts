@@ -22,7 +22,7 @@ version: 1.0.2
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "4.0.8" # renovate: datasource=docker depName=node-red/node-red versioning=semver
+appVersion: "4.0.8" # renovate: datasource=docker depName=nodered/node-red versioning=semver
 sources:
   - https://github.com/wittdennis/charts/tree/master/node-red
 icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/node-red/assets/icon.png
