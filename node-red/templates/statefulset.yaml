@@ -35,8 +35,13 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          {{- if .Values.metrics.enabled}}
+          {{- if or .Values.metrics.enabled .Values.env}}
           env:
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end -}}
+          {{- end }}
+          {{- if .Values.metrics.enabled}}
             - name: PROMETHEUS_COLLECT_DEFAULT_METRICS
               value: "true"
             - name: PROMETHEUS_METRICS_PATH

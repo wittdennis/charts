@@ -16,6 +16,7 @@ It provides a browser-based editor that makes it easy to wire together flows usi
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| env | object | `{}` | Additional env values to pass to the container |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","repository":"nodered/node-red","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
