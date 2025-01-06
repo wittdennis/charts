@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.1.0 - 2025-01-06
+#### Bug Fixes
+- **(ddb-proxy)** don't automount service account token - (b4d9b56) - Dennis Witt
+#### Documentation
+- generalize global readme - (62d2356) - Dennis Witt
+#### Features
+- **(node-red)** add ability to set env variables - (8a105ac) - Dennis Witt
+#### Miscellaneous Chores
+- fix renovate depName for node-red - (5811ff2) - Dennis Witt
+
+- - -
+
 ## node-red-1.0.2 - 2024-12-27
 #### Bug Fixes
 - **(node-red)** set correct docker image - (9b07ff0) - Dennis Witt
