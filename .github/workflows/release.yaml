@@ -11,6 +11,7 @@ on:
           - foundryvtt
           - ddb-proxy
           - node-red
+          - home-assistant-matter-server
       preview:
         description: Suffix for a preview version
         default: ""

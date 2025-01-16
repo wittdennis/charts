@@ -14,6 +14,10 @@
     {
       "matchFileNames": ["node-red/Chart.yaml"],
       "semanticCommitType": "fix"
+    },
+    {
+      "matchFileNames": ["home-assistant-matter-server/Chart.yaml"],
+      "semanticCommitType": "fix"
     }
   ]
 }
