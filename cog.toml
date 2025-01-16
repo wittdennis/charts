@@ -39,3 +39,4 @@ owner = "wittdennis"
 foundryvtt = { path = "foundryvtt" }
 ddb-proxy = { path = "ddb-proxy"}
 node-red = { path = "node-red" }
+home-assistant-matter-server = { path= "home-assistant-matter-server" }
