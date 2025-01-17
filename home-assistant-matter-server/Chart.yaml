@@ -19,3 +19,10 @@ version: 0.1.0-rc.1
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "7.0.1" # renovate: datasource=github-releases depName=home-assistant-libs/python-matter-server
+sources:
+  - https://github.com/wittdennis/charts/tree/master/home-assistant-matter-server
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/home-assistant-matter-server/assets/icon.png
+keywords:
+  - home-assistant
+  - matter
+  - home automation
