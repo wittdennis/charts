@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-1.0.0 - 2025-01-17
+#### Bug Fixes
+- add chart metadata - (95a054b) - Dennis Witt
+#### Features
+- add home-assistant-matter-server - (06aad57) - Dennis Witt
+#### Miscellaneous Chores
+- **(version)** home-assistant-matter-server-0.1.0-rc.1 - (f13c64d) - github-actions
+
+- - -
+
 ## home-assistant-matter-server-0.1.0-rc.1 - 2025-01-16
 #### Features
 - add home-assistant-matter-server - (bedb71c) - Dennis Witt
