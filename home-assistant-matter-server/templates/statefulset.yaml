@@ -23,8 +23,9 @@ spec:
         {{- end }}
     spec:
       hostname: {{ include "home-assistant-matter-server.fullname" . }}
-      {{- with .Values.imagePullSecrets }}
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
