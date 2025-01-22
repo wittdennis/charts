@@ -51,7 +51,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: HTTP_PORT
-              value: 8888
+              value: "8888"
           args:
             - --radio-url
             - spinel+hdlc+uart://{{ .Values.rcpMountPath }}
