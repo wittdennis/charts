@@ -20,9 +20,10 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      # hostname: {{ include "otbr.fullname" . }}
-      # hostNetwork: true
-      # dnsPolicy: ClusterFirstWithHostNet
+      hostname: {{ include "otbr.fullname" . }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -48,12 +49,16 @@ spec:
             privileged: true
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: HTTP_PORT
+              value: 8888
           args:
             - --radio-url
             - spinel+hdlc+uart://{{ .Values.rcpMountPath }}
+            - --backbone-interface {{ .Values.backboneInterface }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8888
               protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
