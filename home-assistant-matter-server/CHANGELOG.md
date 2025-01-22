@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-1.0.1 - 2025-01-22
+#### Bug Fixes
+- **(matter-server)** correctly set hostNetwork and dnsPolicy - (56c15b2) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-1.0.0 - 2025-01-17
 #### Bug Fixes
 - add chart metadata - (95a054b) - Dennis Witt
