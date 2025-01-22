@@ -2,6 +2,28 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## otbr-0.1.0-rc.3 - 2025-01-22
+#### Bug Fixes
+- http port in env - (d286ca0) - Dennis Witt
+
+- - -
+
+## otbr-0.1.0-rc.2 - 2025-01-22
+#### Features
+- set http port and backbone interface - (b3d2834) - Dennis Witt
+#### Miscellaneous Chores
+- **(version)** otbr-0.1.0-rc.2 - (50135a1) - github-actions
+
+- - -
+
+## otbr-0.1.0-rc.1 - 2025-01-22
+#### Features
+- otbr chart - (d964314) - Dennis Witt
+#### Miscellaneous Chores
+- **(version)** otbr-0.1.0-rc.1 - (cec9849) - github-actions
+
+- - -
+
 ## otbr-0.1.0-rc.2 - 2025-01-22
 #### Features
 - set http port and backbone interface - (b3d2834) - Dennis Witt
