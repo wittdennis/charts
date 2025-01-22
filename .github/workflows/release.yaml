@@ -12,6 +12,7 @@ on:
           - ddb-proxy
           - node-red
           - home-assistant-matter-server
+          - otbr
       preview:
         description: Suffix for a preview version
         default: ""

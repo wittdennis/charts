@@ -18,6 +18,10 @@
     {
       "matchFileNames": ["home-assistant-matter-server/Chart.yaml"],
       "semanticCommitType": "fix"
+    },
+    {
+      "matchFileNames": ["otbr/Chart.yaml"],
+      "semanticCommitType": "fix"
     }
   ]
 }
