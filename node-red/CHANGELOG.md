@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.2.0 - 2025-02-14
+#### Bug Fixes
+- **(deps)** update nodered/node-red docker tag to v4.0.9 - (d891352) - wittdennis-renovate[bot]
+#### Features
+- add home-assistant-matter-server - (06aad57) - Dennis Witt
+
+- - -
+
 ## node-red-1.1.0 - 2025-01-06
 #### Bug Fixes
 - **(ddb-proxy)** don't automount service account token - (b4d9b56) - Dennis Witt
