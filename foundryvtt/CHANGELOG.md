@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-13.0.0-pre.1 - 2025-02-14
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.335.0 - (fc7eac3) - wittdennis-renovate[bot]
+#### Features
+- add node-red chart - (88122b5) - Dennis Witt
+
+- - -
+
+## foundryvtt-13.0.0-pre.0 - 2025-02-14
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13 - (e5e8d3f) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- **(version)** foundryvtt-13.0.0-pre.0 - (7e8c093) - github-actions
+
+- - -
+
 ## foundryvtt-13.0.0-pre.0 - 2024-12-27
 #### Bug Fixes
 - **(deps)** update felddy/foundryvtt docker tag to v13 - (e5e8d3f) - wittdennis-renovate[bot]
