@@ -2,6 +2,54 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-13.0.0-pre.5 - 2025-03-29
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.339.0 - (50d679a) - wittdennis-renovate[bot]
+
+- - -
+
+## foundryvtt-13.0.0-pre.4 - 2025-03-29
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.338.0 - (58b18b1) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- **(version)** foundryvtt-13.0.0-pre.4 - (c20f5c3) - github-actions
+
+- - -
+
+## foundryvtt-13.0.0-pre.3 - 2025-03-29
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.337.0 - (775a32c) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- **(version)** foundryvtt-13.0.0-pre.3 - (2ccf3b5) - github-actions
+
+- - -
+
+## foundryvtt-13.0.0-pre.2 - 2025-03-29
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.336.0 - (4f69665) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- **(version)** foundryvtt-13.0.0-pre.2 - (0ba7331) - github-actions
+
+- - -
+
+## foundryvtt-13.0.0-pre.1 - 2025-03-29
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.335.0 - (fc7eac3) - wittdennis-renovate[bot]
+#### Features
+- add node-red chart - (88122b5) - Dennis Witt
+#### Miscellaneous Chores
+- **(version)** foundryvtt-13.0.0-pre.1 - (6712db1) - github-actions
+
+- - -
+
+## foundryvtt-13.0.0-pre.0 - 2025-03-29
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13 - (e5e8d3f) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- **(version)** foundryvtt-13.0.0-pre.0 - (7e8c093) - github-actions
+
+- - -
+
 ## foundryvtt-13.0.0-pre.4 - 2025-03-19
 #### Bug Fixes
 - **(deps)** update felddy/foundryvtt docker tag to v13.338.0 - (58b18b1) - wittdennis-renovate[bot]
