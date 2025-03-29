@@ -18,7 +18,7 @@ version: 13.0.0-pre.4
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "13.338.0" # renovate: datasource=docker depName=felddy/foundryvtt versioning=docker
+appVersion: "13.339.0" # renovate: datasource=docker depName=felddy/foundryvtt versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/master/foundryvtt
 keywords:
