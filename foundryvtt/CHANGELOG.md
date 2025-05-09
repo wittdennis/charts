@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-13.0.3 - 2025-05-09
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v13.342.2 - (169d5db) - wittdennis-renovate[bot]
+
+- - -
+
 ## foundryvtt-13.0.2 - 2025-05-09
 #### Bug Fixes
 - **(deps)** update felddy/foundryvtt docker tag to v13.342.1 - (dea8fd7) - wittdennis-renovate[bot]
