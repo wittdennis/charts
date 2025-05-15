@@ -10,6 +10,11 @@ on:
         options:
           - foundryvtt
           - ddb-proxy
+      preview:
+        description: Suffix for a preview version
+        default: ""
+        type: string
+        required: false
 
 jobs:
   release:
@@ -26,7 +31,7 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: install cocogitto
-        uses: oknozor/cocogitto-action@v3.9
+        uses: oknozor/cocogitto-action@v3.11
         with:
           check: false
 
@@ -48,18 +53,26 @@ jobs:
       - name: bump version
         id: release
         run: |
-          cog bump --auto --package $CHART
+          if [ -z "${PRE_RELEASE}" ]; then
+            cog bump --auto --package $CHART
+            echo "preview=false" >> $GITHUB_OUTPUT
+          else
+            cog bump --auto --package $CHART --pre $PRE_RELEASE
+            echo "preview=true" >> $GITHUB_OUTPUT
+          fi
           VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
         env:
           CHART: ${{ inputs.chart }}
+          PRE_RELEASE: ${{ inputs.preview }}
 
       - name: generate changelog
         run: cog changelog --at ${{ steps.release.outputs.version }} > GITHUB_CHANGELOG.md
 
-      - uses: softprops/action-gh-release@v2.2.0
+      - uses: softprops/action-gh-release@v2.2.2
         name: create release
         with:
           body_path: GITHUB_CHANGELOG.md
           tag_name: ${{ steps.release.outputs.version }}
           token: ${{ secrets.RELEASE_TOKEN }}
+          prerelease: ${{ steps.release.outputs.preview == 'true' }}
