@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-13.0.4 - 2025-05-15
+#### Bug Fixes
+- **(deps)** update felddy/foundryvtt docker tag to v12.343.0 - (067730f) - wittdennis-renovate[bot]
+
+- - -
+
 ## foundryvtt-12.0.2 - 2024-12-19
 #### Bug Fixes
 - **(foundryvtt)** don't set labels of volumeClaimTemplate with values that change on version update - (5e29992) - Dennis Witt
