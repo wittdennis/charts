@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-1.1.0 - 2025-05-16
+#### Bug Fixes
+- **(deps)** update dependency home-assistant-libs/python-matter-server to v8 - (5d7ebeb) - wittdennis-renovate[bot]
+#### Features
+- otbr chart - (f5648a6) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-1.0.1 - 2025-01-22
 #### Bug Fixes
 - **(matter-server)** correctly set hostNetwork and dnsPolicy - (56c15b2) - Dennis Witt
