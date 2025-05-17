@@ -31,13 +31,37 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "home-assistant-matter-server.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            allowPrivilegeEscalation: true
+            readOnlyRootFilesystem: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: 0
+            runAsGroup: 0
+            runAsNonRoot: false
+            privileged: true
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --storage-path
+            - /data
+            - --paa-root-cert-dir
+            - /data/credentials
+            - --log-level-sdk
+            - progress
+            - --bluetooth-adapter
+            - {{ .Values.bluetoothCommissioning.enabled | ternary "1" "0" | quote }}
+            - --primary-interface
+            - {{ required "networkInterface not set. A valid network interface has to be provided." .Values.networkInterface}}
           ports:
             - name: http
               containerPort: 5580
