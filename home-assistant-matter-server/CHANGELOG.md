@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-2.0.0 - 2025-05-17
+#### Features
+- added required networkInterface value to specify network interface that should be used - (f223ba2) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-1.1.0 - 2025-05-16
 #### Bug Fixes
 - **(deps)** update dependency home-assistant-libs/python-matter-server to v8 - (5d7ebeb) - wittdennis-renovate[bot]
