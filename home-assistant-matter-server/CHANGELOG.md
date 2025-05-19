@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.0.0 - 2025-05-19
+#### Bug Fixes
+- remove default value for networkInterface - (85fe6e7) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-2.0.0 - 2025-05-17
 #### Features
 - added required networkInterface value to specify network interface that should be used - (f223ba2) - Dennis Witt
