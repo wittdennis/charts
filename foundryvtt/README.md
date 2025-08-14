@@ -17,6 +17,7 @@ A Helm chart for Foundry VTT
 | config.downloadRetries | int | `3` | Number of times the container will try to download the foundry binary |
 | config.enableTelemetry | bool | `false` | Defines if telemetry data are allowed to be tracked |
 | config.minifyStaticFiles | bool | `true` | Defines if static files should be minified |
+| config.preserveConfig | bool | `false` | Defines if in-app configuration changes should be preserved across container restarts |
 | existingSecret | object | `{"containsAwsConfig":false,"containsLicenseKey":false,"name":null}` | Config for the existing secret that will be referenced by the container. By default the name of the secret that is looked for is the name of the release. The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version. Also a "admin-key" must be provided in the secret. |
 | existingSecret.containsAwsConfig | bool | `false` | Set tot true if the secret contains an awsConfig.json key |
 | existingSecret.containsLicenseKey | bool | `false` | Set to true if the secret contains a license key to use. The key that is uses is foundry-license-key |
@@ -58,4 +59,3 @@ A Helm chart for Foundry VTT
 | storage.className | string | `nil` | The storage class name to use |
 | storage.size | string | `"10Gi"` | The size the pv should have |
 | tolerations | list | `[]` |  |
-

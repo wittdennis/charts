@@ -38,6 +38,8 @@ spec:
           env:
             - name: CONTAINER_URL_FETCH_RETRY
               value: {{ .Values.config.downloadRetries | quote }}
+            - name: CONTAINER_PRESERVE_CONFIG
+              value: {{ .Values.config.preserveConfig | quote }}
             - name: FOUNDRY_MINIFY_STATIC_FILES
               value: {{ .Values.config.minifyStaticFiles | quote }}
             - name: FOUNDRY_TELEMETRY
