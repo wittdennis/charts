@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.0.1 - 2025-08-14
+#### Bug Fixes
+- **(deps)** update dependency home-assistant-libs/python-matter-server to v8.1.0 - (89428d5) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-matter-server-3.0.0 - 2025-05-19
 #### Bug Fixes
 - remove default value for networkInterface - (85fe6e7) - Dennis Witt
