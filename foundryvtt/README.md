@@ -1,6 +1,6 @@
 # foundryvtt
 
-![Version: 14.0.4](https://img.shields.io/badge/Version-14.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 13.347.0](https://img.shields.io/badge/AppVersion-13.347.0-informational?style=flat-square)
+![Version: 14.1.0](https://img.shields.io/badge/Version-14.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 13.347.0](https://img.shields.io/badge/AppVersion-13.347.0-informational?style=flat-square)
 
 A Helm chart for Foundry VTT
 
@@ -59,3 +59,4 @@ A Helm chart for Foundry VTT
 | storage.className | string | `nil` | The storage class name to use |
 | storage.size | string | `"10Gi"` | The size the pv should have |
 | tolerations | list | `[]` |  |
+
