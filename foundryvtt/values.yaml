@@ -5,6 +5,8 @@ config:
   enableTelemetry: false
   # --Defines if static files should be minified
   minifyStaticFiles: true
+  # -- Defines if in-app configuration changes should be preserved across container restarts
+  preserveConfig: false
   # --The default world to load when the server has started
   defaultWorld: ~
 
