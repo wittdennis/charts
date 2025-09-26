@@ -10,6 +10,9 @@ image:
 bluetoothCommissioning:
   enabled: false
 
+# -- Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links
+enableServiceLinks: true
+
 # -- Required. Name of the network interface that should be used
 networkInterface: ~
 
