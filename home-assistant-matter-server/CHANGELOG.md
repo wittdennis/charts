@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.1.0 - 2025-09-26
+#### Bug Fixes
+- **(deps)** update dependency home-assistant-libs/python-matter-server to v8.1.1 - (c44db23) - wittdennis-renovate[bot]
+#### Features
+- **(home-assistant-matter-server)** added ability to set enableServiceLinks - (4d474c0) - Dennis Witt
+- **(home-assistant-matter-server)** added ability to specify a startupProbe - (c19ecba) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-3.0.1 - 2025-08-14
 #### Bug Fixes
 - **(deps)** update dependency home-assistant-libs/python-matter-server to v8.1.0 - (89428d5) - wittdennis-renovate[bot]
