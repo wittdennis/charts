@@ -92,6 +92,8 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+# -- Used to define a startup probe. More information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes
+startupProbe: {}
 
 # -- Additional volumes on the output Deployment definition.
 volumes: []
