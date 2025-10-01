@@ -1,26 +1,41 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>wittdennis/renovate-config"],
-  "baseBranches": ["$default", "/^release\\/.*/"],
+  "extends": [
+    "local>wittdennis/renovate-config"
+  ],
+  "baseBranchPatterns": [
+    "$default",
+    "/^release\\/.*/"
+  ],
   "packageRules": [
     {
-      "matchFileNames": ["foundryvtt/Chart.yaml"],
+      "matchFileNames": [
+        "foundryvtt/Chart.yaml"
+      ],
       "semanticCommitType": "fix"
     },
     {
-      "matchFileNames": ["ddb-proxy/Chart.yaml"],
+      "matchFileNames": [
+        "ddb-proxy/Chart.yaml"
+      ],
       "semanticCommitType": "fix"
     },
     {
-      "matchFileNames": ["node-red/Chart.yaml"],
+      "matchFileNames": [
+        "node-red/Chart.yaml"
+      ],
       "semanticCommitType": "fix"
     },
     {
-      "matchFileNames": ["home-assistant-matter-server/Chart.yaml"],
+      "matchFileNames": [
+        "home-assistant-matter-server/Chart.yaml"
+      ],
       "semanticCommitType": "fix"
     },
     {
-      "matchFileNames": ["otbr/Chart.yaml"],
+      "matchFileNames": [
+        "otbr/Chart.yaml"
+      ],
       "semanticCommitType": "fix"
     }
   ]
