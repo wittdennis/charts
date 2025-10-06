@@ -16,7 +16,7 @@ Helm chart for home assistant matter server
 | bluetoothCommissioning | object | `{"enabled":false}` | Flag to control if bluetooth commissioning should be enabled |
 | enableServiceLinks | bool | `true` | Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links |
 | fullnameOverride | string | `""` |  |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"ghcr.io/home-assistant-libs/python-matter-server","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
+| image | object | `{"pullPolicy":"IfNotPresent","repository":"ghcr.io/matter-js/python-matter-server","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
@@ -45,4 +45,3 @@ Helm chart for home assistant matter server
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
-
