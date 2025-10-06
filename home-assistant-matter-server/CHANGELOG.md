@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.1.1 - 2025-10-06
+#### Bug Fixes
+- update source repository for python-matter-server - (2854713) - Philipp Holler
+
+- - -
+
 ## home-assistant-matter-server-3.1.0 - 2025-09-26
 #### Bug Fixes
 - **(deps)** update dependency home-assistant-libs/python-matter-server to v8.1.1 - (c44db23) - wittdennis-renovate[bot]
