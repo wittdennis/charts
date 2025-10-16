@@ -1,8 +1,8 @@
 # garage
 
-![Version: 0.9.1](https://img.shields.io/badge/Version-0.9.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
 
-S3-compatible object store for small self-hosted geo-distributed deployments
+S3-compatible object store for small self-hosted geo-distributed deployments.
 
 **Homepage:** <https://garagehq.deuxfleurs.fr/>
 
@@ -35,7 +35,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments
 | garage.metadataAutoSnapshotInterval | string | `""` | If this value is set, Garage will automatically take a snapshot of the metadata DB file at a regular interval and save it in the metadata directory. https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#metadata_auto_snapshot_interval |
 | garage.replicationFactor | string | `"3"` | Default to 3 replicas, see the replication_factor section at https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication_factor |
 | garage.rpc.bindAddr | string | `"[::]:3901"` |  |
-| garage.rpc.secret.create | bool | `true` | If set to false set rpc.secret.name to use an existing kubernetes secret |
+| garage.rpc.secret.create | bool | `true` | Flag to control if a rpc kubernetes secret should be created during deployment |
 | garage.rpc.secret.name | string | `""` | Name of the rpc secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false |
 | garage.rpc.secret.value | string | `""` | If not given, a random secret will be generated and stored in a Secret object |
 | garage.s3.api.region | string | `"garage"` |  |
@@ -73,11 +73,11 @@ S3-compatible object store for small self-hosted geo-distributed deployments
 | nodeSelector | object | `{}` |  |
 | persistence.data.hostPath | string | `"/var/lib/garage/data"` |  |
 | persistence.data.size | string | `"100Mi"` |  |
-| persistence.data.storageClass | string | `""` | This would classically be a "slow" storage type like HDDs |
+| persistence.data.storageClass | string | `nil` | This would classically be a "slow" storage type like HDDs |
 | persistence.enabled | bool | `true` |  |
 | persistence.meta.hostPath | string | `"/var/lib/garage/meta"` |  |
 | persistence.meta.size | string | `"100Mi"` |  |
-| persistence.meta.storageClass | string | `""` | Use a storage class with a preferably fast storage type |
+| persistence.meta.storageClass | string | `nil` | Use a storage class with a preferably fast storage type |
 | podAnnotations | object | `{}` | additonal pod annotations |
 | podSecurityContext.fsGroup | int | `1000` |  |
 | podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
