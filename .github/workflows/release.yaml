@@ -13,6 +13,7 @@ on:
           - node-red
           - home-assistant-matter-server
           - otbr
+          - garage
       preview:
         description: Suffix for a preview version
         default: ""
