@@ -45,7 +45,6 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "garage.labels" -}}
-helm.sh/chart: {{ include "garage.chart" . }}
 {{ include "garage.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
