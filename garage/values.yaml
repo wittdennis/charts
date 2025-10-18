@@ -255,3 +255,7 @@ monitoring:
   tracing:
     # -- specify a sink endpoint for OpenTelemetry Traces, eg. `http://localhost:4317`
     sink: ""
+  grafanaDashboard:
+    # -- If enabled deploys the grafana dashboard as configmap
+    enabled: false
+    annotations: {}
