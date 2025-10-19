@@ -35,24 +35,15 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: install cocogitto
-        uses: oknozor/cocogitto-action@v3.11
+        uses: cocogitto/cocogitto-action@v4.0.0
         with:
-          check: false
+          command: help
 
       - name: install helm-docs
         run: |
           GOBIN=/usr/local/bin/ go install github.com/norwoodj/helm-docs/cmd/helm-docs@$HELM_DOCS_VERSION
         env:
           HELM_DOCS_VERSION: v1.14.2 # renovate: datasource=github-releases depName=norwoodj/helm-docs versioning=semver
-
-      # - name: bump version
-      #   id: release
-      #   uses: oknozor/cocogitto-action@v3.9
-      #   with:
-      #     release: true
-      #     check-latest-tag-only: false
-      #     git-user: github-actions
-      #     git-user-email: github-actions@github.com
 
       - name: bump version
         id: release
