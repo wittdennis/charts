@@ -26,6 +26,10 @@
     {
       "matchFileNames": ["garage/Chart.yaml"],
       "semanticCommitType": "fix"
+    },
+    {
+      "matchFileNames": ["yas3p/Chart.yaml"],
+      "semanticCommitType": "fix"
     }
   ]
 }
