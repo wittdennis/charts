@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## yas3p-0.2.0 - 2025-10-26
+#### Features
+- (**yas3p**) added ability to configure yas3p run command - (9760c0c) - Dennis Witt
+
+- - -
+
 ## yas3p-0.1.0 - 2025-10-26
 #### Features
 - added yas3p chart - (32629db) - Dennis Witt
