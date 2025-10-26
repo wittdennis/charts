@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## yas3p-0.2.3 - 2025-10-26
+#### Bug Fixes
+- (**yas3p**) added yas3p to command line of container - (e35d226) - Dennis Witt
+
+- - -
+
 ## yas3p-0.2.2 - 2025-10-26
 #### Bug Fixes
 - (**yas3p**) change volume name for bucket config to lower case - (2dc2cf9) - Dennis Witt
