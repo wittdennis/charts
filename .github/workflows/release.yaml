@@ -14,6 +14,7 @@ on:
           - home-assistant-matter-server
           - otbr
           - garage
+          - yas3p
       preview:
         description: Suffix for a preview version
         default: ""
