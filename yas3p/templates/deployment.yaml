@@ -6,7 +6,6 @@ metadata:
     {{- include "yas3p.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
-  serviceName: {{ include "yas3p.fullname" . }}
   selector:
     matchLabels:
       {{- include "yas3p.selectorLabels" . | nindent 6 }}
@@ -35,6 +34,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           command:
+            - yas3p
             - run
             - --endpoint
             - {{ .Values.yas3p.endpoint }}
