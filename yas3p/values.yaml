@@ -5,6 +5,11 @@
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
+yas3p:
+  endpoint: s3.amazonaws.com
+  region: us-east-1
+
+  buckets: []
 # -- Additional env values to pass to the container
 env: {}
 # - name: TZ

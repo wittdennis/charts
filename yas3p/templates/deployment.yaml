@@ -34,6 +34,14 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+            - run
+            - --endpoint
+            - {{ .Values.yas3p.endpoint }}
+            - --region
+            - {{ .Values.yas3p.region }}
+            - --bucket-config
+            - /etc/yas3p/bucket-config.yaml
           {{- if .Values.env}}
           env:
             {{- with .Values.env }}
@@ -50,12 +58,21 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+            - name: {{ include "yas3p.fullname" . }}-bucket-config
+              mountPath: /etc/yas3p
+              readOnly: true
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
       volumes:
         - name: tmp
           emptyDir: {}
+        - name: bucketConfig
+          configMap:
+            name: {{ include "yas3p.fullname" . }}-bucket-config
+            items:
+              - key: bucket-config.yaml
+                path: bucket-config.yaml
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}

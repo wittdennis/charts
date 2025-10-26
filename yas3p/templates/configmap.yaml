@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "yas3p.fullname" . }}-bucket-config
+  labels:
+    {{- include "yas3p.labels" . | nindent 4 }}
+data:
+  bucket-config.yaml: |-
+
+    buckets:
+      {{- toYaml .Values.yas3p.buckets | nindent 6 }}
