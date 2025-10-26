@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## yas3p-0.2.1 - 2025-10-26
+#### Bug Fixes
+- (**yas3p**) use correct name for volume - (490af7b) - Dennis Witt
+
+- - -
+
 ## yas3p-0.2.0 - 2025-10-26
 #### Features
 - (**yas3p**) added ability to configure yas3p run command - (9760c0c) - Dennis Witt
