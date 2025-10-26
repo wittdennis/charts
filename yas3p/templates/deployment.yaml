@@ -58,7 +58,7 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
-            - name: {{ include "yas3p.fullname" . }}-bucket-config
+            - name: bucketConfig
               mountPath: /etc/yas3p
               readOnly: true
           {{- with .Values.volumeMounts }}
