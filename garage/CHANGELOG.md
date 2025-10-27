@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-1.1.2 - 2025-10-27
+#### Bug Fixes
+- grafana dashboard now works auto provisioned - (15acb48) - Lukas Hankeln
+
+- - -
+
 ## garage-1.1.1 - 2025-10-18
 #### Bug Fixes
 - **(garage)** remove chart version from labels to prevent redeploy on every chart update - (e4baedb) - Dennis Witt
