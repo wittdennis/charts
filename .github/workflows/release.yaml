@@ -36,7 +36,7 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: install cocogitto
-        uses: cocogitto/cocogitto-action@v4.0.0
+        uses: cocogitto/cocogitto-action@v4.1.0
         with:
           command: help
 
