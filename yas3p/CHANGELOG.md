@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## yas3p-0.2.6 - 2025-12-11
+#### Bug Fixes
+- (**deps**) update denniswitt/yas3p docker tag to v0.2.2 - (601760d) - wittdennis-renovate[bot]
+
+- - -
+
 ## yas3p-0.2.5 - 2025-11-10
 #### Bug Fixes
 - (**deps**) update denniswitt/yas3p docker tag to v0.2.1 - (3e53d37) - wittdennis-renovate[bot]
