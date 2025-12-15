@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.1.2 - 2025-12-15
+#### Bug Fixes
+- (**deps**) update dependency matter-js/python-matter-server to v8.1.2 - (e940b1b) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-matter-server-3.1.1 - 2025-10-06
 #### Bug Fixes
 - update source repository for python-matter-server - (2854713) - Philipp Holler
