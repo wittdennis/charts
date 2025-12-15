@@ -18,7 +18,7 @@ version: 3.1.1
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "8.1.1" # renovate: datasource=github-releases depName=matter-js/python-matter-server
+appVersion: "8.1.2" # renovate: datasource=github-releases depName=matter-js/python-matter-server
 sources:
   - https://github.com/wittdennis/charts/tree/master/home-assistant-matter-server
 icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/home-assistant-matter-server/assets/icon.png
