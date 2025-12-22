@@ -1,6 +1,6 @@
 # home-assistant-matter-server
 
-![Version: 3.1.2](https://img.shields.io/badge/Version-3.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.2](https://img.shields.io/badge/AppVersion-8.1.2-informational?style=flat-square)
+![Version: 3.1.3](https://img.shields.io/badge/Version-3.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.2](https://img.shields.io/badge/AppVersion-8.1.2-informational?style=flat-square)
 
 Helm chart for home assistant matter server
 
@@ -23,7 +23,7 @@ Helm chart for home assistant matter server
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
 | livenessProbe | object | `{"httpGet":{"path":"/","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | nameOverride | string | `""` | This is to override the chart name. |
-| networkInterface | string | `nil` | Required. Name of the network interface that should be used |
+| networkInterface | string | `nil` | Name of the network interface that should be used |
 | nodeSelector | object | `{}` | Selector to control on which node the pods should be running |
 | persistence | object | `{"size":"2Gi","storageClassName":null}` | Settings for storage |
 | persistence.size | string | `"2Gi"` | Size for the persistent volume claim. |
