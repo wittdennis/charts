@@ -30,6 +30,10 @@
     {
       "matchFileNames": ["yas3p/Chart.yaml"],
       "semanticCommitType": "fix"
+    },
+    {
+      "matchFileNames": ["linkwarden/Chart.yaml"],
+      "semanticCommitType": "fix"
     }
   ]
 }

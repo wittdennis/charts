@@ -1,0 +1,61 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "linkwarden.fullname" . }}
+data:
+  STORAGE_FOLDER: /data
+
+  {{- if .Values.gatewayApi.enabled }}
+  {{- with (first .Values.gatewayApi.hostnames) }}
+  NEXTAUTH_URL: "https://{{ . }}/api/v1/auth"
+  {{- end }}
+  {{- else if .Values.ingress.enabled }}
+  {{- with (first .Values.ingress.hosts) }}
+  NEXTAUTH_URL: "https://{{ .host }}/api/v1/auth"
+  {{- end }}
+  {{- else }}
+  NEXTAUTH_URL: "http://localhost:3000/api/v1/auth"
+  {{- end }}
+
+  PAGINATION_TAKE_COUNT: {{ .Values.configuration.paginationTakeCount }}
+  AUTOSCROLL_TIMEOUT: {{ .Values.configuration.autoscrollTimeout }}
+  RE_ARCHIVE_LIMIT: {{ .Values.configuration.reArchiveLimit }}
+  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.configuration.disableRegistration }}
+  NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ not .Values.configuration.disableCredentialLogin }}
+  DISABLE_NEW_SSO_USERS: {{ .Values.configuration.disableNewSSOLogins }}
+  ARCHIVE_TAKE_COUNT: {{ .Values.configuration.preservationSettings.worker }}
+  BROWSER_TIMEOUT: {{ .Values.configuration.preservationSettings.timeout }}
+  IGNORE_UNAUTHORIZED_CA: {{ .Values.configuration.allowInsecureLinks }}
+  MAX_LINKS_PER_USER: {{ .Values.configuration.maxLinksPerUser }}
+  IGNORE_HTTPS_ERRORS: {{ .Values.configuration.allowInsecureLinks }}
+  NEXT_PUBLIC_ADMIN: {{ .Values.configuration.adminUserId }}
+  NEXT_PUBLIC_MAX_FILE_BUFFER: {{ .Values.configuration.preservationSettings.maxFileSize }}
+  PDF_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxPdfSize }}
+  SCREENSHOT_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxScreenshotSize }}
+  READABILITY_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxReadabilitySize }}
+  PREVIEW_MAX_BUFFER: {{ .Values.configuration.maxPreviewSize }}
+  MONOLITH_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxMonolithSize }}
+  IMPORT_LIMIT: {{ .Values.configuration.maxImportSize }}
+
+  {{- if .Values.configuration.ignoreUrlSizeLimit }}
+  IGNORE_URL_SIZE_LIMIT: {{ .Values.configuration.ignoreUrlSizeLimit }}
+  {{- end }}
+
+  {{- if .Values.configuration.monolithCustomOptions }}
+  MONOLITH_CUSTOM_OPTIONS: {{ .Values.configuration.monolithCustomOptions }}
+  {{- end }}
+
+  DISABLE_PRESERVATION: {{ .Values.configuration.disablePreservation }}
+  NEXT_PUBLIC_RSS_POLLING_INTERVAL_MINUTES: {{ .Values.configuration.rssPollingInterval }}
+  RSS_SUBSCRIPTION_LIMIT_PER_USER: {{ .Values.configuration.rssSubscriptionLimitPerUser }}
+  TEXT_CONTENT_LIMIT: {{ .Values.configuration.preservationSettings.readabilityTextLimit }}
+
+  {{- if .Values.configuration.searchFilterLimit }}
+  SEARCH_FILTER_LIMIT: {{ .Values.configuration.searchFilterLimit }}
+  {{- end }}
+  INDEX_TAKE_COUNT: {{ .Values.configuration.indexAmount }}
+
+  {{- if .Values.configuration.meilisearch.host }}
+  MEILI_HOST: {{ .Values.configuration.meilisearch.host }}
+  MEILI_TIMEOUT: {{ .Values.configuration.meilisearch.timeout }}
+  {{- end }}
