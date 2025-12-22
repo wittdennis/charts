@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: {{ include "linkwarden.fullname" . }}
 data:
-  STORAGE_FOLDER: /data
+  STORAGE_FOLDER: /data/data
 
   {{- if .Values.gatewayApi.enabled }}
   {{- with (first .Values.gatewayApi.hostnames) }}
@@ -48,7 +48,9 @@ data:
   DISABLE_PRESERVATION: {{ .Values.configuration.disablePreservation | quote }}
   NEXT_PUBLIC_RSS_POLLING_INTERVAL_MINUTES: {{ .Values.configuration.rssPollingInterval | quote }}
   RSS_SUBSCRIPTION_LIMIT_PER_USER: {{ .Values.configuration.rssSubscriptionLimitPerUser | quote }}
+  {{- if .Values.configuration.preservationSettings.readabilityTextLimit }}
   TEXT_CONTENT_LIMIT: {{ .Values.configuration.preservationSettings.readabilityTextLimit | quote }}
+  {{- end }}
 
   {{- if .Values.configuration.searchFilterLimit }}
   SEARCH_FILTER_LIMIT: {{ .Values.configuration.searchFilterLimit | quote }}

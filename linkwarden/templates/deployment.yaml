@@ -77,7 +77,7 @@ spec:
               mountPath: /tmp
             {{- if .Values.persistence.enabled }}
             - name: data
-              mountPath: /data
+              mountPath: /data/data
             {{- end }}
             {{- with .Values.volumeMounts }}
               {{- toYaml . | nindent 12 }}
