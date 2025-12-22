@@ -17,45 +17,45 @@ data:
   NEXTAUTH_URL: "http://localhost:3000/api/v1/auth"
   {{- end }}
 
-  PAGINATION_TAKE_COUNT: {{ .Values.configuration.paginationTakeCount }}
-  AUTOSCROLL_TIMEOUT: {{ .Values.configuration.autoscrollTimeout }}
-  RE_ARCHIVE_LIMIT: {{ .Values.configuration.reArchiveLimit }}
-  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.configuration.disableRegistration }}
-  NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ not .Values.configuration.disableCredentialLogin }}
-  DISABLE_NEW_SSO_USERS: {{ .Values.configuration.disableNewSSOLogins }}
-  ARCHIVE_TAKE_COUNT: {{ .Values.configuration.preservationSettings.worker }}
-  BROWSER_TIMEOUT: {{ .Values.configuration.preservationSettings.timeout }}
-  IGNORE_UNAUTHORIZED_CA: {{ .Values.configuration.allowInsecureLinks }}
-  MAX_LINKS_PER_USER: {{ .Values.configuration.maxLinksPerUser }}
-  IGNORE_HTTPS_ERRORS: {{ .Values.configuration.allowInsecureLinks }}
-  NEXT_PUBLIC_ADMIN: {{ .Values.configuration.adminUserId }}
-  NEXT_PUBLIC_MAX_FILE_BUFFER: {{ .Values.configuration.preservationSettings.maxFileSize }}
-  PDF_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxPdfSize }}
-  SCREENSHOT_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxScreenshotSize }}
-  READABILITY_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxReadabilitySize }}
-  PREVIEW_MAX_BUFFER: {{ .Values.configuration.maxPreviewSize }}
-  MONOLITH_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxMonolithSize }}
-  IMPORT_LIMIT: {{ .Values.configuration.maxImportSize }}
+  PAGINATION_TAKE_COUNT: {{ .Values.configuration.paginationTakeCount | quote }}
+  AUTOSCROLL_TIMEOUT: {{ .Values.configuration.autoscrollTimeout | quote }}
+  RE_ARCHIVE_LIMIT: {{ .Values.configuration.reArchiveLimit | quote }}
+  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.configuration.disableRegistration | quote }}
+  NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ not .Values.configuration.disableCredentialLogin | quote }}
+  DISABLE_NEW_SSO_USERS: {{ .Values.configuration.disableNewSSOLogins | quote }}
+  ARCHIVE_TAKE_COUNT: {{ .Values.configuration.preservationSettings.worker | quote }}
+  BROWSER_TIMEOUT: {{ .Values.configuration.preservationSettings.timeout | quote }}
+  IGNORE_UNAUTHORIZED_CA: {{ .Values.configuration.allowInsecureLinks | quote }}
+  MAX_LINKS_PER_USER: {{ .Values.configuration.maxLinksPerUser | quote }}
+  IGNORE_HTTPS_ERRORS: {{ .Values.configuration.allowInsecureLinks | quote }}
+  NEXT_PUBLIC_ADMIN: {{ .Values.configuration.adminUserId | quote }}
+  NEXT_PUBLIC_MAX_FILE_BUFFER: {{ .Values.configuration.preservationSettings.maxFileSize | quote }}
+  PDF_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxPdfSize | quote }}
+  SCREENSHOT_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxScreenshotSize | quote }}
+  READABILITY_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxReadabilitySize | quote }}
+  PREVIEW_MAX_BUFFER: {{ .Values.configuration.maxPreviewSize | quote }}
+  MONOLITH_MAX_BUFFER: {{ .Values.configuration.preservationSettings.maxMonolithSize | quote }}
+  IMPORT_LIMIT: {{ .Values.configuration.maxImportSize | quote }}
 
   {{- if .Values.configuration.ignoreUrlSizeLimit }}
-  IGNORE_URL_SIZE_LIMIT: {{ .Values.configuration.ignoreUrlSizeLimit }}
+  IGNORE_URL_SIZE_LIMIT: {{ .Values.configuration.ignoreUrlSizeLimit | quote }}
   {{- end }}
 
   {{- if .Values.configuration.monolithCustomOptions }}
-  MONOLITH_CUSTOM_OPTIONS: {{ .Values.configuration.monolithCustomOptions }}
+  MONOLITH_CUSTOM_OPTIONS: {{ .Values.configuration.monolithCustomOptions | quote }}
   {{- end }}
 
-  DISABLE_PRESERVATION: {{ .Values.configuration.disablePreservation }}
-  NEXT_PUBLIC_RSS_POLLING_INTERVAL_MINUTES: {{ .Values.configuration.rssPollingInterval }}
-  RSS_SUBSCRIPTION_LIMIT_PER_USER: {{ .Values.configuration.rssSubscriptionLimitPerUser }}
-  TEXT_CONTENT_LIMIT: {{ .Values.configuration.preservationSettings.readabilityTextLimit }}
+  DISABLE_PRESERVATION: {{ .Values.configuration.disablePreservation | quote }}
+  NEXT_PUBLIC_RSS_POLLING_INTERVAL_MINUTES: {{ .Values.configuration.rssPollingInterval | quote }}
+  RSS_SUBSCRIPTION_LIMIT_PER_USER: {{ .Values.configuration.rssSubscriptionLimitPerUser | quote }}
+  TEXT_CONTENT_LIMIT: {{ .Values.configuration.preservationSettings.readabilityTextLimit | quote }}
 
   {{- if .Values.configuration.searchFilterLimit }}
-  SEARCH_FILTER_LIMIT: {{ .Values.configuration.searchFilterLimit }}
+  SEARCH_FILTER_LIMIT: {{ .Values.configuration.searchFilterLimit | quote }}
   {{- end }}
-  INDEX_TAKE_COUNT: {{ .Values.configuration.indexAmount }}
+  INDEX_TAKE_COUNT: {{ .Values.configuration.indexAmount | quote }}
 
   {{- if .Values.configuration.meilisearch.host }}
-  MEILI_HOST: {{ .Values.configuration.meilisearch.host }}
-  MEILI_TIMEOUT: {{ .Values.configuration.meilisearch.timeout }}
+  MEILI_HOST: {{ .Values.configuration.meilisearch.host | quote }}
+  MEILI_TIMEOUT: {{ .Values.configuration.meilisearch.timeout | quote }}
   {{- end }}
