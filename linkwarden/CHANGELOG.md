@@ -2,6 +2,36 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-0.1.0-preview.4 - 2025-12-22
+#### Bug Fixes
+- (**linkwarden**) use correct data dir - (5dce483) - Dennis Witt
+
+- - -
+
+## linkwarden-0.1.0-preview.3 - 2025-12-22
+#### Bug Fixes
+- (**linkwarden**) quote values in configmap - (a334c4d) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) linkwarden-0.1.0-preview.3 - (4a97b17) - github-actions
+
+- - -
+
+## linkwarden-0.1.0-preview.2 - 2025-12-22
+#### Bug Fixes
+- (**linkwarden**) correctly use required function - (64c6f2e) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) linkwarden-0.1.0-preview.2 - (92f87fd) - github-actions
+
+- - -
+
+## linkwarden-0.1.0-preview.1 - 2025-12-22
+#### Features
+- added first draft of linkwarden chart - (baf009c) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) linkwarden-0.1.0-preview.1 - (69a72be) - github-actions
+
+- - -
+
 ## linkwarden-0.1.0-preview.3 - 2025-12-22
 #### Bug Fixes
 - (**linkwarden**) quote values in configmap - (a334c4d) - Dennis Witt
