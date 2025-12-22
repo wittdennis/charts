@@ -1,6 +1,6 @@
 # garage
 
-![Version: 1.1.2](https://img.shields.io/badge/Version-1.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments.
 
@@ -42,6 +42,25 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | garage.s3.api.rootDomain | string | `".s3.garage.tld"` |  |
 | garage.s3.web.index | string | `"index.html"` |  |
 | garage.s3.web.rootDomain | string | `".web.garage.tld"` |  |
+| gatewayApi | object | `{"s3":{"api":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["s3.garage.ltd","*.s3.garage.ltd"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]},"web":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["*.web.garage.tld"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}}}` | Support for gateway api |
+| gatewayApi.s3.api | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["s3.garage.ltd","*.s3.garage.ltd"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | Creates route for the S3 api |
+| gatewayApi.s3.api.additionalRules | object | `{}` | Any custom rule you want to specify |
+| gatewayApi.s3.api.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| gatewayApi.s3.api.enabled | bool | `false` | Flag to control if HTTP route should be created |
+| gatewayApi.s3.api.filters | list | `[]` | Filter that should be added to the default rule |
+| gatewayApi.s3.api.hostnames | list | `["s3.garage.ltd","*.s3.garage.ltd"]` | Hostnames of the HTTPRoute |
+| gatewayApi.s3.api.labels | object | `{}` | Additional labels for the HTTPRoute |
+| gatewayApi.s3.api.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| gatewayApi.s3.api.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
+| gatewayApi.s3.web | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["*.web.garage.tld"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | Route for Web buckets |
+| gatewayApi.s3.web.additionalRules | object | `{}` | Any custom rule you want to specify |
+| gatewayApi.s3.web.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| gatewayApi.s3.web.enabled | bool | `false` | Flag to control if HTTP route should be created |
+| gatewayApi.s3.web.filters | list | `[]` | Filter that should be added to the default rule |
+| gatewayApi.s3.web.hostnames | list | `["*.web.garage.tld"]` | Hostnames of the HTTPRoute |
+| gatewayApi.s3.web.labels | object | `{}` | Additional labels for the HTTPRoute |
+| gatewayApi.s3.web.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| gatewayApi.s3.web.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"dxflrs/amd64_garage"` | default to amd64 docker image |
 | image.tag | string | `""` | set the image tag, please prefer using the chart version and not this to avoid compatibility issues |
