@@ -61,8 +61,10 @@ spec:
             - progress
             - --bluetooth-adapter
             - {{ .Values.bluetoothCommissioning.enabled | ternary "1" "0" | quote }}
+            {{- if .Values.networkInterface }}
             - --primary-interface
-            - {{ required "networkInterface not set. A valid network interface has to be provided." .Values.networkInterface}}
+            - {{ .Values.networkInterface }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 5580
