@@ -1,0 +1,14 @@
+apiVersion: v2
+name: linkwarden
+description: |
+  Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, read, annotate, and fully preserve what matters, all in one place.
+
+type: application
+version: 0.1.0
+appVersion: "v2.13.2" # renovate: datasource=docker depName=ghcr.io/linkwarden/linkwarden versioning=semver
+sources:
+  - https://github.com/wittdennis/charts/tree/master/linkwarden
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/linkwarden/assets/icon.png
+keywords:
+  - bookmarks
+  - archival

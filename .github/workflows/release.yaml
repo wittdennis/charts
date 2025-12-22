@@ -15,6 +15,7 @@ on:
           - otbr
           - garage
           - yas3p
+          - linkwarden
       preview:
         description: Suffix for a preview version
         default: ""

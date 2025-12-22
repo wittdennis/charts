@@ -1,0 +1,41 @@
+{{- if .Values.gatewayApi.enabled -}}
+{{- $fullName := include "linkwarden.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "linkwarden.labels" . | nindent 4 }}
+    {{- with .Values.gatewayApi.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.gatewayApi.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.gatewayApi.hostnames }}
+  hostnames:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  {{- with .Values.gatewayApi.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- if .Values.gatewayApi.additionalRules }}
+    {{- tpl (toYaml .Values.gatewayApi.additionalRules) $ | nindent 4 }}
+    {{- end }}
+    - backendRefs:
+        - name: {{ $fullName }}
+          port: {{ $svcPort }}
+          weight: 100
+      {{- with .Values.gatewayApi.matches }}
+      matches:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.gatewayApi.filters }}
+        {{- toYaml . | nindent 8 }}
+      {{- end -}}
+{{- end }}
