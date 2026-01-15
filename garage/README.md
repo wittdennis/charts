@@ -1,6 +1,6 @@
 # garage
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments.
 
@@ -24,6 +24,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | extraVolumeMounts | object | `{}` |  |
 | extraVolumes | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
+| garage.additionalTopLevelConfig | string | `""` | Additional configuration to append to garage.toml. Use a multi-line string for custom config. Example:  additionalTopLevelConfig: |-    data_fsync = true |
 | garage.admin | object | `{"token":{"create":false,"secret":{"create":true,"name":"","value":""}}}` | Configuration for the Admin API |
 | garage.admin.token | object | `{"create":false,"secret":{"create":true,"name":"","value":""}}` | Settings for the API token |
 | garage.admin.token.create | bool | `false` | Used to control if admin token should be created. Needed for API in garage < v2.0. Not recommended for garage >= v2.0, use the more flexible dynamic admin token system instead |
@@ -116,6 +117,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | resources | object | `{}` |  |
 | securityContext.capabilities | object | `{"drop":["ALL"]}` | The default security context is heavily restricted, feel free to tune it to your requirements |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| service.annotations | object | `{}` | Annotations to add to the service |
 | service.s3.api.port | int | `3900` |  |
 | service.s3.web.port | int | `3902` |  |
 | service.type | string | `"ClusterIP"` | You can rely on any service to expose your cluster - ClusterIP (+ Ingress) - NodePort (+ Ingress) - LoadBalancer |

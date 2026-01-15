@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-1.4.0 - 2026-01-15
+#### Features
+- (**garage**) add additionalTopLevelConfig in order to set arbitrary garage.toml values - (e845ac2) - Dennis Witt
+
+- - -
+
 ## garage-1.3.0 - 2026-01-15
 #### Features
 - (**garage**) add opt-in feature to create a admin token for the Admin API - (e31bf05) - Dennis Witt
