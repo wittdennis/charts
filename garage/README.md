@@ -1,6 +1,6 @@
 # garage
 
-![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.0](https://img.shields.io/badge/AppVersion-v2.1.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments.
 
@@ -24,6 +24,13 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | extraVolumeMounts | object | `{}` |  |
 | extraVolumes | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
+| garage.admin | object | `{"token":{"create":false,"secret":{"create":true,"name":"","value":""}}}` | Configuration for the Admin API |
+| garage.admin.token | object | `{"create":false,"secret":{"create":true,"name":"","value":""}}` | Settings for the API token |
+| garage.admin.token.create | bool | `false` | Used to control if admin token should be created. Needed for API in garage < v2.0. Not recommended for garage >= v2.0, use the more flexible dynamic admin token system instead |
+| garage.admin.token.secret | object | `{"create":true,"name":"","value":""}` | Kubernetes secret configuration |
+| garage.admin.token.secret.create | bool | `true` | Flag to control if a token secret should be created during deployment |
+| garage.admin.token.secret.name | string | `""` | Name of the admin token secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false. Secret has to contain a 'token' value |
+| garage.admin.token.secret.value | string | `""` | If not given, a random secret will be generated and stored in a Secret object |
 | garage.blockSize | string | `"1048576"` | Defaults is 1MB An increase can result in better performance in certain scenarios https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#block_size |
 | garage.bootstrapPeers | list | `[]` | This is not required if you use the integrated kubernetes discovery |
 | garage.compressionLevel | string | `"1"` | zstd compression level of stored blocks https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#compression_level |
@@ -36,7 +43,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | garage.replicationFactor | string | `"3"` | Default to 3 replicas, see the replication_factor section at https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#replication_factor |
 | garage.rpc.bindAddr | string | `"[::]:3901"` |  |
 | garage.rpc.secret.create | bool | `true` | Flag to control if a rpc kubernetes secret should be created during deployment |
-| garage.rpc.secret.name | string | `""` | Name of the rpc secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false |
+| garage.rpc.secret.name | string | `""` | Name of the rpc secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false. Secret has to contain a 'rpcSecret' value |
 | garage.rpc.secret.value | string | `""` | If not given, a random secret will be generated and stored in a Secret object |
 | garage.s3.api.region | string | `"garage"` |  |
 | garage.s3.api.rootDomain | string | `".s3.garage.tld"` |  |

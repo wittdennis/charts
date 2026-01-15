@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-1.3.0 - 2026-01-15
+#### Features
+- (**garage**) add opt-in feature to create a admin token for the Admin API - (e31bf05) - Dennis Witt
+
+- - -
+
 ## garage-1.2.0 - 2025-12-22
 #### Features
 - (**garage**) added support for gateway api - (3c98514) - Dennis Witt
