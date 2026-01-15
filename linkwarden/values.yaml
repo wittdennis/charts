@@ -6,7 +6,8 @@
 # If you want to create a HA setup with more than one replica you have to disable persistence and use S3 storage instead
 replicaCount: 1
 
-configuration:
+# -- Linkwarden specific settings
+linkwarden:
   # -- Postgres connection settings
   postgres:
     # -- Required. Name of a secret that contains postgres connection settings. Secret must contain a field 'uri'
@@ -81,6 +82,9 @@ configuration:
   # -- Custom options for the monolith process
   monolithCustomOptions: ~
 
+deployment:
+  kind: StatefulSet
+
 # -- Additional env values to pass to the container
 env: {}
 # - name: TZ
@@ -89,9 +93,9 @@ env: {}
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   # -- The registry where the image is hosted
-  registry: ghcr.io
+  registry: docker.io
   # -- Repository of the image
-  repository: linkwarden/linkwarden
+  repository: denniswitt/linkwarden-rootless
   # -- This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -168,8 +172,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# -- Block for setting up gateway api. More information can be found here: https://gateway-api.sigs.k8s.io/
-gatewayApi:
+# -- Block for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/
+route:
   # -- Flag to control if route should be created
   enabled: false
   # -- Additional labels for the HTTPRoute
@@ -202,12 +206,14 @@ gatewayApi:
 
 # -- Settings for storage
 persistence:
-  # -- Controls if persistence should be enabled
+  # -- If persistent volumes should be configured. Disable preservation features when you set this to false
   enabled: true
   # -- Storage class to use for persistent storage. If left empty default storage class will be used.
-  className: ~
+  storageClass: ~
   # -- Size for the persistent volume claim.
   size: 10Gi
+  # -- Use this if you're deploying as DaemonSet
+  hostPath: ~
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
