@@ -39,10 +39,25 @@ garage:
     secret:
       # -- Flag to control if a rpc kubernetes secret should be created during deployment
       create: true
-      # -- Name of the rpc secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false
+      # -- Name of the rpc secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false. Secret has to contain a 'rpcSecret' value
       name: ""
       # -- If not given, a random secret will be generated and stored in a Secret object
       value: ""
+
+  # -- Configuration for the Admin API
+  admin:
+    # -- Settings for the API token
+    token:
+      # -- Used to control if admin token should be created. Needed for API in garage < v2.0. Not recommended for garage >= v2.0, use the more flexible dynamic admin token system instead
+      create: false
+      # -- Kubernetes secret configuration
+      secret:
+        # -- Flag to control if a token secret should be created during deployment
+        create: true
+        # -- Name of the admin token secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false. Secret has to contain a 'token' value
+        name: ""
+        # -- If not given, a random secret will be generated and stored in a Secret object
+        value: ""
 
   # -- This is not required if you use the integrated kubernetes discovery
   bootstrapPeers: []
