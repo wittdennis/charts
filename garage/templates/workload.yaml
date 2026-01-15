@@ -51,6 +51,13 @@ spec:
                 secretKeyRef:
                   name: {{ include "garage.rpcSecretName" . }}
                   key: rpcSecret
+            {{- if .Values.garage.admin.token.create }}
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "garage.adminTokenSecretName" . }}
+                  key: token
+            {{- end }}
             {{- with .Values.environment }}
               {{- toYaml . | nindent 12 }}
             {{- end }}

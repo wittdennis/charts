@@ -35,6 +35,17 @@ Create the name of the rpc secret
 {{- end }}
 
 {{/*
+Create the name of the admin token secret
+*/}}
+{{- define "garage.adminTokenSecretName" -}}
+{{- if .Values.garage.admin.token.secret.name -}}
+{{- .Values.garage.admin.token.secret.name -}}
+{{- else -}}
+{{- printf "%s-admin-token-secret" (include "garage.fullname" .) -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "garage.chart" -}}
