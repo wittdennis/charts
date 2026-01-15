@@ -26,7 +26,15 @@ data:
 
     rpc_bind_addr = "{{ .Values.garage.rpc.bindAddr }}"
 
-    bootstrap_peers = {{ .Values.garage.bootstrapPeers }}
+    bootstrap_peers = [
+    {{- range $index, $peer := .Values.garage.bootstrapPeers }}
+    {{- if $index}}, {{ end }}{{ $peer | quote }}
+    {{ end }}
+    ]
+
+    {{- if .Values.garage.additionalTopLevelConfig }}
+    {{ .Values.garage.additionalTopLevelConfig | nindent 4 }}
+    {{- end }}
 
     [kubernetes_discovery]
     namespace = "{{ .Release.Namespace }}"

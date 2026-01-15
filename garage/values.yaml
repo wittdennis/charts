@@ -72,6 +72,12 @@ garage:
       rootDomain: ".web.garage.tld"
       index: "index.html"
 
+  # -- Additional configuration to append to garage.toml. Use a multi-line string for custom config.
+  # Example:
+  #  additionalTopLevelConfig: |-
+  #    data_fsync = true
+  additionalTopLevelConfig: ""
+
   # -- if not empty string, allow using an existing ConfigMap for the garage.toml,
   # if set, ignores garage.toml
   existingConfigMap: ""
@@ -153,6 +159,8 @@ service:
   # - NodePort (+ Ingress)
   # - LoadBalancer
   type: ClusterIP
+  # -- Annotations to add to the service
+  annotations: {}
   s3:
     api:
       port: 3900
