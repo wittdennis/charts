@@ -20,15 +20,15 @@ data:
   PAGINATION_TAKE_COUNT: {{ .Values.linkwarden.paginationTakeCount | quote }}
   AUTOSCROLL_TIMEOUT: {{ .Values.linkwarden.autoscrollTimeout | quote }}
   RE_ARCHIVE_LIMIT: {{ .Values.linkwarden.reArchiveLimit | quote }}
-  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.linkwarden.disableRegistration | quote }}
-  NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ not .Values.linkwarden.disableCredentialLogin | quote }}
-  DISABLE_NEW_SSO_USERS: {{ .Values.linkwarden.disableNewSSOLogins | quote }}
+  NEXT_PUBLIC_DISABLE_REGISTRATION: {{ .Values.linkwarden.auth.disableRegistration | quote }}
+  NEXT_PUBLIC_CREDENTIALS_ENABLED: {{ not .Values.linkwarden.auth.disableCredentialLogin | quote }}
+  DISABLE_NEW_SSO_USERS: {{ .Values.linkwarden.auth.disableNewSSOLogins | quote }}
   ARCHIVE_TAKE_COUNT: {{ .Values.linkwarden.preservationSettings.worker | quote }}
   BROWSER_TIMEOUT: {{ .Values.linkwarden.preservationSettings.timeout | quote }}
   IGNORE_UNAUTHORIZED_CA: {{ .Values.linkwarden.allowInsecureLinks | quote }}
   MAX_LINKS_PER_USER: {{ .Values.linkwarden.maxLinksPerUser | quote }}
   IGNORE_HTTPS_ERRORS: {{ .Values.linkwarden.allowInsecureLinks | quote }}
-  NEXT_PUBLIC_ADMIN: {{ .Values.linkwarden.adminUserId | quote }}
+  NEXT_PUBLIC_ADMIN: {{ .Values.linkwarden.auth.adminUserId | quote }}
   NEXT_PUBLIC_MAX_FILE_BUFFER: {{ .Values.linkwarden.preservationSettings.maxFileSize | quote }}
   PDF_MAX_BUFFER: {{ .Values.linkwarden.preservationSettings.maxPdfSize | quote }}
   SCREENSHOT_MAX_BUFFER: {{ .Values.linkwarden.preservationSettings.maxScreenshotSize | quote }}
