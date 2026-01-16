@@ -33,6 +33,18 @@ linkwarden:
     disableNewSSOLogins: false
     # -- Id of the admin user. Defaults to the first user registered
     adminUserId: 1
+    # -- Settings for authentik
+    authentik:
+      # -- Set to true to enable authentik
+      enabled: false
+      # -- OpenID configuration issuer for the application
+      issuer: ~
+      # -- Client ID of the authentik application
+      clientID: ~
+      # -- Existing kubernetes secret containing the client secret of the authentik application. Requires a 'client-secret' value
+      existingSecret: ~
+      # -- Optional custom provider name
+      customName: ~
 
   # -- The numbers of Links to fetch every time you reach the bottom of the webpage
   paginationTakeCount: 50

@@ -57,6 +57,13 @@ spec:
                   name: {{ required "Existing secret for meilisearch is required" .Values.linkwarden.meilisearch.existingSecret }}
                   key: master-key
             {{- end}}
+            {{- if .Values.linkwarden.auth.authentik.enabled }}
+            - name: AUTHENTIK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.linkwarden.auth.authentik.existingSecret }}
+                  key: client-secret
+            {{- end}}
           envFrom:
             - configMapRef:
                 name: {{ include "linkwarden.fullname" . }}
