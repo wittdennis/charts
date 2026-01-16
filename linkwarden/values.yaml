@@ -40,7 +40,7 @@ linkwarden:
       # -- OpenID configuration issuer for the application
       issuer: ~
       # -- Client ID of the authentik application
-      clientID: ~
+      clientId: ~
       # -- Existing kubernetes secret containing the client secret of the authentik application. Requires a 'client-secret' value
       existingSecret: ~
       # -- Optional custom provider name
