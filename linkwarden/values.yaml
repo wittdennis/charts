@@ -21,9 +21,18 @@ linkwarden:
     # -- Timeout for a meilisearch search
     timeout: 1000000
 
-  authSecret:
+  # -- Authentication settings for linkwarden
+  auth:
     # -- Required. Name of a secret containing a secret string to be used for the authentication mechanism. Secret must contain 'auth-secret' field
     existingSecret: ~
+    # -- If set to true, registration will be disabled.
+    disableRegistration: false
+    # -- If set to true, users won't be able to login with username and password.
+    disableCredentialLogin: false
+    # -- If set to true, new users will not be able to login with SSO.
+    disableNewSSOLogins: false
+    # -- Id of the admin user. Defaults to the first user registered
+    adminUserId: 1
 
   # -- The numbers of Links to fetch every time you reach the bottom of the webpage
   paginationTakeCount: 50
@@ -31,20 +40,12 @@ linkwarden:
   autoscrollTimeout: 30
   # -- Adjusts how often a user can trigger a new archive for each link (in minutes).
   reArchiveLimit: 5
-  # -- If set to true, registration will be disabled.
-  disableRegistration: false
-  # -- If set to true, users won't be able to login with username and password.
-  disableCredentialLogin: false
-  # -- If set to true, new users will not be able to login with SSO.
-  disableNewSSOLogins: false
   # -- Limits the maximum number of links per user
   maxLinksPerUser: 30000
   # -- Set to true to allow processing of insecure links
   allowInsecureLinks: false
   # -- Set to true to ignore header size limit when fetching links
   ignoreUrlSizeLimit: ~
-  # -- Id of the admin user. Defaults to the first user registered
-  adminUserId: 1
   # -- Maximum size in MB of a link preview
   maxPreviewSize: 10
   # -- Maximum size in MB for a imported link

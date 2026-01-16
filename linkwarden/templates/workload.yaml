@@ -48,7 +48,7 @@ spec:
             - name: NEXTAUTH_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ required "Existing secret for authSecret is required" .Values.linkwarden.authSecret.existingSecret }}
+                  name: {{ required "Existing secret for authSecret is required" .Values.linkwarden.auth.existingSecret }}
                   key: auth-secret
             {{- if .Values.linkwarden.meilisearch.host }}
             - name: MEILI_MASTER_KEY
