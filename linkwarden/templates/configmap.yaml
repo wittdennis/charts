@@ -61,3 +61,12 @@ data:
   MEILI_HOST: {{ .Values.linkwarden.meilisearch.host | quote }}
   MEILI_TIMEOUT: {{ .Values.linkwarden.meilisearch.timeout | quote }}
   {{- end }}
+
+  {{- if .Values.linkwarden.auth.authentik.enabled }}
+  NEXT_PUBLIC_AUTHENTIK_ENABLED: {{ .Values.linkwarden.auth.authentik.enabled | quote }}
+  {{- if .Values.linkwarden.auth.authentik.customName }}
+  AUTHENTIK_CUSTOM_NAME: {{ .Values.linkwarden.auth.authentik.customName | quote }}
+  {{- end }}
+  AUTHENTIK_ISSUER: {{ .Values.linkwarden.auth.authentik.issuer | quote }}
+  AUTHENTIK_CLIENT_ID: {{ .Values.linkwarden.auth.authentik.clientID | quote }}
+  {{- end }}
