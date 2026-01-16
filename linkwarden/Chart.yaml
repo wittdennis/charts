@@ -3,7 +3,7 @@ name: linkwarden
 description: |
   Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, read, annotate, and fully preserve what matters, all in one place.
 type: application
-version: 0.1.0
+version: 0.2.0-preview.1
 appVersion: "2.13.5" # renovate: datasource=docker depName=docker.io/denniswitt/linkwarden-rootless versioning=semver
 sources:
   - https://github.com/wittdennis/charts/tree/master/linkwarden

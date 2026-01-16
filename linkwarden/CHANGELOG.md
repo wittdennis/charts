@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-0.2.0-preview.1 - 2026-01-16
+#### Features
+- (**linkwarden**) add configuration options for authentik - (f12b88e) - Dennis Witt
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>create new auth section for auth configurations - (0604413) - Dennis Witt
+
+- - -
+
 ## linkwarden-0.1.0 - 2026-01-15
 #### Features
 - initial working linkwarden version - (86ea572) - Dennis Witt
