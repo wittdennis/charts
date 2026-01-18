@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-2.0.0 - 2026-01-18
+#### Features
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**garage**) use more common routes value instead of gatewayApi - (f81fadf) - Dennis Witt
+
+- - -
+
 ## garage-1.4.0 - 2026-01-15
 #### Features
 - (**garage**) add additionalTopLevelConfig in order to set arbitrary garage.toml values - (e845ac2) - Dennis Witt
