@@ -223,8 +223,8 @@ ingress:
       #    hosts:
       #      - kubernetes.docker.internal
 
-# -- Support for gateway api
-gatewayApi:
+# -- Route configuration for Gateway API
+routes:
   s3:
     # -- Creates route for the S3 api
     api:
