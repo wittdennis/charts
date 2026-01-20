@@ -33,6 +33,15 @@ Helm chart for home assistant matter server
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | resources | object | `{}` |  |
+| route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
+| route.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| route.enabled | bool | `false` | Flag to control if route should be created |
+| route.filters | list | `[]` | Filter that should be added to the default rule |
+| route.hostnames | list | `[]` | Hostnames of the HTTPRoute |
+| route.labels | object | `{}` | Additional labels for the HTTPRoute |
+| route.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| route.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
 | service | object | `{"port":80,"type":"ClusterIP"}` | This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/ |
 | service.port | int | `80` | This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports |
 | service.type | string | `"ClusterIP"` | This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types |
