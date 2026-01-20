@@ -68,4 +68,3 @@ A Helm chart for Foundry VTT
 | storage.className | string | `nil` | The storage class name to use |
 | storage.size | string | `"10Gi"` | The size the pv should have |
 | tolerations | list | `[]` |  |
-

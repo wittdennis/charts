@@ -47,12 +47,42 @@ service:
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
 
+# -- This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/
+route:
+  # -- Flag to control if route should be created
+  enabled: false
+  # -- Additional labels for the HTTPRoute
+  labels: {}
+  # -- Additional annotations for the HTTPRoute
+  annotations: {}
+  # -- Hostnames of the HTTPRoute
+  hostnames: []
+  # - otbr.example.com
+
+  # -- Gateway reference that the HTTPRoute should bind against
+  parentRefs: []
+  # - group: gateway.networking.k8s.io
+  #   kind: Gateway
+  #   name: example-gateway
+  #   namespace: gateway-namespace
+
+  # -- Matches for the default rule
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+
+  # -- Filter that should be added to the default rule
+  filters: []
+
+  # -- Any custom rule you want to specify
+  additionalRules: {}
+
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
   enabled: false
   className: ""
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -65,8 +95,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
