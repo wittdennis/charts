@@ -41,6 +41,15 @@ A Helm chart for Foundry VTT
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | readinessProbe | object | `{"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":30}` | This is to setup the readiness probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | resources | object | `{}` | Resources for the foundry container |
+| route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
+| route.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| route.enabled | bool | `false` | Flag to control if route should be created |
+| route.filters | list | `[]` | Filter that should be added to the default rule |
+| route.hostnames | list | `[]` | Hostnames of the HTTPRoute |
+| route.labels | object | `{}` | Additional labels for the HTTPRoute |
+| route.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| route.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.readOnlyRootFilesystem | bool | `false` |  |
 | securityContext.runAsGroup | int | `1000` |  |
