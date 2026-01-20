@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## otbr-0.2.0 - 2026-01-20
+#### Features
+- (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+- (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
+- (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
+
+- - -
+
 ## otbr-0.1.0 - 2025-02-04
 #### Bug Fixes
 - http port in env - (0691d2c) - Dennis Witt
