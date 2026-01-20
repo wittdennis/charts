@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.3.0 - 2026-01-20
+#### Features
+- (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
+
+- - -
+
 ## node-red-1.2.4 - 2026-01-07
 #### Bug Fixes
 - (**deps**) update nodered/node-red docker tag to v4.1.3 - (e025971) - wittdennis-renovate[bot]
