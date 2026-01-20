@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-14.2.0 - 2026-01-20
+#### Features
+- (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+- (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
+
+- - -
+
 ## foundryvtt-14.1.3 - 2025-11-15
 #### Bug Fixes
 - (**deps**) update felddy/foundryvtt docker tag to v13.351.0 - (9cbb311) - wittdennis-renovate[bot]
