@@ -64,4 +64,3 @@ A Helm chart for MrPrimates D&D Beyond Proxy
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
-
