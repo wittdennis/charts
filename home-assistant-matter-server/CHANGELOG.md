@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.2.0 - 2026-01-20
+#### Features
+- (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+- (**home-assistant-matter-server**) add route block for gateway api usage - (01b978e) - Dennis Witt
+- (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-3.1.3 - 2025-12-22
 #### Bug Fixes
 - (**home-assistant-matter-server**) made networkInterface optional as it is optional in the implementation - (066c8c9) - Dennis Witt

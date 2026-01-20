@@ -1,6 +1,6 @@
 # home-assistant-matter-server
 
-![Version: 3.1.3](https://img.shields.io/badge/Version-3.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.2](https://img.shields.io/badge/AppVersion-8.1.2-informational?style=flat-square)
+![Version: 3.2.0](https://img.shields.io/badge/Version-3.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.2](https://img.shields.io/badge/AppVersion-8.1.2-informational?style=flat-square)
 
 Helm chart for home assistant matter server
 
@@ -54,3 +54,4 @@ Helm chart for home assistant matter server
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
+
