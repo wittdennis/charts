@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-2.1.0 - 2026-01-25
+#### Features
+- (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+- (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
+#### Bug Fixes
+- (**deps**) update dxflrs/amd64_garage docker tag to v2.2.0 - (2361c85) - wittdennis-renovate[bot]
+
+- - -
+
 ## garage-2.0.0 - 2026-01-18
 #### Features
 - <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**garage**) use more common routes value instead of gatewayApi - (f81fadf) - Dennis Witt
