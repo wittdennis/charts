@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.4.0 - 2026-01-26
+#### Features
+- (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+#### Bug Fixes
+- (**deps**) update nodered/node-red docker tag to v4.1.4 - (590c2c8) - wittdennis-renovate[bot]
+
+- - -
+
 ## node-red-1.3.0 - 2026-01-20
 #### Features
 - (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
