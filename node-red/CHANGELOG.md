@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.4.1 - 2026-02-11
+#### Bug Fixes
+- (**deps**) update nodered/node-red docker tag to v4.1.5 - (97e2f79) - wittdennis-renovate[bot]
+
+- - -
+
 ## node-red-1.4.0 - 2026-01-26
 #### Features
 - (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
