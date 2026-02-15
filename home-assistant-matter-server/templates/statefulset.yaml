@@ -57,8 +57,14 @@ spec:
             - /data
             - --paa-root-cert-dir
             - /data/credentials
+            {{- if .Values.log.logLevel }}
+            - --log-level
+            - {{ .Values.log.logLevel }}
+            {{- end }}
+            {{- if .Values.log.logLevelSDK }}
             - --log-level-sdk
-            - progress
+            - {{ .Values.log.logLevelSDK }}
+            {{- end }}
             - --bluetooth-adapter
             - {{ .Values.bluetoothCommissioning.enabled | ternary "1" "0" | quote }}
             {{- if .Values.networkInterface }}

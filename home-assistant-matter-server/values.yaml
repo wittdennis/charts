@@ -16,6 +16,12 @@ enableServiceLinks: true
 # -- Name of the network interface that should be used
 networkInterface: ~
 
+log:
+# -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
+  logLevel: info
+# -- Matter SDK logging level, possible options are: none, error, progress, detail, automation
+  logLevelSDK: progress
+
 # -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # -- This is to override the chart name.
