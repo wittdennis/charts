@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-3.3.0 - 2026-02-17
+#### Features
+- (**home-assisstant-matter-server**) Add logging level config for global and sdk (#258) - (b0a962a) - Sean Johnson
+
+- - -
+
 ## home-assistant-matter-server-3.2.0 - 2026-01-20
 #### Features
 - (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt

@@ -1,6 +1,6 @@
 # home-assistant-matter-server
 
-![Version: 3.2.0](https://img.shields.io/badge/Version-3.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.2](https://img.shields.io/badge/AppVersion-8.1.2-informational?style=flat-square)
+![Version: 3.3.0](https://img.shields.io/badge/Version-3.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 8.1.2](https://img.shields.io/badge/AppVersion-8.1.2-informational?style=flat-square)
 
 Helm chart for home assistant matter server
 
@@ -22,6 +22,8 @@ Helm chart for home assistant matter server
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
 | livenessProbe | object | `{"httpGet":{"path":"/","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
+| log.logLevel | string | `"info"` | Global logging level, possible options are: critical, error, warning, info, debug, verbose |
+| log.logLevelSDK | string | `"progress"` | Matter SDK logging level, possible options are: none, error, progress, detail, automation |
 | nameOverride | string | `""` | This is to override the chart name. |
 | networkInterface | string | `nil` | Name of the network interface that should be used |
 | nodeSelector | object | `{}` | Selector to control on which node the pods should be running |
