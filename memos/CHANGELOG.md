@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.0.2 - 2026-02-18
+#### Bug Fixes
+- (**memos**) use correct version tag for container - (1eec9d6) - Dennis Witt
+
+- - -
+
 ## memos-1.0.1 - 2026-02-18
 #### Bug Fixes
 - (**memos**) use correct name for memos data volume mount - (279e868) - Dennis Witt
