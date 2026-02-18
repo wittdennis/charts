@@ -40,6 +40,16 @@ spec:
             - name: http
               containerPort: 5230
               protocol: TCP
+          env:
+            - name: MEMOS_DRIVER
+              value: {{ .Values.memos.databaseDriver }}
+            {{- if not (eq .Values.memos.databaseDriver "sqlite") }}
+            - name: MEMOS_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.memos.existingDsnSecret.name }}
+                  key: {{ .Values.memos.existingDsnSecret.key }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

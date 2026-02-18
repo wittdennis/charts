@@ -5,6 +5,14 @@
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
+memos:
+  # -- The database driver for memos (see: https://usememos.com/docs/configuration/database)
+  databaseDriver: sqlite
+  # -- Use this when databaseDriver != sqlite to define a secret where the data source name is contained
+  existingDsnSecret:
+    name: ~
+    key: ~
+
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   registry: docker.io
