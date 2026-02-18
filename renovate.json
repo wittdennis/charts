@@ -4,35 +4,7 @@
   "baseBranchPatterns": ["$default", "/^release\\/.*/"],
   "packageRules": [
     {
-      "matchFileNames": ["foundryvtt/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["ddb-proxy/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["node-red/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["home-assistant-matter-server/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["otbr/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["garage/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["yas3p/Chart.yaml"],
-      "semanticCommitType": "fix"
-    },
-    {
-      "matchFileNames": ["linkwarden/Chart.yaml"],
+      "matchFileNames": ["*/Chart.yaml"],
       "semanticCommitType": "fix"
     }
   ]

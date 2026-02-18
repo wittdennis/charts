@@ -44,3 +44,4 @@ otbr = { path = "otbr" }
 garage = { path = "garage" }
 yas3p = { path = "yas3p" }
 linkwarden = { path = "linkwarden" }
+memos = { path = "memos" }
