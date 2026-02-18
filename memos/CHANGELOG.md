@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.0.1 - 2026-02-18
+#### Bug Fixes
+- (**memos**) use correct name for memos data volume mount - (279e868) - Dennis Witt
+
+- - -
+
 ## memos-1.0.0 - 2026-02-18
 #### Features
 - add memos chart - (966c70d) - Dennis Witt
