@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.1.0 - 2026-02-18
+#### Features
+- (**memos**) add possibility to define database driver - (84d7e06) - Dennis Witt
+#### Bug Fixes
+- (**memos**) use correct path for liveness and readiness probes - (9b6c3ff) - Dennis Witt
+
+- - -
+
 ## memos-1.0.2 - 2026-02-18
 #### Bug Fixes
 - (**memos**) use correct version tag for container - (1eec9d6) - Dennis Witt
