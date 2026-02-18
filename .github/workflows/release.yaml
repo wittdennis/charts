@@ -16,6 +16,12 @@ on:
           - garage
           - yas3p
           - linkwarden
+          - memos
+      version:
+        default: "auto"
+        description: Can be used to set a specific version. Use 'auto' for automatic version calculation
+        type: string
+        required: false
       preview:
         description: Suffix for a preview version
         default: ""
@@ -50,18 +56,36 @@ jobs:
       - name: bump version
         id: release
         run: |
-          if [ -z "${PRE_RELEASE}" ]; then
-            cog bump --auto --package $CHART
-            echo "preview=false" >> $GITHUB_OUTPUT
+          set -euo pipefail
+
+          COG_BUMP_ARGS=()
+
+          if [ "${VERSION}" = "auto" ]; then
+            COG_BUMP_ARGS+=(--auto)
           else
-            cog bump --auto --package $CHART --pre $PRE_RELEASE
-            echo "preview=true" >> $GITHUB_OUTPUT
+            COG_BUMP_ARGS+=(--version "$VERSION")
           fi
-          VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          COG_BUMP_ARGS+=(--package "$CHART")
+
+          PREVIEW=false
+          if [ -n "${PRE_RELEASE:-}" ]; then
+            COG_BUMP_ARGS+=(--pre "$PRE_RELEASE")
+            PREVIEW=true
+          fi
+
+          cog bump "${COG_BUMP_ARGS[@]}"
+
+          GIT_VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
+
+          {
+            echo "preview=$PREVIEW"
+            echo "version=$GIT_VERSION"
+          } >> "$GITHUB_OUTPUT"
         env:
           CHART: ${{ inputs.chart }}
           PRE_RELEASE: ${{ inputs.preview }}
+          VERSION: ${{ inputs.version }}
 
       - name: generate changelog
         run: cog changelog --at ${{ steps.release.outputs.version }} > GITHUB_CHANGELOG.md
