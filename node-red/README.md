@@ -1,6 +1,6 @@
 # node-red
 
-![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.1.5](https://img.shields.io/badge/AppVersion-4.1.5-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.1.6](https://img.shields.io/badge/AppVersion-4.1.6-informational?style=flat-square)
 
 A Helm chart for node-red.
 Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
@@ -79,3 +79,4 @@ It provides a browser-based editor that makes it easy to wire together flows usi
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
+
