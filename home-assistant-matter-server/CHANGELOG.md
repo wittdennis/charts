@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-4.0.0-preview.1 - 2026-03-04
+#### Features
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**home-assistant-matter-server**) use matterjs implementation as matter server - (a7dd5a0) - Dennis Witt
+- add memos chart - (966c70d) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-3.3.0 - 2026-02-17
 #### Features
 - (**home-assisstant-matter-server**) Add logging level config for global and sdk (#258) - (b0a962a) - Sean Johnson
