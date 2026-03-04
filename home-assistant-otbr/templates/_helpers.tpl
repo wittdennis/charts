@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "otbr.name" -}}
+{{- define "home-assistant-otbr.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "otbr.fullname" -}}
+{{- define "home-assistant-otbr.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "otbr.chart" -}}
+{{- define "home-assistant-otbr.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "otbr.labels" -}}
-helm.sh/chart: {{ include "otbr.chart" . }}
-{{ include "otbr.selectorLabels" . }}
+{{- define "home-assistant-otbr.labels" -}}
+helm.sh/chart: {{ include "home-assistant-otbr.chart" . }}
+{{ include "home-assistant-otbr.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "otbr.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "otbr.name" . }}
+{{- define "home-assistant-otbr.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "home-assistant-otbr.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "otbr.serviceAccountName" -}}
+{{- define "home-assistant-otbr.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "otbr.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "home-assistant-otbr.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

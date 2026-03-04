@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "home-assistant-otbr.fullname" . }}-rest
+  labels:
+    {{- include "home-assistant-otbr.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.rest.type }}
+  ports:
+    - port: {{ .Values.service.rest.port }}
+      targetPort: rest
+      protocol: TCP
+      name: rest
+  selector:
+    {{- include "home-assistant-otbr.selectorLabels" . | nindent 4 }}
