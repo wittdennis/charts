@@ -2,6 +2,60 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-0.1.0-preview.7 - 2026-03-04
+#### Bug Fixes
+- mount data dir - (6abafdd) - Dennis Witt
+
+- - -
+
+## home-assistant-otbr-0.1.0-preview.6 - 2026-03-04
+#### Bug Fixes
+- probes - (0910255) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.6 - (2d19d25) - github-actions
+
+- - -
+
+## home-assistant-otbr-0.1.0-preview.5 - 2026-03-04
+#### Bug Fixes
+- use correct image repository - (c31a187) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.5 - (29b4b32) - github-actions
+
+- - -
+
+## home-assistant-otbr-0.1.0-preview.4 - 2026-03-04
+#### Bug Fixes
+- (**home-assistant-otbr**) image fqdn - (feeb4b7) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.4 - (10fc5f8) - github-actions
+
+- - -
+
+## home-assistant-otbr-0.1.0-preview.3 - 2026-03-04
+#### Bug Fixes
+- home-assistant otbr values block - (86850a3) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.3 - (2affdea) - github-actions
+
+- - -
+
+## home-assistant-otbr-0.1.0-preview.2 - 2026-03-04
+#### Bug Fixes
+- rename storageClass to storageClassName - (84ad6dd) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.2 - (f6ffffc) - github-actions
+
+- - -
+
+## home-assistant-otbr-0.1.0-preview.1 - 2026-03-04
+#### Features
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>use home-assistant openthread border router implementation - (e47b04e) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.1 - (2777f8c) - github-actions
+
+- - -
+
 ## home-assistant-otbr-0.1.0-preview.6 - 2026-03-04
 #### Bug Fixes
 - probes - (0910255) - Dennis Witt
