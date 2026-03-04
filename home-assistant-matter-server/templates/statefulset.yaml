@@ -50,7 +50,7 @@ spec:
             runAsGroup: 0
             runAsNonRoot: false
             privileged: true
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - --storage-path
@@ -61,12 +61,10 @@ spec:
             - --log-level
             - {{ .Values.log.logLevel }}
             {{- end }}
-            {{- if .Values.log.logLevelSDK }}
-            - --log-level-sdk
-            - {{ .Values.log.logLevelSDK }}
-            {{- end }}
+            {{- if .Values.bluetoothCommissioning.enabled }}
             - --bluetooth-adapter
-            - {{ .Values.bluetoothCommissioning.enabled | ternary "1" "0" | quote }}
+            - {{ .Values.bluetoothCommissioning.adapterId }}
+            {{- end }}
             {{- if .Values.networkInterface }}
             - --primary-interface
             - {{ .Values.networkInterface }}

@@ -1,14 +1,20 @@
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: ghcr.io/matter-js/python-matter-server
+  # -- Container registry where the repository is hosted
+  registry: ghcr.io
+  # -- Container repository
+  repository: matter-js/matterjs-server
   # -- This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-# -- Flag to control if bluetooth commissioning should be enabled
+# -- Bluetooth settings
 bluetoothCommissioning:
+  # -- Flag to control if bluetooth commissioning should be enabled
   enabled: false
+  # -- Id of the bluetooth adapter e.g.: 0 for hci0
+  adapterId: 0
 
 # -- Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links
 enableServiceLinks: true
@@ -17,10 +23,8 @@ enableServiceLinks: true
 networkInterface: ~
 
 log:
-# -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
+  # -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
   logLevel: info
-# -- Matter SDK logging level, possible options are: none, error, progress, detail, automation
-  logLevelSDK: progress
 
 # -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
