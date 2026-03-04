@@ -1,6 +1,6 @@
 # home-assistant-otbr
 
-![Version: 0.1.0-preview.2](https://img.shields.io/badge/Version-0.1.0--preview.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.16.5](https://img.shields.io/badge/AppVersion-2.16.5-informational?style=flat-square)
+![Version: 0.1.0-preview.3](https://img.shields.io/badge/Version-0.1.0--preview.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.16.5](https://img.shields.io/badge/AppVersion-2.16.5-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -10,15 +10,15 @@ A Helm chart for Kubernetes
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
-| home-assistant-otbr | object | `{"backboneInterface":"eth0","baudrate":460800,"firewall":false,"flowControl":true,"nat64":false,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
-| home-assistant-otbr.backboneInterface | string | `"eth0"` | The physical network interface to use for routing |
-| home-assistant-otbr.baudrate | int | `460800` | Serial port baudrate (depends on firmware) |
-| home-assistant-otbr.firewall | bool | `false` | If iptables firewall should be configured |
-| home-assistant-otbr.flowControl | bool | `true` | Toggles flow control |
-| home-assistant-otbr.nat64 | bool | `false` | If nat64 should be enabled |
-| home-assistant-otbr.rcpMountPath | string | `"/dev/ttyUSB0"` | The mount path for the thread receiver |
-| home-assistant-otbr.restPort | int | `8081` | Port of the rest api |
-| home-assistant-otbr.webPort | int | `7586` | Port of the web ui |
+| homeAssistantOtbr | object | `{"backboneInterface":"eth0","baudrate":460800,"firewall":false,"flowControl":true,"nat64":false,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
+| homeAssistantOtbr.backboneInterface | string | `"eth0"` | The physical network interface to use for routing |
+| homeAssistantOtbr.baudrate | int | `460800` | Serial port baudrate (depends on firmware) |
+| homeAssistantOtbr.firewall | bool | `false` | If iptables firewall should be configured |
+| homeAssistantOtbr.flowControl | bool | `true` | Toggles flow control |
+| homeAssistantOtbr.nat64 | bool | `false` | If nat64 should be enabled |
+| homeAssistantOtbr.rcpMountPath | string | `"/dev/ttyUSB0"` | The mount path for the thread receiver |
+| homeAssistantOtbr.restPort | int | `8081` | Port of the rest api |
+| homeAssistantOtbr.webPort | int | `7586` | Port of the web ui |
 | image.pullPolicy | string | `"Always"` |  |
 | image.registry | string | `"docker.io"` | The registry where the image is hosted |
 | image.repository | string | `"denniswitt/home-assistant-otbr"` | Image repository |
