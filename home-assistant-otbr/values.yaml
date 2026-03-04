@@ -26,7 +26,7 @@ image:
   # -- The registry where the image is hosted
   registry: docker.io
   # -- Image repository
-  repository: denniswitt/home-assistant-otbr
+  repository: denniswitt/homeassistant-otbr
   # This sets the pull policy for images.
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
