@@ -40,7 +40,7 @@ spec:
             runAsUser: 0
             runAsGroup: 0
             privileged: true
-          image: "{{ .Values.image.repository }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DEVICE
