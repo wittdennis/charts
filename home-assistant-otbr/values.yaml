@@ -77,7 +77,7 @@ persistence:
   # -- Set this if a already existing pvc should be used otherwise a new one will be created
   existingVolumeClaim: ~
   # -- The storage class to use when creating a new pvc
-  storageClass: ~
+  storageClassName: ~
   accessMode: ReadWriteOnce
   size: 1Gi
 
