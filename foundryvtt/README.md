@@ -1,6 +1,6 @@
 # foundryvtt
 
-![Version: 14.3.0-preview.3](https://img.shields.io/badge/Version-14.3.0--preview.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 13.351.0](https://img.shields.io/badge/AppVersion-13.351.0-informational?style=flat-square)
+![Version: 14.3.0-preview.6](https://img.shields.io/badge/Version-14.3.0--preview.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 13.351.0](https://img.shields.io/badge/AppVersion-13.351.0-informational?style=flat-square)
 
 A Helm chart for Foundry VTT
 
