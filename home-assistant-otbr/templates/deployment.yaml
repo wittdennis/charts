@@ -81,6 +81,8 @@ spec:
           volumeMounts:
             - name: rcp
               mountPath: {{ .Values.homeAssistantOtbr.rcpMountPath }}
+            - name: data
+              mountPath: /data/thread
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
