@@ -55,8 +55,6 @@ spec:
           args:
             - --storage-path
             - /data
-            - --paa-root-cert-dir
-            - /data/credentials
             {{- if .Values.log.logLevel }}
             - --log-level
             - {{ .Values.log.logLevel }}
