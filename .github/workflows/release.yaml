@@ -12,7 +12,7 @@ on:
           - ddb-proxy
           - node-red
           - home-assistant-matter-server
-          - otbr
+          - home-assistant-otbr
           - garage
           - yas3p
           - linkwarden

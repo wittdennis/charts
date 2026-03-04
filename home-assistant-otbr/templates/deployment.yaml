@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "home-assistant-otbr.fullname" . }}
+  labels:
+    {{- include "home-assistant-otbr.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "home-assistant-otbr.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "home-assistant-otbr.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      hostname: {{ include "home-assistant-otbr.fullname" . }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "home-assistant-otbr.serviceAccountName" . }}
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            privileged: true
+          image: "{{ .Values.image.repository }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DEVICE
+              value: {{ .Values.home-assistant-otbr.rcpMountPath | quote }}
+            - name: BACKBONE_IF
+              value: {{ .Values.home-assistant-otbr.backboneInterface | quote }}
+            - name: FLOW_CONTROL
+              value: {{ ternary "1" "0" .Values.home-assistant-otbr.flowControl | quote }}
+            - name: FIREWALL
+              value: {{ ternary "1" "0" .Values.home-assistant-otbr.firewall | quote }}
+            - name: NAT64
+              value: {{ ternary "1" "0" .Values.home-assistant-otbr.nat64 | quote }}
+            - name: BAUDRATE
+              value: {{ .Values.home-assistant-otbr.baudrate | quote }}
+            - name: OTBR_REST_PORT
+              value: {{ .Values.home-assistant-otbr.restPort | quote }}
+            - name: OTBR_WEB_PORT
+              value: {{ .Values.home-assistant-otbr.webPort | quote }}
+          ports:
+            - name: rest
+              containerPort: {{ .Values.home-assistant-otbr.restPort }}
+              protocol: TCP
+            - name: web
+              containerPort: {{ .Values.home-assistant-otbr.webPort }}
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: rcp
+              mountPath: {{ .Values.home-assistant-otbr.rcpMountPath }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: rcp
+          hostPath:
+            path: {{ .Values.home-assistant-otbr.rcpMountPath }}
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingVolumeClaim | default (include "home-assistant-otbr.fullname" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

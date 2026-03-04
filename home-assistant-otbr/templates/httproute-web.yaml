@@ -1,41 +1,41 @@
-{{- if .Values.route.enabled -}}
-{{- $fullName := include "otbr.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- if .Values.route.web.enabled -}}
+{{- $fullName := (include "home-assistant-otbr.fullname" .)-web -}}
+{{- $svcPort := .Values.service.web.port -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "otbr.labels" . | nindent 4 }}
-    {{- with .Values.route.labels }}
+    {{- include "home-assistant-otbr.labels" . | nindent 4 }}
+    {{- with .Values.route.web.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  {{- with .Values.route.annotations }}
+  {{- with .Values.route.web.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- with .Values.route.hostnames }}
+  {{- with .Values.route.web.hostnames }}
   hostnames:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
-  {{- with .Values.route.parentRefs }}
+  {{- with .Values.route.web.parentRefs }}
   parentRefs:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   rules:
-    {{- if .Values.route.additionalRules }}
-    {{- tpl (toYaml .Values.route.additionalRules) $ | nindent 4 }}
+    {{- if .Values.route.web.additionalRules }}
+    {{- tpl (toYaml .Values.route.web.additionalRules) $ | nindent 4 }}
     {{- end }}
     - backendRefs:
         - name: {{ $fullName }}
           port: {{ $svcPort }}
           weight: 100
-      {{- with .Values.route.matches }}
+      {{- with .Values.route.web.matches }}
       matches:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.route.filters }}
+      {{- with .Values.route.web.filters }}
         {{- toYaml . | nindent 8 }}
       {{- end -}}
 {{- end }}
