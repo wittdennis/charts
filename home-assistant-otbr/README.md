@@ -1,52 +1,82 @@
 # home-assistant-otbr
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: latest](https://img.shields.io/badge/AppVersion-latest-informational?style=flat-square)
+![Version: 0.1.0-preview.1](https://img.shields.io/badge/Version-0.1.0--preview.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.16.5](https://img.shields.io/badge/AppVersion-2.16.5-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
 ## Values
 
-| Key                                | Type   | Default                                                                                                                                                                  | Description                                                                                                               |
-| ---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| affinity                           | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| backboneInterface                  | string | `"eth0"`                                                                                                                                                                 | The physical network interface to use for routing                                                                         |
-| fullnameOverride                   | string | `""`                                                                                                                                                                     |                                                                                                                           |
-| image.pullPolicy                   | string | `"Always"`                                                                                                                                                               |                                                                                                                           |
-| image.repository                   | string | `"openthread/home-assistant-otbr"`                                                                                                                                       |                                                                                                                           |
-| image.tag                          | string | `""`                                                                                                                                                                     |                                                                                                                           |
-| imagePullSecrets                   | list   | `[]`                                                                                                                                                                     |                                                                                                                           |
-| ingress.annotations                | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| ingress.className                  | string | `""`                                                                                                                                                                     |                                                                                                                           |
-| ingress.enabled                    | bool   | `false`                                                                                                                                                                  |                                                                                                                           |
-| ingress.hosts[0].host              | string | `"chart-example.local"`                                                                                                                                                  |                                                                                                                           |
-| ingress.hosts[0].paths[0].path     | string | `"/"`                                                                                                                                                                    |                                                                                                                           |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"`                                                                                                                                               |                                                                                                                           |
-| ingress.tls                        | list   | `[]`                                                                                                                                                                     |                                                                                                                           |
-| livenessProbe.httpGet.path         | string | `"/"`                                                                                                                                                                    |                                                                                                                           |
-| livenessProbe.httpGet.port         | string | `"http"`                                                                                                                                                                 |                                                                                                                           |
-| nameOverride                       | string | `""`                                                                                                                                                                     |                                                                                                                           |
-| nodeSelector                       | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| podAnnotations                     | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| podLabels                          | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| rcpMountPath                       | string | `"/dev/ttyUSB0"`                                                                                                                                                         | The mount path for the thread receiver                                                                                    |
-| readinessProbe.httpGet.path        | string | `"/"`                                                                                                                                                                    |                                                                                                                           |
-| readinessProbe.httpGet.port        | string | `"http"`                                                                                                                                                                 |                                                                                                                           |
-| resources                          | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| route                              | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
-| route.additionalRules              | object | `{}`                                                                                                                                                                     | Any custom rule you want to specify                                                                                       |
-| route.annotations                  | object | `{}`                                                                                                                                                                     | Additional annotations for the HTTPRoute                                                                                  |
-| route.enabled                      | bool   | `false`                                                                                                                                                                  | Flag to control if route should be created                                                                                |
-| route.filters                      | list   | `[]`                                                                                                                                                                     | Filter that should be added to the default rule                                                                           |
-| route.hostnames                    | list   | `[]`                                                                                                                                                                     | Hostnames of the HTTPRoute                                                                                                |
-| route.labels                       | object | `{}`                                                                                                                                                                     | Additional labels for the HTTPRoute                                                                                       |
-| route.matches                      | list   | `[{"path":{"type":"PathPrefix","value":"/"}}]`                                                                                                                           | Matches for the default rule                                                                                              |
-| route.parentRefs                   | list   | `[]`                                                                                                                                                                     | Gateway reference that the HTTPRoute should bind against                                                                  |
-| service.port                       | int    | `80`                                                                                                                                                                     |                                                                                                                           |
-| service.type                       | string | `"ClusterIP"`                                                                                                                                                            |                                                                                                                           |
-| serviceAccount.annotations         | object | `{}`                                                                                                                                                                     |                                                                                                                           |
-| serviceAccount.automount           | bool   | `false`                                                                                                                                                                  |                                                                                                                           |
-| serviceAccount.create              | bool   | `true`                                                                                                                                                                   |                                                                                                                           |
-| serviceAccount.name                | string | `""`                                                                                                                                                                     |                                                                                                                           |
-| tolerations                        | list   | `[]`                                                                                                                                                                     |                                                                                                                           |
-| volumeMounts                       | list   | `[]`                                                                                                                                                                     |                                                                                                                           |
-| volumes                            | list   | `[]`                                                                                                                                                                     |                                                                                                                           |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| affinity | object | `{}` |  |
+| fullnameOverride | string | `""` |  |
+| home-assistant-otbr | object | `{"backboneInterface":"eth0","baudrate":460800,"firewall":false,"flowControl":true,"nat64":false,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
+| home-assistant-otbr.backboneInterface | string | `"eth0"` | The physical network interface to use for routing |
+| home-assistant-otbr.baudrate | int | `460800` | Serial port baudrate (depends on firmware) |
+| home-assistant-otbr.firewall | bool | `false` | If iptables firewall should be configured |
+| home-assistant-otbr.flowControl | bool | `true` | Toggles flow control |
+| home-assistant-otbr.nat64 | bool | `false` | If nat64 should be enabled |
+| home-assistant-otbr.rcpMountPath | string | `"/dev/ttyUSB0"` | The mount path for the thread receiver |
+| home-assistant-otbr.restPort | int | `8081` | Port of the rest api |
+| home-assistant-otbr.webPort | int | `7586` | Port of the web ui |
+| image.pullPolicy | string | `"Always"` |  |
+| image.registry | string | `"docker.io"` | The registry where the image is hosted |
+| image.repository | string | `"denniswitt/home-assistant-otbr"` | Image repository |
+| image.tag | string | `""` |  |
+| imagePullSecrets | list | `[]` |  |
+| ingress.rest.annotations | object | `{}` |  |
+| ingress.rest.className | string | `""` |  |
+| ingress.rest.enabled | bool | `false` |  |
+| ingress.rest.hosts[0].host | string | `"chart-example.local"` |  |
+| ingress.rest.hosts[0].paths[0].path | string | `"/"` |  |
+| ingress.rest.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
+| ingress.rest.tls | list | `[]` |  |
+| ingress.web.annotations | object | `{}` |  |
+| ingress.web.className | string | `""` |  |
+| ingress.web.enabled | bool | `false` |  |
+| ingress.web.hosts[0].host | string | `"chart-example.local"` |  |
+| ingress.web.hosts[0].paths[0].path | string | `"/"` |  |
+| ingress.web.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
+| ingress.web.tls | list | `[]` |  |
+| livenessProbe.httpGet.path | string | `"/"` |  |
+| livenessProbe.httpGet.port | string | `"http"` |  |
+| nameOverride | string | `""` |  |
+| nodeSelector | object | `{}` |  |
+| persistence | object | `{"accessMode":"ReadWriteOnce","enabled":true,"existingVolumeClaim":null,"size":"1Gi","storageClass":null}` | Persistence settings |
+| persistence.enabled | bool | `true` | If disabled uses emptyDir causing data loss on pod restarts |
+| persistence.existingVolumeClaim | string | `nil` | Set this if a already existing pvc should be used otherwise a new one will be created |
+| persistence.storageClass | string | `nil` | The storage class to use when creating a new pvc |
+| podAnnotations | object | `{}` |  |
+| podLabels | object | `{}` |  |
+| readinessProbe.httpGet.path | string | `"/"` |  |
+| readinessProbe.httpGet.port | string | `"http"` |  |
+| resources | object | `{}` |  |
+| route | object | `{"rest":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]},"web":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
+| route.rest.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route.rest.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| route.rest.enabled | bool | `false` | Flag to control if route should be created |
+| route.rest.filters | list | `[]` | Filter that should be added to the default rule |
+| route.rest.hostnames | list | `[]` | Hostnames of the HTTPRoute |
+| route.rest.labels | object | `{}` | Additional labels for the HTTPRoute |
+| route.rest.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| route.rest.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
+| route.web.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route.web.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| route.web.enabled | bool | `false` | Flag to control if route should be created |
+| route.web.filters | list | `[]` | Filter that should be added to the default rule |
+| route.web.hostnames | list | `[]` | Hostnames of the HTTPRoute |
+| route.web.labels | object | `{}` | Additional labels for the HTTPRoute |
+| route.web.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| route.web.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
+| service.rest.port | int | `80` |  |
+| service.rest.type | string | `"ClusterIP"` |  |
+| service.web.port | int | `80` |  |
+| service.web.type | string | `"ClusterIP"` |  |
+| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.automount | bool | `false` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.name | string | `""` |  |
+| tolerations | list | `[]` |  |
+| volumeMounts | list | `[]` |  |
+| volumes | list | `[]` |  |
+
