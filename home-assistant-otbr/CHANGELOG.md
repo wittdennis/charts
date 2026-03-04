@@ -2,6 +2,28 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.0.0 - 2026-03-04
+#### Features
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>use home-assistant openthread border router implementation - (0bed7f8) - Dennis Witt
+#### Bug Fixes
+- (**home-assistant-otbr**) image fqdn - (e50bb2c) - Dennis Witt
+- static mount device inside container - (7dc98b5) - Dennis Witt
+- mount data dir - (ca2eca6) - Dennis Witt
+- probes - (0b64d18) - Dennis Witt
+- use correct image repository - (d3d3776) - Dennis Witt
+- home-assistant otbr values block - (09fefff) - Dennis Witt
+- rename storageClass to storageClassName - (7be98bf) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) home-assistant-otbr-0.1.0-preview.7 - (2af67f3) - github-actions
+- (**version**) home-assistant-otbr-0.1.0-preview.6 - (3aa1593) - github-actions
+- (**version**) home-assistant-otbr-0.1.0-preview.5 - (aa94df1) - github-actions
+- (**version**) home-assistant-otbr-0.1.0-preview.4 - (0f40131) - github-actions
+- (**version**) home-assistant-otbr-0.1.0-preview.3 - (0621475) - github-actions
+- (**version**) home-assistant-otbr-0.1.0-preview.2 - (cbfbcce) - github-actions
+- (**version**) home-assistant-otbr-0.1.0-preview.1 - (3366981) - github-actions
+
+- - -
+
 ## home-assistant-otbr-0.1.0-preview.7 - 2026-03-04
 #### Bug Fixes
 - mount data dir - (6abafdd) - Dennis Witt
