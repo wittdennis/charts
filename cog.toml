@@ -35,7 +35,7 @@ owner = "wittdennis"
 
 [bump_profiles]
 
-[packages]
+[monorepo.packages]
 foundryvtt = { path = "foundryvtt" }
 ddb-proxy = { path = "ddb-proxy"}
 node-red = { path = "node-red" }
