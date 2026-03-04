@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-14.3.0-preview.6 - 2026-03-04
+#### Features
+- (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) foundryvtt-14.3.0-preview.3 - (2cd29c1) - github-actions
+
+- - -
+
 ## foundryvtt-14.3.0-preview.3 - 2026-01-20
 #### Features
 - (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
