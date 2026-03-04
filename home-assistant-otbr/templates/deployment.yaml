@@ -44,7 +44,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DEVICE
-              value: {{ .Values.homeAssistantOtbr.rcpMountPath | quote }}
+              value: /dev/ttyUSB0
             - name: BACKBONE_IF
               value: {{ .Values.homeAssistantOtbr.backboneInterface | quote }}
             - name: FLOW_CONTROL
@@ -80,7 +80,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: rcp
-              mountPath: {{ .Values.homeAssistantOtbr.rcpMountPath }}
+              mountPath: /dev/ttyUSB0
             - name: data
               mountPath: /data/thread
           {{- with .Values.volumeMounts }}
