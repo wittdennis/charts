@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # -- OpenThread Border Router settings
-home-assistant-otbr:
+homeAssistantOtbr:
   # -- The mount path for the thread receiver
   rcpMountPath: /dev/ttyUSB0
   # -- The physical network interface to use for routing

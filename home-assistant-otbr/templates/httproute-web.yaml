@@ -1,5 +1,5 @@
 {{- if .Values.route.web.enabled -}}
-{{- $fullName := (include "home-assistant-otbr.fullname" .)-web -}}
+{{- $fullName := "(include 'home-assistant-otbr.fullname' .)-web" -}}
 {{- $svcPort := .Values.service.web.port -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

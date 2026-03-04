@@ -44,27 +44,27 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DEVICE
-              value: {{ .Values.home-assistant-otbr.rcpMountPath | quote }}
+              value: {{ .Values.homeAssistantOtbr.rcpMountPath | quote }}
             - name: BACKBONE_IF
-              value: {{ .Values.home-assistant-otbr.backboneInterface | quote }}
+              value: {{ .Values.homeAssistantOtbr.backboneInterface | quote }}
             - name: FLOW_CONTROL
-              value: {{ ternary "1" "0" .Values.home-assistant-otbr.flowControl | quote }}
+              value: {{ ternary "1" "0" .Values.homeAssistantOtbr.flowControl | quote }}
             - name: FIREWALL
-              value: {{ ternary "1" "0" .Values.home-assistant-otbr.firewall | quote }}
+              value: {{ ternary "1" "0" .Values.homeAssistantOtbr.firewall | quote }}
             - name: NAT64
-              value: {{ ternary "1" "0" .Values.home-assistant-otbr.nat64 | quote }}
+              value: {{ ternary "1" "0" .Values.homeAssistantOtbr.nat64 | quote }}
             - name: BAUDRATE
-              value: {{ .Values.home-assistant-otbr.baudrate | quote }}
+              value: {{ .Values.homeAssistantOtbr.baudrate | quote }}
             - name: OTBR_REST_PORT
-              value: {{ .Values.home-assistant-otbr.restPort | quote }}
+              value: {{ .Values.homeAssistantOtbr.restPort | quote }}
             - name: OTBR_WEB_PORT
-              value: {{ .Values.home-assistant-otbr.webPort | quote }}
+              value: {{ .Values.homeAssistantOtbr.webPort | quote }}
           ports:
             - name: rest
-              containerPort: {{ .Values.home-assistant-otbr.restPort }}
+              containerPort: {{ .Values.homeAssistantOtbr.restPort }}
               protocol: TCP
             - name: web
-              containerPort: {{ .Values.home-assistant-otbr.webPort }}
+              containerPort: {{ .Values.homeAssistantOtbr.webPort }}
               protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
@@ -80,14 +80,14 @@ spec:
           {{- end }}
           volumeMounts:
             - name: rcp
-              mountPath: {{ .Values.home-assistant-otbr.rcpMountPath }}
+              mountPath: {{ .Values.homeAssistantOtbr.rcpMountPath }}
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
       volumes:
         - name: rcp
           hostPath:
-            path: {{ .Values.home-assistant-otbr.rcpMountPath }}
+            path: {{ .Values.homeAssistantOtbr.rcpMountPath }}
         - name: data
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
