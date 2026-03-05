@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-4.0.1 - 2026-03-05
+#### Bug Fixes
+- (**deps**) update ghcr.io/matter-js/matterjs-server docker tag to v0.5.0 - (929de65) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-matter-server-4.0.0 - 2026-03-04
 #### Features
 - <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**home-assistant-matter-server**) use matterjs implementation as matter server - (70f6327) - Dennis Witt
