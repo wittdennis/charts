@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.5.1 - 2026-03-06
+#### Bug Fixes
+- (**deps**) update nodered/node-red docker tag to v4.1.7 - (ac672ba) - wittdennis-renovate[bot]
+
+- - -
+
 ## node-red-1.5.0 - 2026-02-26
 #### Features
 - add memos chart - (966c70d) - Dennis Witt
