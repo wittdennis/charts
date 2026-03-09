@@ -1,0 +1,159 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperless-ngx.fullname" . }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "paperless-ngx.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "paperless-ngx.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "paperless-ngx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: key
+                  name: {{ include "paperless-ngx.secretKeyName" . }}
+            - name: USERMAP_UID
+              value: {{ .Values.securityContext.runAsUser | quote }}
+            - name: USERMAP_GID
+              value: {{ .Values.securityContext.runAsGroup | quote }}
+            {{- if .Values.securityContext.readOnlyRootFilesystem }}
+            - name: PAPERLESS_SUPERVISORD_WORKING_DIR
+              value: /tmp
+            - name: PYTHONPYCACHEPREFIX
+              value: /tmp/pycache
+            - name: S6_READ_ONLY_ROOT
+              value: "1"
+            {{- end }}
+            {{- if .Values.route.enabled }}
+            {{- with (first .Values.route.hostnames) }}
+            - name: PAPERLESS_URL
+              value: https://{{ . }}
+            {{- end }}
+            {{- else if .Values.ingress.enabled }}
+            {{- with (first .Values.ingress.hosts) }}
+            - name: PAPERLESS_URL
+              value: https://{{ .host }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.redis.prefix }}
+            - name: PAPERLESS_REDIS_PREFIX
+              value: {{ .Values.redis.prefix }}
+            {{- end}}
+            - name: PAPERLESS_REDIS
+            {{- if .Values.redis.connectionSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.redis.connectionSecret.key }}
+                  name: {{ .Values.redis.connectionSecret.name }}
+            {{- else}}
+              value: {{ .Values.redis.connectionUrl }}
+            {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            {{- if .Values.securityContext.readOnlyRootFilesystem }}
+            - mountPath: /run
+              name: run
+            {{- end }}
+            - name: paperless-ngx-data
+              mountPath: /usr/src/paperless/data
+            - name: paperless-ngx-media
+              mountPath: /usr/src/paperless/media
+            - name: paperless-ngx-export
+              mountPath: /usr/src/paperless/export
+            - name: paperless-ngx-consume
+              mountPath: /usr/src/paperless/consume
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        {{- if .Values.securityContext.readOnlyRootFilesystem }}
+        - name: run
+          emptyDir:
+            medium: Memory
+        {{- end }}
+        - name: paperless-ngx-data
+        {{- if .Values.persistence.data.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.data.existingVolumeClaim | default (include "paperless-ngx.dataPvcName" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        - name: paperless-ngx-media
+        {{- if .Values.persistence.media.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.media.existingVolumeClaim | default (include "paperless-ngx.mediaPvcName" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        - name: paperless-ngx-export
+        {{- if .Values.persistence.export.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.export.existingVolumeClaim | default (include "paperless-ngx.exportPvcName" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        - name: paperless-ngx-consume
+        {{- if .Values.persistence.consume.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.consume.existingVolumeClaim | default (include "paperless-ngx.consumePvcName" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
