@@ -1,0 +1,18 @@
+{{- if and .Values.persistence.consume.enabled  (not .Values.persistence.consume.existingVolumeClaim) }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "paperless-ngx.fullname" . }}-consume
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.consume.storageClass }}
+  storageClassName: {{ .Values.persistence.consume.storageClass | quote }}
+  {{- end }}
+  accessModes:
+    - {{ .Values.persistence.consume.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.consume.size | quote }}
+{{- end }}

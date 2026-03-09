@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "paperless-ngx.fullname" . }}-test-connection"
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "paperless-ngx.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

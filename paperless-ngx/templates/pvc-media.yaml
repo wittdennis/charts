@@ -1,0 +1,18 @@
+{{- if and .Values.persistence.media.enabled  (not .Values.persistence.media.existingVolumeClaim) }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "paperless-ngx.mediaPvcName" . }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.media.storageClass }}
+  storageClassName: {{ .Values.persistence.media.storageClass | quote }}
+  {{- end }}
+  accessModes:
+    - {{ .Values.persistence.media.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.media.size | quote }}
+{{- end }}

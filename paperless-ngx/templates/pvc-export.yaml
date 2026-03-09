@@ -1,0 +1,18 @@
+{{- if and .Values.persistence.export.enabled  (not .Values.persistence.export.existingVolumeClaim) }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "paperless-ngx.exportPvcName" . }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.export.storageClass }}
+  storageClassName: {{ .Values.persistence.export.storageClass | quote }}
+  {{- end }}
+  accessModes:
+    - {{ .Values.persistence.export.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.export.size | quote }}
+{{- end }}

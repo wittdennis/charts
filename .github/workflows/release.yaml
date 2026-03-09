@@ -17,6 +17,7 @@ on:
           - yas3p
           - linkwarden
           - memos
+          - paperless-ngx
       version:
         default: "auto"
         description: Can be used to set a specific version. Use 'auto' for automatic version calculation
