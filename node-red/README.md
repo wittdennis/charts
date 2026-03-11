@@ -79,4 +79,3 @@ It provides a browser-based editor that makes it easy to wire together flows usi
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
-

@@ -79,4 +79,3 @@ A Helm chart for Kubernetes
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` |  |
 | volumes | list | `[]` |  |
-
