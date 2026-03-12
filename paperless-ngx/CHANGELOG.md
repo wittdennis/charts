@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-0.2.0 - 2026-03-12
+#### Features
+- (**paperless-ngx**) allow configuring database settings - (2c5a16b) - Dennis Witt
+#### Bug Fixes
+- naming for consume pvc - (2b0f01c) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-0.1.0 - 2026-03-11
 #### Features
 - (**paperless-ngx**) add paperless-ngx chart - (783d915) - Dennis Witt
