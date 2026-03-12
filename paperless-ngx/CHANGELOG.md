@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-0.3.0 - 2026-03-12
+#### Features
+- (**paperless-ngx**) add auth options - (46048db) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-0.2.1 - 2026-03-12
 #### Bug Fixes
 - (**paperless-ngx**) quote readCacheTTL - (eb774eb) - Dennis Witt
