@@ -78,6 +78,8 @@ persistence:
   existingVolumeClaim: ~
   # -- The storage class to use when creating a new pvc
   storageClassName: ~
+  # -- Additional annotations for the PVC
+  annotations: {}
   accessMode: ReadWriteOnce
   size: 1Gi
 
