@@ -15,6 +15,37 @@ redis:
   # -- Prefix to be used in Redis for keys and channels. Useful for sharing one Redis server among multiple Paperless instances.
   prefix: ~
 
+# -- Database configuration
+database:
+  # -- Engine to use for the database (possible values sqlite (default), postgresql, mariadb)
+  engine: sqlite
+  # -- When `engine` isn't sqlite set host for your database
+  host: ~
+  # -- When `engine` isn't sqlite use this to set the db user for the connection
+  user: ~
+  # -- When `engine` isn't sqlite use this to specify a secret containing the user for the connection
+  userSecret:
+    # -- Name of the secret
+    name: ~
+    # -- Key of the user
+    key: ~
+  # -- When `engine` isn't sqlite use this to set the db user password for the connection
+  password: ~
+  # -- When `engine` isn't sqlite use this to specify a secret containing the user password for the connection
+  passwordSecret:
+    # -- Name of the secret
+    name: ~
+    # -- Key of the password
+    key: ~
+  # -- When `engine` isn't sqlite can be used to set the port of the db. Defaults to 5432 for postgres and 3306 for mariadb
+  port: ~
+  # -- Can be used to configure a custom name for the database defaults to paperless
+  databaseName: ~
+  # -- Caches the database read query results into Redis. This can significantly improve application response times by caching database queries, at the cost of slightly increased memory usage.
+  enableReadCache: false
+  # -- Specifies how long (in seconds) read data should be cached. Allowed values are between 1 (one second) and 31536000 (one year).
+  readCacheTTL: 3600
+
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
