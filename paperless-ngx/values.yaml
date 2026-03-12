@@ -46,6 +46,43 @@ database:
   # -- Specifies how long (in seconds) read data should be cached. Allowed values are between 1 (one second) and 31536000 (one year).
   readCacheTTL: 3600
 
+# -- Authentication settings
+auth:
+  # -- Allow users to signup for a new Paperless-ngx account.
+  allowSignup: false
+  # -- Comma seperated list of groups users will be added to when they signup
+  defaultGroups: None
+  # -- If false, sessions will expire at browser close, if true will use `cookieAge` for expiration
+  rememberSession: true
+  # -- Login session cookie expiration. Applies if PAPERLESS_ACCOUNT_SESSION_REMEMBER is enabled
+  cookieAge: 1209600
+  # -- Settings for single sign-on
+  sso:
+    # -- Secret containing the provider configuration. See: https://docs.paperless-ngx.com/configuration/?h=redis#PAPERLESS_SOCIALACCOUNT_PROVIDERS for information how to setup.
+    # Remember to add your provider to `tweaks.apps`.
+    providersSecret:
+      # -- Name of the secret
+      name: ~
+      # -- Key containing the configuration
+      key: ~
+    # -- Attempt to signup the user using retrieved email, username etc from the third party authentication system
+    autoSignup: false
+    # -- Allow users to signup for a new Paperless-ngx account using any setup third party authentication systems.
+    allowSignup: true
+    # -- Sync groups from the third party authentication system (e.g. OIDC) to Paperless-ngx. For more info see: https://docs.paperless-ngx.com/configuration/?h=redis#PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS
+    syncGroups: false
+    # -- A list of group names that users who signup via social accounts will be added to upon signup. Groups listed here must already exist. If both the `auth.defaultGroups` setting and this setting are used, the user will be added to both sets of groups.
+    defaultGroups: ~
+    # -- Disables the regular frontend username / password login, i.e. once you have setup SSO.
+    disableRegularLogin: false
+    # -- When enabled users will be automatically be redirected to the first SSO provider login
+    autoRedirect: false
+
+# -- Various software tweaks for the paperless application
+tweaks:
+  # -- A comma-separated list of Django apps to be included in Django's INSTALLED_APPS
+  apps: ~
+
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
