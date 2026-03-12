@@ -2,7 +2,7 @@ apiVersion: v2
 name: paperless-ngx
 description: A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 type: application
-version: 0.3.0
+version: 0.3.1
 appVersion: "2.20.10" # renovate: datasource=docker depName=ghcr.io/paperless-ngx/paperless-ngx versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/master/paperless-ngx
