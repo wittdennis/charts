@@ -15,7 +15,7 @@ post_package_bump_hooks = [
 pre_bump_hooks = []
 pre_package_bump_hooks = [
   "yq -i '.version = \"{{version}}\"' Chart.yaml",
-  "helm-docs",
+  "helm-docs --skip-version-footer",
   "echo \"{{package}}\" > ../last_released_chart",
 ]
 skip_ci = "[skip ci]"
