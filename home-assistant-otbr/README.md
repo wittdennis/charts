@@ -1,6 +1,6 @@
 # home-assistant-otbr
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.16.5](https://img.shields.io/badge/AppVersion-2.16.5-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.16.5](https://img.shields.io/badge/AppVersion-2.16.5-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -42,7 +42,8 @@ A Helm chart for Kubernetes
 | livenessProbe.httpGet.port | string | `"web"` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
-| persistence | object | `{"accessMode":"ReadWriteOnce","enabled":true,"existingVolumeClaim":null,"size":"1Gi","storageClassName":null}` | Persistence settings |
+| persistence | object | `{"accessMode":"ReadWriteOnce","annotations":{},"enabled":true,"existingVolumeClaim":null,"size":"1Gi","storageClassName":null}` | Persistence settings |
+| persistence.annotations | object | `{}` | Additional annotations for the PVC |
 | persistence.enabled | bool | `true` | If disabled uses emptyDir causing data loss on pod restarts |
 | persistence.existingVolumeClaim | string | `nil` | Set this if a already existing pvc should be used otherwise a new one will be created |
 | persistence.storageClassName | string | `nil` | The storage class to use when creating a new pvc |

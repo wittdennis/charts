@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.1.0 - 2026-03-12
+#### Features
+- (**home-assistant-otbr**) Add support for PVC annotations - (4dee82a) - Anton Mu
+#### Documentation
+- fix end of line in files - (f2ba3d9) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.0.0 - 2026-03-04
 #### Features
 - <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>use home-assistant openthread border router implementation - (0bed7f8) - Dennis Witt
