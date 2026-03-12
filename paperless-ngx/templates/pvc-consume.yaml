@@ -3,7 +3,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "paperless-ngx.fullname" . }}-consume
+  name: {{ include "paperless-ngx.consumePvcName" . }}
   labels:
     {{- include "paperless-ngx.labels" . | nindent 4 }}
 spec:
