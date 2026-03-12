@@ -6,6 +6,10 @@ metadata:
   name: {{ template "home-assistant-otbr.fullname" . }}
   labels:
     {{- include "home-assistant-otbr.labels" . | nindent 4 }}
+  {{- if .Values.persistence.annotations }}
+  annotations:
+    {{- toYaml .Values.persistence.annotations | nindent 4 }}
+  {{- end }}
 spec:
   {{- if .Values.persistence.storageClassName }}
   storageClassName: {{ .Values.persistence.storageClassName | quote }}
