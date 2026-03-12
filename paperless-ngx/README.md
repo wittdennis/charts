@@ -15,6 +15,21 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
+| database | object | `{"databaseName":null,"enableReadCache":false,"engine":"sqlite","host":null,"password":null,"passwordSecret":{"key":null,"name":null},"port":null,"readCacheTTL":3600,"user":null,"userSecret":{"key":null,"name":null}}` | Database configuration |
+| database.databaseName | string | `nil` | Can be used to configure a custom name for the database defaults to paperless |
+| database.enableReadCache | bool | `false` | Caches the database read query results into Redis. This can significantly improve application response times by caching database queries, at the cost of slightly increased memory usage. |
+| database.engine | string | `"sqlite"` | Engine to use for the database (possible values sqlite (default), postgresql, mariadb) |
+| database.host | string | `nil` | When `engine` isn't sqlite set host for your database |
+| database.password | string | `nil` | When `engine` isn't sqlite use this to set the db user password for the connection |
+| database.passwordSecret | object | `{"key":null,"name":null}` | When `engine` isn't sqlite use this to specify a secret containing the user password for the connection |
+| database.passwordSecret.key | string | `nil` | Key of the password |
+| database.passwordSecret.name | string | `nil` | Name of the secret |
+| database.port | string | `nil` | When `engine` isn't sqlite can be used to set the port of the db. Defaults to 5432 for postgres and 3306 for mariadb |
+| database.readCacheTTL | int | `3600` | Specifies how long (in seconds) read data should be cached. Allowed values are between 1 (one second) and 31536000 (one year). |
+| database.user | string | `nil` | When `engine` isn't sqlite use this to set the db user for the connection |
+| database.userSecret | object | `{"key":null,"name":null}` | When `engine` isn't sqlite use this to specify a secret containing the user for the connection |
+| database.userSecret.key | string | `nil` | Key of the user |
+| database.userSecret.name | string | `nil` | Name of the secret |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"paperless-ngx/paperless-ngx","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
@@ -96,4 +111,3 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
-

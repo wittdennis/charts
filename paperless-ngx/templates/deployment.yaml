@@ -82,6 +82,42 @@ spec:
             {{- else}}
               value: {{ .Values.redis.connectionUrl }}
             {{- end }}
+            {{- if not (eq .Values.database.engine "sqlite") }}
+            - name: PAPERLESS_DBENGINE
+              value: {{ .Values.database.engine }}
+            - name: PAPERLESS_DBHOST
+              value: {{ .Values.database.host }}
+            {{- if .Values.database.port }}
+            - name: PAPERLESS_DBPORT
+              value: {{ .Values.database.port | quote }}
+            {{- end}}
+            {{- if .Values.database.databaseName }}
+            - name: PAPERLESS_DBNAME
+              value: {{ .Values.database.databaseName }}
+            {{- end }}
+            - name: PAPERLESS_DBUSER
+            {{- if .Values.database.userSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.database.userSecret.key }}
+                  name: {{ .Values.database.userSecret.name }}
+            {{- else }}
+              value: {{ .Values.database.user }}
+            {{- end }}
+            - name: PAPERLESS_DBPASS
+            {{- if .Values.database.passwordSecret.name }}
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.database.passwordSecret.key }}
+                  name: {{ .Values.database.passwordSecret.name }}
+            {{- else }}
+              value: {{ .Values.database.password }}
+            {{- end }}
+            {{- end}}
+            - name: PAPERLESS_DB_READ_CACHE_ENABLED
+              value: {{ .Values.database.enableReadCache | quote }}
+            - name: PAPERLESS_READ_CACHE_TTL
+              value: {{ .Values.database.readCacheTTL }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
