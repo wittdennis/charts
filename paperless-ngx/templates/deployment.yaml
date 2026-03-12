@@ -117,7 +117,7 @@ spec:
             - name: PAPERLESS_DB_READ_CACHE_ENABLED
               value: {{ .Values.database.enableReadCache | quote }}
             - name: PAPERLESS_READ_CACHE_TTL
-              value: {{ .Values.database.readCacheTTL }}
+              value: {{ .Values.database.readCacheTTL | quote }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
