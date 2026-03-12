@@ -14,6 +14,21 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| auth | object | `{"allowSignup":false,"cookieAge":1209600,"defaultGroups":"None","rememberSession":true,"sso":{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"providersSecret":{"key":null,"name":null},"syncGroups":false}}` | Authentication settings |
+| auth.allowSignup | bool | `false` | Allow users to signup for a new Paperless-ngx account. |
+| auth.cookieAge | int | `1209600` | Login session cookie expiration. Applies if PAPERLESS_ACCOUNT_SESSION_REMEMBER is enabled |
+| auth.defaultGroups | string | `"None"` | Comma seperated list of groups users will be added to when they signup |
+| auth.rememberSession | bool | `true` | If false, sessions will expire at browser close, if true will use `cookieAge` for expiration |
+| auth.sso | object | `{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"providersSecret":{"key":null,"name":null},"syncGroups":false}` | Settings for single sign-on |
+| auth.sso.allowSignup | bool | `true` | Allow users to signup for a new Paperless-ngx account using any setup third party authentication systems. |
+| auth.sso.autoRedirect | bool | `false` | When enabled users will be automatically be redirected to the first SSO provider login |
+| auth.sso.autoSignup | bool | `false` | Attempt to signup the user using retrieved email, username etc from the third party authentication system |
+| auth.sso.defaultGroups | string | `nil` | A list of group names that users who signup via social accounts will be added to upon signup. Groups listed here must already exist. If both the `auth.defaultGroups` setting and this setting are used, the user will be added to both sets of groups. |
+| auth.sso.disableRegularLogin | bool | `false` | Disables the regular frontend username / password login, i.e. once you have setup SSO. |
+| auth.sso.providersSecret | object | `{"key":null,"name":null}` | Secret containing the provider configuration. See: https://docs.paperless-ngx.com/configuration/?h=redis#PAPERLESS_SOCIALACCOUNT_PROVIDERS for information how to setup. Remember to add your provider to `tweaks.apps`. |
+| auth.sso.providersSecret.key | string | `nil` | Key containing the configuration |
+| auth.sso.providersSecret.name | string | `nil` | Name of the secret |
+| auth.sso.syncGroups | bool | `false` | Sync groups from the third party authentication system (e.g. OIDC) to Paperless-ngx. For more info see: https://docs.paperless-ngx.com/configuration/?h=redis#PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS |
 | autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
 | database | object | `{"databaseName":null,"enableReadCache":false,"engine":"sqlite","host":null,"password":null,"passwordSecret":{"key":null,"name":null},"port":null,"readCacheTTL":3600,"user":null,"userSecret":{"key":null,"name":null}}` | Database configuration |
 | database.databaseName | string | `nil` | Can be used to configure a custom name for the database defaults to paperless |
@@ -109,5 +124,7 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` |  |
+| tweaks | object | `{"apps":null}` | Various software tweaks for the paperless application |
+| tweaks.apps | string | `nil` | A comma-separated list of Django apps to be included in Django's INSTALLED_APPS |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
