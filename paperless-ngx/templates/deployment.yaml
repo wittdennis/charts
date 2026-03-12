@@ -117,13 +117,13 @@ spec:
             - name: PAPERLESS_DB_READ_CACHE_ENABLED
               value: {{ .Values.database.enableReadCache | quote }}
             - name: PAPERLESS_READ_CACHE_TTL
-              value: {{ .Values.database.readCacheTTL | quote }}
+              value: {{ printf "%d" (.Values.database.readCacheTTL | int64) | quote }}
             - name: PAPERLESS_ACCOUNT_ALLOW_SIGNUPS
               value: {{ .Values.auth.allowSignup | quote }}
             - name: PAPERLESS_ACCOUNT_DEFAULT_GROUPS
               value: {{ .Values.auth.defaultGroups | quote }}
             - name: PAPERLESS_SESSION_COOKIE_AGE
-              value: {{ .Values.auth.cookieAge | quote }}
+              value: {{ printf "%d" (.Values.auth.cookieAge | int64) | quote }}
             - name: PAPERLESS_ACCOUNT_SESSION_REMEMBER
               value: {{ .Values.auth.rememberSession | quote }}
             {{- if .Values.auth.sso.providersSecret.name }}
