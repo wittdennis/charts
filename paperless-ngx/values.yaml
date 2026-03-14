@@ -77,11 +77,36 @@ auth:
     disableRegularLogin: false
     # -- When enabled users will be automatically be redirected to the first SSO provider login
     autoRedirect: false
+    # -- Determines whether email addresses are verified during signup.
+    # Possible value are: none, optional, mandatory
+    # Don't forget to setup email sending for this to work properly
+    emailVerification: optional
 
 # -- Various software tweaks for the paperless application
 tweaks:
   # -- A comma-separated list of Django apps to be included in Django's INSTALLED_APPS
   apps: ~
+
+# -- Configuration for email
+email:
+  # -- Configuration for sending emails
+  sending:
+    # -- Host for email sending
+    host: localhost
+    # -- Port for the email host
+    port: 25
+    # -- User for authentication
+    user: ~
+    # -- Secret containing the password of the user
+    passwordSecret:
+      # -- Name of the secret
+      name: ~
+      # -- Key containing the secret
+      key: ~
+    # -- From email. Defaults to `email.sending.user` if not set
+    from: ~
+    # -- Use tls for email sending
+    useTls: false
 
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1

@@ -151,6 +151,29 @@ spec:
               value: {{ .Values.auth.sso.disableRegularLogin | quote }}
             - name: PAPERLESS_REDIRECT_LOGIN_TO_SSO
               value: {{ .Values.auth.sso.autoRedirect | quote }}
+            - name: PAPERLESS_ACCOUNT_EMAIL_VERIFICATION
+              value: {{ .Values.auth.sso.emailVerification }}
+            - name: PAPERLESS_EMAIL_HOST
+              value: {{ .Values.email.sending.host }}
+            - name: PAPERLESS_EMAIL_PORT
+              value: {{ printf "%d" (.Values.auth.cookieAge | int64) | quote }}
+            {{- if .Values.email.sending.user }}
+            - name: PAPERLESS_EMAIL_HOST_USER
+              value: {{ .Values.email.sending.user }}
+            {{- end }}
+            {{- if .Values.email.sending.from }}
+            - name: PAPERLESS_EMAIL_FROM
+              value: {{ .Values.email.sending.from }}
+            {{- end }}
+            {{- if .Values.email.sending.passwordSecret.name }}
+            - name: PAPERLESS_EMAIL_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.email.sending.passwordSecret.key }}
+                  name: {{ .Values.email.sending.passwordSecret.name }}
+            {{- end }}
+            - name: PAPERLESS_EMAIL_USE_TLS
+              value: {{ .Values.email.sending.useTls }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
