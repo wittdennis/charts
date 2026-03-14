@@ -183,7 +183,7 @@ spec:
             - name: PAPERLESS_OCR_CLEAN
               value: {{ .Values.ocr.cleanMode }}
             - name: PAPERLESS_OCR_DESKEW
-              value: {{ .Values.ocr.deskew }}
+              value: {{ .Values.ocr.deskew | quote }}
             - name: PAPERLESS_OCR_ROTATE_PAGES
               value: {{ .Values.ocr.rotatePages | quote }}
             - name: PAPERLESS_OCR_ROTATE_PAGES_THRESHOLD
