@@ -14,17 +14,18 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| auth | object | `{"allowSignup":false,"cookieAge":1209600,"defaultGroups":"None","rememberSession":true,"sso":{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"providersSecret":{"key":null,"name":null},"syncGroups":false}}` | Authentication settings |
+| auth | object | `{"allowSignup":false,"cookieAge":1209600,"defaultGroups":"None","rememberSession":true,"sso":{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"emailVerification":"optional","providersSecret":{"key":null,"name":null},"syncGroups":false}}` | Authentication settings |
 | auth.allowSignup | bool | `false` | Allow users to signup for a new Paperless-ngx account. |
 | auth.cookieAge | int | `1209600` | Login session cookie expiration. Applies if PAPERLESS_ACCOUNT_SESSION_REMEMBER is enabled |
 | auth.defaultGroups | string | `"None"` | Comma seperated list of groups users will be added to when they signup |
 | auth.rememberSession | bool | `true` | If false, sessions will expire at browser close, if true will use `cookieAge` for expiration |
-| auth.sso | object | `{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"providersSecret":{"key":null,"name":null},"syncGroups":false}` | Settings for single sign-on |
+| auth.sso | object | `{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"emailVerification":"optional","providersSecret":{"key":null,"name":null},"syncGroups":false}` | Settings for single sign-on |
 | auth.sso.allowSignup | bool | `true` | Allow users to signup for a new Paperless-ngx account using any setup third party authentication systems. |
 | auth.sso.autoRedirect | bool | `false` | When enabled users will be automatically be redirected to the first SSO provider login |
 | auth.sso.autoSignup | bool | `false` | Attempt to signup the user using retrieved email, username etc from the third party authentication system |
 | auth.sso.defaultGroups | string | `nil` | A list of group names that users who signup via social accounts will be added to upon signup. Groups listed here must already exist. If both the `auth.defaultGroups` setting and this setting are used, the user will be added to both sets of groups. |
 | auth.sso.disableRegularLogin | bool | `false` | Disables the regular frontend username / password login, i.e. once you have setup SSO. |
+| auth.sso.emailVerification | string | `"optional"` | Determines whether email addresses are verified during signup. Possible value are: none, optional, mandatory Don't forget to setup email sending for this to work properly |
 | auth.sso.providersSecret | object | `{"key":null,"name":null}` | Secret containing the provider configuration. See: https://docs.paperless-ngx.com/configuration/?h=redis#PAPERLESS_SOCIALACCOUNT_PROVIDERS for information how to setup. Remember to add your provider to `tweaks.apps`. |
 | auth.sso.providersSecret.key | string | `nil` | Key containing the configuration |
 | auth.sso.providersSecret.name | string | `nil` | Name of the secret |
@@ -45,6 +46,16 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | database.userSecret | object | `{"key":null,"name":null}` | When `engine` isn't sqlite use this to specify a secret containing the user for the connection |
 | database.userSecret.key | string | `nil` | Key of the user |
 | database.userSecret.name | string | `nil` | Name of the secret |
+| email | object | `{"sending":{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}}` | Configuration for email |
+| email.sending | object | `{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}` | Configuration for sending emails |
+| email.sending.from | string | `nil` | From email. Defaults to `email.sending.user` if not set |
+| email.sending.host | string | `"localhost"` | Host for email sending |
+| email.sending.passwordSecret | object | `{"key":null,"name":null}` | Secret containing the password of the user |
+| email.sending.passwordSecret.key | string | `nil` | Key containing the secret |
+| email.sending.passwordSecret.name | string | `nil` | Name of the secret |
+| email.sending.port | int | `25` | Port for the email host |
+| email.sending.useTls | bool | `false` | Use tls for email sending |
+| email.sending.user | string | `nil` | User for authentication |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"paperless-ngx/paperless-ngx","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
