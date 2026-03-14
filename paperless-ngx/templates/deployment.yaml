@@ -156,7 +156,7 @@ spec:
             - name: PAPERLESS_EMAIL_HOST
               value: {{ .Values.email.sending.host }}
             - name: PAPERLESS_EMAIL_PORT
-              value: {{ printf "%d" (.Values.auth.cookieAge | int64) | quote }}
+              value: {{ printf "%d" (.Values.email.sending.port | int64) | quote }}
             {{- if .Values.email.sending.user }}
             - name: PAPERLESS_EMAIL_HOST_USER
               value: {{ .Values.email.sending.user }}
@@ -174,6 +174,42 @@ spec:
             {{- end }}
             - name: PAPERLESS_EMAIL_USE_TLS
               value: {{ .Values.email.sending.useTls | quote }}
+            - name: PAPERLESS_OCR_LANGUAGE
+              value: {{ .Values.ocr.language }}
+            - name: PAPERLESS_OCR_MODE
+              value: {{ .Values.ocr.mode }}
+            - name: PAPERLESS_OCR_SKIP_ARCHIVE_FILE
+              value: {{ .Values.ocr.skipArchiveFile }}
+            - name: PAPERLESS_OCR_CLEAN
+              value: {{ .Values.ocr.cleanMode }}
+            - name: PAPERLESS_OCR_DESKEW
+              value: {{ .Values.ocr.deskew }}
+            - name: PAPERLESS_OCR_ROTATE_PAGES
+              value: {{ .Values.ocr.rotatePages | quote }}
+            - name: PAPERLESS_OCR_ROTATE_PAGES_THRESHOLD
+              value: {{ printf "%d" (.Values.ocr.rotatePagesThreshold | int64) | quote }}
+            - name: PAPERLESS_OCR_OUTPUT_TYPE
+              value: {{ .Values.ocr.outputType }}
+            {{- if .Values.ocr.pageLimit }}
+            - name: PAPERLESS_OCR_PAGES
+              value: {{ printf "%d" (.Values.ocr.pageLimit | int64) | quote }}
+            {{- end }}
+            {{- if .Values.ocr.imageDpi }}
+            - name: PAPERLESS_OCR_IMAGE_DPI
+              value: {{ printf "%d" (.Values.ocr.imageDpi | int64) | quote }}
+            {{- end }}
+            {{- if .Values.ocr.maxImagePixels }}
+            - name: PAPERLESS_OCR_MAX_IMAGE_PIXELS
+              value: {{ printf "%d" (.Values.ocr.maxImagePixels | int64) | quote }}
+            {{- end }}
+            {{- if .Values.ocr.colorConversionStrategy }}
+            - name: PAPERLESS_OCR_COLOR_CONVERSION_STRATEGY
+              value: {{ .Values.ocr.colorConversionStrategy }}
+            {{- end }}
+            {{- if .Values.ocr.userArgs }}
+            - name: PAPERLESS_OCR_USER_ARGS
+              value: {{ .Values.ocr.userArgs | quote }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
