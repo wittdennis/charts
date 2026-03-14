@@ -173,7 +173,7 @@ spec:
                   name: {{ .Values.email.sending.passwordSecret.name }}
             {{- end }}
             - name: PAPERLESS_EMAIL_USE_TLS
-              value: {{ .Values.email.sending.useTls }}
+              value: {{ .Values.email.sending.useTls | quote }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
