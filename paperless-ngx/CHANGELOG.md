@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-0.4.1 - 2026-03-14
+#### Bug Fixes
+- (**paperless-ngx**) quote tls option for email sending - (2c969f6) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-0.4.0 - 2026-03-14
 #### Features
 - (**paperless-ngx**) add configuration for email sending - (13fb926) - Dennis Witt
