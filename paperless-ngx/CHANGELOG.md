@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.0.1 - 2026-03-14
+#### Bug Fixes
+- (**paperless-ngx**) quote deskew value - (af31c0b) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.0.0 - 2026-03-14
 #### Features
 - (**paperless-ngx**) add ocr settings - (4d0146f) - Dennis Witt
