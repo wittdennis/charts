@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.1.1 - 2026-03-16
+#### Bug Fixes
+- (**home-assistant-otbr**) adding filters to route would lead to invalid yaml - (19c6915) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.1.0 - 2026-03-12
 #### Features
 - (**home-assistant-otbr**) Add support for PVC annotations - (4dee82a) - Anton Mu
