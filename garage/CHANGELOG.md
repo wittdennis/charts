@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-2.2.0 - 2026-03-16
+#### Features
+- add memos chart - (966c70d) - Dennis Witt
+#### Bug Fixes
+- (**garage**) adding filters to route would lead to invalid yaml - (481ac2b) - Dennis Witt
+
+- - -
+
 ## garage-2.1.0 - 2026-01-25
 #### Features
 - (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
