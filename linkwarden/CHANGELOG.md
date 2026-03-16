@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-0.3.0 - 2026-03-16
+#### Features
+- (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+- (**node-red**) add route block for gateway api usage - (c6c9e31) - Dennis Witt
+#### Bug Fixes
+- (**linkwarden**) adding filters to route would lead to invalid yaml - (f8665dd) - Dennis Witt
+
+- - -
+
 ## linkwarden-0.2.0 - 2026-01-16
 #### Features
 - (**linkwarden**) add configuration options for authentik - (5062a51) - Dennis Witt
