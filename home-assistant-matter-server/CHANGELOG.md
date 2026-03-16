@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-4.0.9 - 2026-03-16
+#### Bug Fixes
+- (**mattter-server**) filters need top-level attribute, otherwise filters will be indented too far - (498e04a) - Fabian Gruber
+
+- - -
+
 ## home-assistant-matter-server-4.0.8 - 2026-03-13
 #### Bug Fixes
 - (**deps**) update ghcr.io/matter-js/matterjs-server docker tag to v0.5.7 - (e5166eb) - wittdennis-renovate[bot]
