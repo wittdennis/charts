@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.1.2 - 2026-03-16
+#### Bug Fixes
+- (**memos**) adding filters to route would lead to invalid yaml - (9895ed8) - Dennis Witt
+#### Documentation
+- fix end of line in files - (f2ba3d9) - Dennis Witt
+
+- - -
+
 ## memos-1.1.1 - 2026-02-23
 #### Bug Fixes
 - (**deps**) update neosmemo/memos docker tag to v0.26.2 - (e591950) - wittdennis-renovate[bot]
