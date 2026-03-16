@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## ddb-proxy-1.2.0 - 2026-03-16
+#### Features
+- (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
+#### Bug Fixes
+- (**ddb-proxy**) adding filters to route would lead to invalid yaml - (7a21cb6) - Dennis Witt
+
+- - -
+
 ## ddb-proxy-1.1.0 - 2026-01-20
 #### Features
 - (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
