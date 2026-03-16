@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.5.2 - 2026-03-16
+#### Bug Fixes
+- (**node-red**) adding filters to route would lead to invalid yaml - (85b54f8) - Dennis Witt
+#### Documentation
+- fix end of line in files - (f2ba3d9) - Dennis Witt
+
+- - -
+
 ## node-red-1.5.1 - 2026-03-06
 #### Bug Fixes
 - (**deps**) update nodered/node-red docker tag to v4.1.7 - (ac672ba) - wittdennis-renovate[bot]
