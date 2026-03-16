@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-14.3.0 - 2026-03-16
+#### Features
+- (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
+#### Bug Fixes
+- (**foundryvtt**) adding filters to route would lead to invalid yaml - (0f9262b) - Dennis Witt
+#### Documentation
+- fix end of line in files - (f2ba3d9) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) foundryvtt-14.3.0-preview.6 - (fee312a) - github-actions
+- (**version**) foundryvtt-14.3.0-preview.3 - (30c941f) - github-actions
+
+- - -
+
 ## foundryvtt-14.3.0-preview.6 - 2026-03-04
 #### Features
 - (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
