@@ -1,6 +1,6 @@
 # garage
 
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.2.0](https://img.shields.io/badge/AppVersion-v2.2.0-informational?style=flat-square)
+![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.2.0](https://img.shields.io/badge/AppVersion-v2.2.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments.
 
@@ -89,6 +89,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | persistence.meta.size | string | `"100Mi"` |  |
 | persistence.meta.storageClass | string | `nil` | Use a storage class with a preferably fast storage type |
 | podAnnotations | object | `{}` | additonal pod annotations |
+| podDisruptionBudget | optional | `{"enabled":false,"maxUnavailable":1}` | PodDisruptionBudget (PDB) for max unavailable pod |
 | podSecurityContext.fsGroup | int | `1000` |  |
 | podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
 | podSecurityContext.runAsGroup | int | `1000` |  |

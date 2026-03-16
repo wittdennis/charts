@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-2.3.0 - 2026-03-16
+#### Features
+- (**garage**) add optional PodDisruptionBudget in Helm Chart (#328) - (9a77dc2) - Frank Kloeker
+
+- - -
+
 ## garage-2.2.0 - 2026-03-16
 #### Features
 - add memos chart - (966c70d) - Dennis Witt
