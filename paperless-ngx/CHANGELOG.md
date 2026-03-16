@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.0.2 - 2026-03-16
+#### Bug Fixes
+- (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v2.20.11 - (34a6744) - wittdennis-renovate[bot]
+- (**paperless-ngx**) adding filters to route would lead to invalid yaml - (4ea4ba7) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.0.1 - 2026-03-14
 #### Bug Fixes
 - (**paperless-ngx**) quote deskew value - (af31c0b) - Dennis Witt
