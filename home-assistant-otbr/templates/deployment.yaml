@@ -23,7 +23,8 @@ spec:
       hostname: {{ include "home-assistant-otbr.fullname" . }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      strategy: Recreate
+      strategy:
+        type: Recreate
       automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
