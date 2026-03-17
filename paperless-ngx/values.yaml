@@ -46,6 +46,15 @@ database:
   # -- Specifies how long (in seconds) read data should be cached. Allowed values are between 1 (one second) and 31536000 (one year).
   readCacheTTL: 3600
 
+# -- Settings pertaining to hosting
+hosting:
+  # -- Paperless uses this to make session tokens. If you expose paperless on the internet, you need to change this, since the default secret is well known.
+  secretKey:
+    # -- If set to true secret will be created on deploy. When false expects the secret to already exist
+    create: true
+    # -- Name of the secret. Defaults to release name.
+    name: ~
+
 # -- Authentication settings
 auth:
   # -- Allow users to signup for a new Paperless-ngx account.
