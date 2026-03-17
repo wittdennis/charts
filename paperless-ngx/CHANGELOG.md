@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file. See [conven
 ## paperless-ngx-1.1.0 - 2026-03-17
 #### Features
 - (**paperless-ngx**) add setting to speficy secret key - (22002ce) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) paperless-ngx-1.1.0 - (34c6a68) - github-actions
+
+- - -
+
+## paperless-ngx-1.1.0 - 2026-03-17
+#### Features
+- (**paperless-ngx**) add setting to speficy secret key - (22002ce) - Dennis Witt
 
 - - -
 
