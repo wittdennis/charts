@@ -93,5 +93,5 @@ Create name for the data pvc
 Create name for the secret-key secret
 */}}
 {{- define "paperless-ngx.secretKeyName" -}}
-{{ printf "%s-secret-key" (include "paperless-ngx.fullname" .) | trunc 63 | trimSuffix "-" }}
+{{ .Values.hosting.secretKey.name | default (printf "%s-secret-key" (include "paperless-ngx.fullname" .)) | trunc 63 | trimSuffix "-" }}
 {{- end }}
