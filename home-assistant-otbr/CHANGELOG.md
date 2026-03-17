@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.1.3 - 2026-03-17
+#### Bug Fixes
+- (**home-assistant-otb**) type for strategy - (5241b47) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.1.2 - 2026-03-17
 #### Bug Fixes
 - (**home-assistant-otbr**) set deployment strategy to recreate so that port isn't blocked - (9869d88) - Dennis Witt
