@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.1.0 - 2026-03-17
+#### Features
+- (**paperless-ngx**) add setting to speficy secret key - (22002ce) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.0.2 - 2026-03-16
 #### Bug Fixes
 - (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v2.20.11 - (34a6744) - wittdennis-renovate[bot]
