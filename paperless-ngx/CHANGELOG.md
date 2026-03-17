@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.1.1 - 2026-03-17
+#### Bug Fixes
+- (**paperless-ngx**) create secretkey only if set to true - (b75b293) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.1.0 - 2026-03-17
 #### Features
 - (**paperless-ngx**) add setting to speficy secret key - (22002ce) - Dennis Witt
