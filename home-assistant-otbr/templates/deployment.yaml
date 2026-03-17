@@ -8,6 +8,8 @@ spec:
   selector:
     matchLabels:
       {{- include "home-assistant-otbr.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: Recreate
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -23,8 +25,6 @@ spec:
       hostname: {{ include "home-assistant-otbr.fullname" . }}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      strategy:
-        type: Recreate
       automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
