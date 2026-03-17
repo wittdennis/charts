@@ -57,9 +57,10 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | email.sending.useTls | bool | `false` | Use tls for email sending |
 | email.sending.user | string | `nil` | User for authentication |
 | fullnameOverride | string | `""` |  |
-| hosting | object | `{"secretKey":{"create":true,"name":null}}` | Settings pertaining to hosting |
-| hosting.secretKey | object | `{"create":true,"name":null}` | Paperless uses this to make session tokens. If you expose paperless on the internet, you need to change this, since the default secret is well known. |
+| hosting | object | `{"secretKey":{"create":true,"key":"key","name":null}}` | Settings pertaining to hosting |
+| hosting.secretKey | object | `{"create":true,"key":"key","name":null}` | Paperless uses this to make session tokens. If you expose paperless on the internet, you need to change this, since the default secret is well known. |
 | hosting.secretKey.create | bool | `true` | If set to true secret will be created on deploy. When false expects the secret to already exist |
+| hosting.secretKey.key | string | `"key"` | Key of the secret |
 | hosting.secretKey.name | string | `nil` | Name of the secret. Defaults to release name. |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"paperless-ngx/paperless-ngx","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |

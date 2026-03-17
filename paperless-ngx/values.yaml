@@ -54,6 +54,8 @@ hosting:
     create: true
     # -- Name of the secret. Defaults to release name.
     name: ~
+    # -- Key of the secret
+    key: key
 
 # -- Authentication settings
 auth:
