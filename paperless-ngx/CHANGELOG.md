@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.1.4 - 2026-03-21
+#### Bug Fixes
+- (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v2.20.13 - (b8e4124) - wittdennis-renovate[bot]
+
+- - -
+
 ## paperless-ngx-1.1.3 - 2026-03-21
 #### Bug Fixes
 - (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v2.20.12 - (39c8ac7) - wittdennis-renovate[bot]
