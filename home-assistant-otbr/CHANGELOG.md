@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.2.1 - 2026-03-25
+#### Bug Fixes
+- (**deps**) update homeassistant-otbr to v3.0.0 - (edec5df) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.2.0 - 2026-03-25
 #### Features
 - (**home-assistant-otbr**) add ability to use network devices - (a29729a) - Dennis Witt
