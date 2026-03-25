@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.2.0 - 2026-03-25
+#### Features
+- (**home-assistant-otbr**) add ability to use network devices - (a29729a) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.1.4 - 2026-03-17
 #### Bug Fixes
 - (**home-assistant-otbr**) move deployment strategy from template to deployment spec - (b32144d) - Dennis Witt
