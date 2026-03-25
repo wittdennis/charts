@@ -10,12 +10,13 @@ A Helm chart for Kubernetes
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
-| homeAssistantOtbr | object | `{"backboneInterface":"eth0","baudrate":460800,"firewall":false,"flowControl":true,"nat64":false,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
+| homeAssistantOtbr | object | `{"backboneInterface":"eth0","baudrate":460800,"firewall":false,"flowControl":true,"nat64":false,"networkDeviceAddress":"10.0.10.10:1010","rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
 | homeAssistantOtbr.backboneInterface | string | `"eth0"` | The physical network interface to use for routing |
 | homeAssistantOtbr.baudrate | int | `460800` | Serial port baudrate (depends on firmware) |
 | homeAssistantOtbr.firewall | bool | `false` | If iptables firewall should be configured |
 | homeAssistantOtbr.flowControl | bool | `true` | Toggles flow control |
 | homeAssistantOtbr.nat64 | bool | `false` | If nat64 should be enabled |
+| homeAssistantOtbr.networkDeviceAddress | string | `"10.0.10.10:1010"` | If you're using a network device specify the network address of the device including the port |
 | homeAssistantOtbr.rcpMountPath | string | `"/dev/ttyUSB0"` | The mount path for the thread receiver |
 | homeAssistantOtbr.restPort | int | `8081` | Port of the rest api |
 | homeAssistantOtbr.webPort | int | `7586` | Port of the web ui |

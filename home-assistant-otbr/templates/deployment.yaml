@@ -45,8 +45,13 @@ spec:
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{- if .Values.homeAssistantOtbr.networkDeviceAddress }}
+            - name: NETWORK_DEVICE
+              value: {{ .Values.homeAssistantOtbr.networkDeviceAddress | quote }}
+            {{- else }}
             - name: DEVICE
               value: /dev/ttyUSB0
+            {{- end }}
             - name: BACKBONE_IF
               value: {{ .Values.homeAssistantOtbr.backboneInterface | quote }}
             - name: FLOW_CONTROL
@@ -81,17 +86,21 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
+          {{- if not .Values.homeAssistantOtbr.networkDeviceAddress }}
             - name: rcp
               mountPath: /dev/ttyUSB0
+          {{- end }}
             - name: data
               mountPath: /data/thread
           {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
       volumes:
+        {{- if not .Values.homeAssistantOtbr.networkDeviceAddress }}
         - name: rcp
           hostPath:
             path: {{ .Values.homeAssistantOtbr.rcpMountPath }}
+        {{- end }}
         - name: data
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
