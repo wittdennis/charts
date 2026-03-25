@@ -18,4 +18,4 @@ version: 1.2.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2.16.5" # yuck but the image doesn't have a correct version
+appVersion: "3.0.0" # renovate: datasource=docker depName=docker.io/denniswitt/homeassistant-otbr versioning=docker
