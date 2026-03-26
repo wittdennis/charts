@@ -1,6 +1,6 @@
 # home-assistant-otbr
 
-![Version: 1.2.2](https://img.shields.io/badge/Version-1.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.0](https://img.shields.io/badge/AppVersion-3.0.0-informational?style=flat-square)
+![Version: 1.2.2](https://img.shields.io/badge/Version-1.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.1](https://img.shields.io/badge/AppVersion-3.0.1-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -21,8 +21,8 @@ A Helm chart for Kubernetes
 | homeAssistantOtbr.restPort | int | `8081` | Port of the rest api |
 | homeAssistantOtbr.webPort | int | `7586` | Port of the web ui |
 | image.pullPolicy | string | `"Always"` |  |
-| image.registry | string | `"docker.io"` | The registry where the image is hosted |
-| image.repository | string | `"denniswitt/homeassistant-otbr"` | Image repository |
+| image.registry | string | `"ghcr.io"` | The registry where the image is hosted |
+| image.repository | string | `"wittdennis/homeassistant-otbr"` | Image repository |
 | image.tag | string | `""` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.rest.annotations | object | `{}` |  |
