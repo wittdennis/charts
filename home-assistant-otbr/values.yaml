@@ -7,7 +7,7 @@ homeAssistantOtbr:
   # -- The mount path for the thread receiver
   rcpMountPath: /dev/ttyUSB0
   # -- If you're using a network device specify the network address of the device including the port
-  networkDeviceAddress: 10.0.10.10:1010
+  networkDeviceAddress: ~
   # -- The physical network interface to use for routing
   backboneInterface: eth0
   # -- Toggles flow control
