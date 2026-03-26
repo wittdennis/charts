@@ -66,6 +66,8 @@ spec:
               value: {{ .Values.homeAssistantOtbr.restPort | quote }}
             - name: OTBR_WEB_PORT
               value: {{ .Values.homeAssistantOtbr.webPort | quote }}
+            - name: BETA
+              value: {{ ternary "1" "0" .Values.homeAssistantOtbr.betaMode | quote }}
           ports:
             - name: rest
               containerPort: {{ .Values.homeAssistantOtbr.restPort }}
