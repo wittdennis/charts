@@ -10,9 +10,10 @@ A Helm chart for Kubernetes
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | fullnameOverride | string | `""` |  |
-| homeAssistantOtbr | object | `{"backboneInterface":"eth0","baudrate":460800,"firewall":false,"flowControl":true,"nat64":false,"networkDeviceAddress":null,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
+| homeAssistantOtbr | object | `{"backboneInterface":"eth0","baudrate":460800,"betaMode":false,"firewall":false,"flowControl":true,"nat64":false,"networkDeviceAddress":null,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
 | homeAssistantOtbr.backboneInterface | string | `"eth0"` | The physical network interface to use for routing |
 | homeAssistantOtbr.baudrate | int | `460800` | Serial port baudrate (depends on firmware) |
+| homeAssistantOtbr.betaMode | bool | `false` | Enables beta mode. (Needed for Thread 1.4) |
 | homeAssistantOtbr.firewall | bool | `false` | If iptables firewall should be configured |
 | homeAssistantOtbr.flowControl | bool | `true` | Toggles flow control |
 | homeAssistantOtbr.nat64 | bool | `false` | If nat64 should be enabled |
