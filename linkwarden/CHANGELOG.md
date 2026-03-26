@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-0.3.1 - 2026-03-26
+#### Bug Fixes
+- (**deps**) update docker.io/denniswitt/linkwarden-rootless docker tag to v2.14.0 - (ddb393b) - wittdennis-renovate[bot]
+
+- - -
+
 ## linkwarden-0.3.0 - 2026-03-16
 #### Features
 - (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
