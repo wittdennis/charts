@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.3.0 - 2026-03-26
+#### Features
+- (**home-assistant-otbr**) add betaMode boolean to enable beta features - (6a39ccb) - Dennis Witt
+#### Bug Fixes
+- (**deps**) update homeassistant-otbr to v3.0.2 - (b7f2a2c) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.2.3 - 2026-03-26
 #### Bug Fixes
 - (**home-assitant-otbr**) use image from ghcr.io - (24c1ce6) - Dennis Witt
