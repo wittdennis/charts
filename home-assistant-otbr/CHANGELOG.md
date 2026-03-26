@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.2.3 - 2026-03-26
+#### Bug Fixes
+- (**home-assitant-otbr**) use image from ghcr.io - (24c1ce6) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.2.2 - 2026-03-26
 #### Bug Fixes
 - (**home-assistant-otbr**) networkDeviceAddress empty by default - (3a9674a) - Dennis Witt
