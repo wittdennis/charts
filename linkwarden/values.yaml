@@ -249,6 +249,12 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  failureThreshold: 30
+  periodSeconds: 10
 
 # -- Additional volumes on the output Deployment definition.
 volumes: []
