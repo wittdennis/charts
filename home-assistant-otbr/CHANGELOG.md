@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.3.2 - 2026-03-27
+#### Bug Fixes
+- (**home-assistant-otbr**) set enableServiceLinks to false and make it configurable - (893805d) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.3.1 - 2026-03-27
 #### Bug Fixes
 - add source to chart - (734efc9) - Michael Kriese
