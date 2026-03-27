@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.3.1 - 2026-03-27
+#### Bug Fixes
+- add source to chart - (734efc9) - Michael Kriese
+
+- - -
+
 ## home-assistant-otbr-1.3.0 - 2026-03-26
 #### Features
 - (**home-assistant-otbr**) add betaMode boolean to enable beta features - (6a39ccb) - Dennis Witt
