@@ -13,6 +13,7 @@ A Helm chart for Kubernetes
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| enableServiceLinks | bool | `false` |  |
 | fullnameOverride | string | `""` |  |
 | homeAssistantOtbr | object | `{"backboneInterface":"eth0","baudrate":460800,"betaMode":false,"firewall":false,"flowControl":true,"nat64":false,"networkDeviceAddress":null,"rcpMountPath":"/dev/ttyUSB0","restPort":8081,"webPort":7586}` | OpenThread Border Router settings |
 | homeAssistantOtbr.backboneInterface | string | `"eth0"` | The physical network interface to use for routing |

@@ -24,6 +24,7 @@ spec:
     spec:
       hostname: {{ include "home-assistant-otbr.fullname" . }}
       hostNetwork: true
+      enableServiceLinks: {{ .Values.enableServiceLinks }}
       dnsPolicy: ClusterFirstWithHostNet
       automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
       {{- with .Values.imagePullSecrets }}
