@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-1.0.0 - 2026-03-27
+#### Features
+- (**linkwarden**) add startupProbe to handle slow app start - (23b89f9) - Dennis Witt
+
+- - -
+
 ## linkwarden-0.3.1 - 2026-03-26
 #### Bug Fixes
 - (**deps**) update docker.io/denniswitt/linkwarden-rootless docker tag to v2.14.0 - (ddb393b) - wittdennis-renovate[bot]
