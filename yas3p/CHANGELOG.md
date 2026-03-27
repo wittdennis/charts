@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## yas3p-0.3.1 - 2026-03-27
+#### Bug Fixes
+- (**deps**) update denniswitt/yas3p docker tag to v0.2.4 - (c38a25b) - wittdennis-renovate[bot]
+#### Documentation
+- fix end of line in files - (f2ba3d9) - Dennis Witt
+
+- - -
+
 ## yas3p-0.3.0 - 2026-02-19
 #### Features
 - (**ddb-proxy**) add route block for gateway api usage - (a36861e) - Dennis Witt
