@@ -33,7 +33,7 @@ jobs:
   release:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: install cocogitto
-        uses: cocogitto/cocogitto-action@v4.2.0
+        uses: cocogitto/cocogitto-action@52d0023b4396897f1815648e553db2ab8d782f3a # v4.2.0
         with:
           command: help
 
@@ -91,7 +91,7 @@ jobs:
       - name: generate changelog
         run: cog changelog --at ${{ steps.release.outputs.version }} > GITHUB_CHANGELOG.md
 
-      - uses: softprops/action-gh-release@v2.6.1
+      - uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
         name: create release
         with:
           body_path: GITHUB_CHANGELOG.md
