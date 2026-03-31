@@ -1,0 +1,57 @@
+name: pull-request
+permissions: {}
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: ["opened", "reopened", "synchronize", "edited"]
+
+jobs:
+  check-multiple:
+    name: check for multiple chart changes
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: setup helm
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5.0.0
+        with:
+          version: v4.1.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
+
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.14"
+
+      - name: setup chart-testing
+        uses: helm/chart-testing-action@6ec842c01de15ebb84c8627d2744a0c2f2755c9f # v2.8.0
+        with:
+          version: v3.14.0 # renovate: datasource=github-releases depName=helm/chart-testing versioning=semver
+          yamllint_version: v1.38.0 # renovate: datasource=github-releases depName=adrienverge/yamllint versioning=semver
+          yamale_version: "6.1.0" # renovate: datasource=github-releases depName=23andMe/yamale versioning=semver
+
+      - name: chart-testing list changed
+        id: list-changed
+        run: |
+          changed="$(ct list-changed --config .chart-testing.yaml)"
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "changed_list=\"${changed//$'\n'/ }\"" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: check for multiple chart changes
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          COUNT=$(echo "$CHANGED_LIST" | wc -w)
+          if [ "$COUNT" -gt 1 ]; then
+            echo "Error: ($COUNT) charts changed. Please create separate PRs for each chart." >&2
+            exit 1
+          fi
+        env:
+          CHANGED_LIST: ${{ steps.list-changed.outputs.changed_list }}
