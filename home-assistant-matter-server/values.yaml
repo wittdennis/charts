@@ -20,7 +20,7 @@ lockFileRemover:
     # -- Container repository
     repository: library/busybox
     # -- Image tag
-    tag: 1.37.0 # renovate: datasource=docker depName=docker.io/library/busybox versioning=semver
+    tag: 1.37.0 # renovate: datasource=docker depName=docker.io/library/busybox versioning=docker
 
 # -- Bluetooth settings
 bluetoothCommissioning:
