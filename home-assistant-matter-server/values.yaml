@@ -9,6 +9,19 @@ image:
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+# -- Init container to remove matter.lock files which can be left behind if the matter-server doesn't shut down cleanly
+lockFileRemover:
+  # -- Flag to disable the init container
+  enabled: true
+  # -- Sets the image for the initContainer
+  image:
+    # -- Container registry where the repository is hosted
+    registry: docker.io
+    # -- Container repository
+    repository: library/busybox
+    # -- Image tag
+    tag: 1.37.0 # renovate: datasource=docker depName=docker.io/library/busybox versioning=semver
+
 # -- Bluetooth settings
 bluetoothCommissioning:
   # -- Flag to control if bluetooth commissioning should be enabled

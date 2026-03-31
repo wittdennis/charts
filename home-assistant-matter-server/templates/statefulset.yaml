@@ -39,6 +39,30 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
+      {{- if .Values.lockFileRemover.enabled }}
+      initContainers:
+        - name: lock-remover
+          image: {{ .Values.lockFileRemover.image.registry }}/{{ .Values.lockFileRemover.image.repository }}:{{ .Values.lockFileRemover.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: 0
+            runAsGroup: 0
+            runAsNonRoot: false
+            privileged: false
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              #!/bin/sh
+
+              rm -f /data/*/matter.lock
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

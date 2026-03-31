@@ -27,6 +27,12 @@ Helm chart for home assistant matter server
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
 | livenessProbe | object | `{"httpGet":{"path":"/","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
+| lockFileRemover | object | `{"enabled":true,"image":{"registry":"docker.io","repository":"library/busybox","tag":"1.37.0"}}` | Init container to remove matter.lock files which can be left behind if the matter-server doesn't shut down cleanly |
+| lockFileRemover.enabled | bool | `true` | Flag to disable the init container |
+| lockFileRemover.image | object | `{"registry":"docker.io","repository":"library/busybox","tag":"1.37.0"}` | Sets the image for the initContainer |
+| lockFileRemover.image.registry | string | `"docker.io"` | Container registry where the repository is hosted |
+| lockFileRemover.image.repository | string | `"library/busybox"` | Container repository |
+| lockFileRemover.image.tag | string | `"1.37.0"` | Image tag |
 | log.logLevel | string | `"info"` | Global logging level, possible options are: critical, error, warning, info, debug, verbose |
 | nameOverride | string | `""` | This is to override the chart name. |
 | networkInterface | string | `nil` | Name of the network interface that should be used |
