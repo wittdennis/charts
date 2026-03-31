@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-4.1.0 - 2026-03-31
+#### Features
+- (**home-assistant-matter-server**) add init container to remove lock files left behind after unclean shutdown - (3b25d08) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-4.0.12 - 2026-03-27
 #### Bug Fixes
 - (**deps**) update ghcr.io/matter-js/matterjs-server docker tag to v0.5.10 - (5adffda) - wittdennis-renovate[bot]
