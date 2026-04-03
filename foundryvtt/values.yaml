@@ -119,7 +119,7 @@ route:
   filters: []
 
   # -- Any custom rule you want to specify
-  additionalRules: {}
+  additionalRules: []
 
 # -- This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
