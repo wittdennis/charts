@@ -19,18 +19,32 @@ config:
   disableBackups: false
   # -- Choose the CSS theme for the setup page. Valid values are dark, fantasy, and scifi.
   cssTheme: dark
-
-# -- Config for the existing secret that will be referenced by the container.
-# By default the name of the secret that is looked for is the name of the release.
-# The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version.
-# Also a "admin-key" must be provided in the secret.
-existingSecret:
-  # -- overrides the name of the secret that is referenced
-  name: ~
-  # -- Set to true if the secret contains a license key to use. The key that is uses is foundry-license-key
-  containsLicenseKey: false
-  # -- Set tot true if the secret contains an awsConfig.json key
-  containsAwsConfig: false
+  # -- Can be used to specify a specific foundry license key
+  licenseKeySecret:
+    # -- Name of the secret containing the license key
+    name: ~
+    # -- Key containing the license key
+    key: license-key
+  # -- Secret containing username and password foundryvtt.com needed to download the foundry binaries
+  foundryAuthSecret:
+    # -- Name of the secret containing the login data
+    name: ~
+    # -- Key containing the username
+    usernameKey: username
+    # -- Key containing the password
+    passwordKey: password
+  # -- Secret containing the admin password for the instance
+  adminKeySecret:
+    # -- Name of the secret
+    name: ~
+    # -- Key containing the admin password
+    key: admin-key
+  # -- Secret containing awsConfig.json
+  awsConfigSecret:
+    # -- Name of the secret
+    name: ~
+    # -- Key containing the aws config
+    key: awsConfig.json
 
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:

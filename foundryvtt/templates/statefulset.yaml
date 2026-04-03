@@ -49,26 +49,26 @@ spec:
             - name: FOUNDRY_USERNAME
               valueFrom:
                 secretKeyRef:
-                  key: foundry-username
-                  name: {{ include "foundryvtt.secretName" . }}
+                  key: {{ .Values.config.foundryAuthSecret.usernameKey }}
+                  name: {{ .Values.config.foundryAuthSecret.name }}
             - name: FOUNDRY_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: foundry-password
-                  name: {{ include "foundryvtt.secretName" . }}
+                  key: {{ .Values.config.foundryAuthSecret.passwordKey }}
+                  name: {{ .Values.config.foundryAuthSecret.name }}
             - name: FOUNDRY_ADMIN_KEY
               valueFrom:
                 secretKeyRef:
-                  key: admin-key
-                  name: {{ include "foundryvtt.secretName" . }}
-            {{- if .Values.existingSecret.containsLicenseKey }}
+                  key: {{ .Values.config.adminKeySecret.key }}
+                  name: {{ .Values.config.adminKeySecret.name }}
+            {{- if .Values.config.licenseKeySecret.name }}
             - name: FOUNDRY_LICENSE_KEY
               valueFrom:
                 secretKeyRef:
-                  key: foundry-license-key
-                  name: {{ include "foundryvtt.secretName" . }}
+                  key: {{ .Values.config.licenseKeySecret.key }}
+                  name: {{ .Values.config.licenseKeySecret.name }}
             {{- end }}
-            {{- if .Values.existingSecret.containsAwsConfig }}
+            {{- if .Values.config.awsConfigSecret.name }}
             - name: FOUNDRY_AWS_CONFIG
               value: "/home/foundry/aws/awsConfig.json"
             {{- end }}
@@ -123,19 +123,19 @@ spec:
               mountPath: /data
             - name: tmp
               mountPath: /tmp
-            {{- if .Values.existingSecret.containsAwsConfig }}
+            {{- if .Values.config.awsConfigSecret.name }}
             - name: aws-config
               mountPath: /home/foundry/aws
             {{- end }}
       volumes:
         - name: tmp
           emptyDir: {}
-        {{- if .Values.existingSecret.containsAwsConfig }}
+        {{- if .Values.config.awsConfigSecret.name }}
         - name: aws-config
           secret:
-            secretName: {{ include "foundryvtt.secretName" . }}
+            secretName: {{ .Values.config.awsConfigSecret.name }}
             items:
-              - key: awsConfig.json
+              - key: {{ .Values.config.awsConfigSecret.key }}
                 path: awsConfig.json
         {{- end }}
       {{- with .Values.nodeSelector }}
