@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-15.0.0 - 2026-04-03
+#### Features
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**foundryvtt**) implement more flexible defining of secret values - (a2be2aa) - Dennis Witt
+- (**foundryvtt**) add new env values for foundry v14 - (404870a) - Dennis Witt
+#### Bug Fixes
+- (**deps**) update felddy/foundryvtt docker tag to v14 - (d8036cd) - wittdennis-renovate[bot]
+- (**foundryvtt**) set foundry hostname via route if enabled - (7a698eb) - Dennis Witt
+- (**foundryvtt**) set field type for route.addtionalRules to array - (495e882) - Dennis Witt
+- (**foundryvtt**) set default registry to ghcr - (3597f2a) - Dennis Witt
+
+- - -
+
 ## foundryvtt-14.3.0 - 2026-03-16
 #### Features
 - (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
