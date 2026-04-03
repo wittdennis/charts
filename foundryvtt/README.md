@@ -1,6 +1,6 @@
 # foundryvtt
 
-![Version: 14.3.0](https://img.shields.io/badge/Version-14.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 13.351.0](https://img.shields.io/badge/AppVersion-13.351.0-informational?style=flat-square)
+![Version: 14.3.0](https://img.shields.io/badge/Version-14.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 14.359.0](https://img.shields.io/badge/AppVersion-14.359.0-informational?style=flat-square)
 
 A Helm chart for Foundry VTT
 
@@ -23,8 +23,10 @@ A Helm chart for Foundry VTT
 | existingSecret.containsLicenseKey | bool | `false` | Set to true if the secret contains a license key to use. The key that is uses is foundry-license-key |
 | existingSecret.name | string | `nil` | overrides the name of the secret that is referenced |
 | fullnameOverride | string | `""` |  |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"felddy/foundryvtt","tag":null}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
+| image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"felddy/foundryvtt","tag":null}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
+| image.registry | string | `"ghcr.io"` | Registry of the image |
+| image.repository | string | `"felddy/foundryvtt"` | Repository of the image |
 | image.tag | string | `nil` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
