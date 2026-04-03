@@ -10,6 +10,11 @@ on:
         options:
           - foundryvtt
           - ddb-proxy
+      version:
+        default: "auto"
+        description: Can be used to set a specific version. Use 'auto' for automatic version calculation
+        type: string
+        required: false
       preview:
         description: Suffix for a preview version
         default: ""
@@ -17,10 +22,14 @@ on:
         required: false
 
 jobs:
+  conventional-compliance:
+    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@4935fe307bbde00c895e19be00476904f61bbfa1 # 2.0.4
+
   release:
     runs-on: ubuntu-24.04
+    needs: conventional-compliance
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           token: ${{ secrets.RELEASE_TOKEN }}
@@ -31,9 +40,9 @@ jobs:
           git config user.email github-actions@github.com
 
       - name: install cocogitto
-        uses: oknozor/cocogitto-action@c7a74f5406bab86da17da0f0e460a69f8219a68c # v3.11
+        uses: cocogitto/cocogitto-action@52d0023b4396897f1815648e553db2ab8d782f3a # v4.2.0
         with:
-          check: false
+          command: help
 
       - name: install helm-docs
         run: |
@@ -41,30 +50,39 @@ jobs:
         env:
           HELM_DOCS_VERSION: v1.14.2 # renovate: datasource=github-releases depName=norwoodj/helm-docs versioning=semver
 
-      # - name: bump version
-      #   id: release
-      #   uses: oknozor/cocogitto-action@v3.9
-      #   with:
-      #     release: true
-      #     check-latest-tag-only: false
-      #     git-user: github-actions
-      #     git-user-email: github-actions@github.com
-
       - name: bump version
         id: release
         run: |
-          if [ -z "${PRE_RELEASE}" ]; then
-            cog bump --auto --package $CHART
-            echo "preview=false" >> $GITHUB_OUTPUT
+          set -euo pipefail
+
+          COG_BUMP_ARGS=()
+
+          if [ "${VERSION}" = "auto" ]; then
+            COG_BUMP_ARGS+=(--auto)
           else
-            cog bump --auto --package $CHART --pre $PRE_RELEASE
-            echo "preview=true" >> $GITHUB_OUTPUT
+            COG_BUMP_ARGS+=(--version "$VERSION")
           fi
-          VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          COG_BUMP_ARGS+=(--package "$CHART")
+
+          PREVIEW=false
+          if [ -n "${PRE_RELEASE:-}" ]; then
+            COG_BUMP_ARGS+=(--pre "$PRE_RELEASE")
+            PREVIEW=true
+          fi
+
+          cog bump "${COG_BUMP_ARGS[@]}"
+
+          GIT_VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
+
+          {
+            echo "preview=$PREVIEW"
+            echo "version=$GIT_VERSION"
+          } >> "$GITHUB_OUTPUT"
         env:
           CHART: ${{ inputs.chart }}
           PRE_RELEASE: ${{ inputs.preview }}
+          VERSION: ${{ inputs.version }}
 
       - name: generate changelog
         run: cog changelog --at ${{ steps.release.outputs.version }} > GITHUB_CHANGELOG.md
