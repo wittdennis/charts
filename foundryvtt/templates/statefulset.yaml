@@ -97,6 +97,16 @@ spec:
             - name: FOUNDRY_WORLD
               value: {{ . | quote }}
             {{- end }}
+            - name: FOUNDRY_DELETE_NEDB
+              value: {{ .Values.config.deleteNeDbFiles | quote }}
+            - name: FOUNDRY_LOG_SIZE
+              value: {{ .Values.config.logFileSize | quote }}
+            - name: FOUNDRY_MAX_LOGS
+              value: {{ .Values.config.maxNumberOfLogFiles | quote }}
+            - name: FOUNDRY_NO_BACKUPS
+              value: {{ .Values.config.disableBackups | quote }}
+            - name: FOUNDRY_CSS_THEME
+              value: {{ .Values.config.cssTheme }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http

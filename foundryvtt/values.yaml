@@ -3,12 +3,22 @@ config:
   downloadRetries: 3
   # -- Defines if telemetry data are allowed to be tracked
   enableTelemetry: false
-  # --Defines if static files should be minified
+  # -- Defines if static files should be minified
   minifyStaticFiles: true
   # -- Defines if in-app configuration changes should be preserved across container restarts
   preserveConfig: false
-  # --The default world to load when the server has started
+  # -- The default world to load when the server has started
   defaultWorld: ~
+  # -- Set to true to automatically delete legacy NeDB .db files after they have been migrated to the LevelDB format introduced in Version 11. Enabling this recovers disk space but removes the ability to roll back to a pre-migration state. Only relevant for data volumes previously used with Foundry Version 10 or earlier.
+  deleteNeDbFiles: false
+  # -- The maximum size a log file can reach before it is rotated. Units must be included. e.g.; 1024k, 64m, 1g.
+  logFileSize: 64M
+  # -- The maximum number of log files to retain before older ones are deleted.
+  maxNumberOfLogFiles: 10
+  # -- Set to true to disable the automatic backup of world data that Foundry creates before performing major version migrations. Users with an external backup strategy or constrained storage may wish to enable this.
+  disableBackups: false
+  # -- Choose the CSS theme for the setup page. Valid values are dark, fantasy, and scifi.
+  cssTheme: dark
 
 # -- Config for the existing secret that will be referenced by the container.
 # By default the name of the secret that is looked for is the name of the release.
