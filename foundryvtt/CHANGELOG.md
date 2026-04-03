@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-14.3.1 - 2026-04-03
+#### Bug Fixes
+- (**foundryvtt**) set default registry for image to ghcr - (184a0d4) - Dennis Witt
+
+- - -
+
 ## foundryvtt-14.3.0 - 2026-03-16
 #### Features
 - (**otbr**) add route block for gateway api usage - (178fcf5) - Dennis Witt
