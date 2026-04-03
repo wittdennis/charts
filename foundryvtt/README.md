@@ -13,20 +13,29 @@ A Helm chart for Foundry VTT
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| config.adminKeySecret | object | `{"key":"admin-key","name":null}` | Secret containing the admin password for the instance |
+| config.adminKeySecret.key | string | `"admin-key"` | Key containing the admin password |
+| config.adminKeySecret.name | string | `nil` | Name of the secret |
+| config.awsConfigSecret | object | `{"key":"awsConfig.json","name":null}` | Secret containing awsConfig.json |
+| config.awsConfigSecret.key | string | `"awsConfig.json"` | Key containing the aws config |
+| config.awsConfigSecret.name | string | `nil` | Name of the secret |
 | config.cssTheme | string | `"dark"` | Choose the CSS theme for the setup page. Valid values are dark, fantasy, and scifi. |
 | config.defaultWorld | string | `nil` | The default world to load when the server has started |
 | config.deleteNeDbFiles | bool | `false` | Set to true to automatically delete legacy NeDB .db files after they have been migrated to the LevelDB format introduced in Version 11. Enabling this recovers disk space but removes the ability to roll back to a pre-migration state. Only relevant for data volumes previously used with Foundry Version 10 or earlier. |
 | config.disableBackups | bool | `false` | Set to true to disable the automatic backup of world data that Foundry creates before performing major version migrations. Users with an external backup strategy or constrained storage may wish to enable this. |
 | config.downloadRetries | int | `3` | Number of times the container will try to download the foundry binary |
 | config.enableTelemetry | bool | `false` | Defines if telemetry data are allowed to be tracked |
+| config.foundryAuthSecret | object | `{"name":null,"passwordKey":"password","usernameKey":"username"}` | Secret containing username and password foundryvtt.com needed to download the foundry binaries |
+| config.foundryAuthSecret.name | string | `nil` | Name of the secret containing the login data |
+| config.foundryAuthSecret.passwordKey | string | `"password"` | Key containing the password |
+| config.foundryAuthSecret.usernameKey | string | `"username"` | Key containing the username |
+| config.licenseKeySecret | object | `{"key":"license-key","name":null}` | Can be used to specify a specific foundry license key |
+| config.licenseKeySecret.key | string | `"license-key"` | Key containing the license key |
+| config.licenseKeySecret.name | string | `nil` | Name of the secret containing the license key |
 | config.logFileSize | string | `"64M"` | The maximum size a log file can reach before it is rotated. Units must be included. e.g.; 1024k, 64m, 1g. |
 | config.maxNumberOfLogFiles | int | `10` | The maximum number of log files to retain before older ones are deleted. |
 | config.minifyStaticFiles | bool | `true` | Defines if static files should be minified |
 | config.preserveConfig | bool | `false` | Defines if in-app configuration changes should be preserved across container restarts |
-| existingSecret | object | `{"containsAwsConfig":false,"containsLicenseKey":false,"name":null}` | Config for the existing secret that will be referenced by the container. By default the name of the secret that is looked for is the name of the release. The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version. Also a "admin-key" must be provided in the secret. |
-| existingSecret.containsAwsConfig | bool | `false` | Set tot true if the secret contains an awsConfig.json key |
-| existingSecret.containsLicenseKey | bool | `false` | Set to true if the secret contains a license key to use. The key that is uses is foundry-license-key |
-| existingSecret.name | string | `nil` | overrides the name of the secret that is referenced |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"felddy/foundryvtt","tag":null}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |

@@ -1,0 +1,2 @@
+{{- $_ := required ".Values.config.foundryAuthSecret.name is a required value" .Values.config.foundryAuthSecret.name }}
+{{- $_ := required ".Values.config.adminKeySecret.name is a required value" .Values.config.adminKeySecret.name }}
