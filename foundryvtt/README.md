@@ -13,9 +13,14 @@ A Helm chart for Foundry VTT
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| config.cssTheme | string | `"dark"` | Choose the CSS theme for the setup page. Valid values are dark, fantasy, and scifi. |
 | config.defaultWorld | string | `nil` | The default world to load when the server has started |
+| config.deleteNeDbFiles | bool | `false` | Set to true to automatically delete legacy NeDB .db files after they have been migrated to the LevelDB format introduced in Version 11. Enabling this recovers disk space but removes the ability to roll back to a pre-migration state. Only relevant for data volumes previously used with Foundry Version 10 or earlier. |
+| config.disableBackups | bool | `false` | Set to true to disable the automatic backup of world data that Foundry creates before performing major version migrations. Users with an external backup strategy or constrained storage may wish to enable this. |
 | config.downloadRetries | int | `3` | Number of times the container will try to download the foundry binary |
 | config.enableTelemetry | bool | `false` | Defines if telemetry data are allowed to be tracked |
+| config.logFileSize | string | `"64M"` | The maximum size a log file can reach before it is rotated. Units must be included. e.g.; 1024k, 64m, 1g. |
+| config.maxNumberOfLogFiles | int | `10` | The maximum number of log files to retain before older ones are deleted. |
 | config.minifyStaticFiles | bool | `true` | Defines if static files should be minified |
 | config.preserveConfig | bool | `false` | Defines if in-app configuration changes should be preserved across container restarts |
 | existingSecret | object | `{"containsAwsConfig":false,"containsLicenseKey":false,"name":null}` | Config for the existing secret that will be referenced by the container. By default the name of the secret that is looked for is the name of the release. The secret is required to have a key foundry-username and foundry-password with the user credentials to download the foundry version. Also a "admin-key" must be provided in the secret. |
