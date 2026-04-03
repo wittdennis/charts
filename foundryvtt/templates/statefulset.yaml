@@ -72,7 +72,16 @@ spec:
             - name: FOUNDRY_AWS_CONFIG
               value: "/home/foundry/aws/awsConfig.json"
             {{- end }}
-            {{- if .Values.ingress.enabled }}
+            {{- if .Values.route.enabled }}
+            {{- with (first .Values.route.hostnames) }}
+            - name: FOUNDRY_HOSTNAME
+              value: {{ . }}
+            {{- end }}
+            - name: FOUNDRY_PROXY_SSL
+              value: "true"
+            - name: FOUNDRY_PROXY_PORT
+              value: "443"
+            {{- else if .Values.ingress.enabled }}
             {{- with (first .Values.ingress.hosts)}}
             - name: FOUNDRY_HOSTNAME
               value: {{ .host }}
