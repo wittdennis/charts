@@ -4,7 +4,7 @@ permissions: {}
 on:
   pull_request:
     branches:
-      - master
+      - main
     types: ["opened", "reopened", "synchronize", "edited"]
 
 jobs:
