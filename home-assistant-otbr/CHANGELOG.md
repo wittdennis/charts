@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.3.3 - 2026-04-09
+#### Bug Fixes
+- (**deps**) update ghcr.io/wittdennis/homeassistant-otbr docker tag to v3.0.3 - (e812572) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-otbr-1.3.2 - 2026-03-27
 #### Bug Fixes
 - (**home-assistant-otbr**) set enableServiceLinks to false and make it configurable - (893805d) - Dennis Witt
