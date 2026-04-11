@@ -9,6 +9,6 @@ chart-dirs:
   - node-red
   - paperless-ngx
   - yas3p
-target-branch: master
+target-branch: main
 use-helmignore: true
 remote: origin
