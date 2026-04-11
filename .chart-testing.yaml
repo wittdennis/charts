@@ -1,0 +1,5 @@
+chart-dirs:
+  - foundryvtt
+target-branch: release/foundryvtt-v12
+use-helmignore: true
+remote: origin

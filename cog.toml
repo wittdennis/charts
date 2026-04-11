@@ -37,4 +37,3 @@ owner = "wittdennis"
 
 [monorepo.packages]
 foundryvtt = { path = "foundryvtt" }
-ddb-proxy = { path = "ddb-proxy"}
