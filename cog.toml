@@ -37,12 +37,3 @@ owner = "wittdennis"
 
 [monorepo.packages]
 foundryvtt = { path = "foundryvtt" }
-ddb-proxy = { path = "ddb-proxy"}
-node-red = { path = "node-red" }
-home-assistant-matter-server = { path = "home-assistant-matter-server" }
-home-assistant-otbr = { path = "home-assistant-otbr" }
-garage = { path = "garage" }
-yas3p = { path = "yas3p" }
-linkwarden = { path = "linkwarden" }
-memos = { path = "memos" }
-paperless-ngx = { path = "paperless-ngx" }

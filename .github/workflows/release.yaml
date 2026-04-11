@@ -9,15 +9,6 @@ on:
         type: choice
         options:
           - foundryvtt
-          - ddb-proxy
-          - node-red
-          - home-assistant-matter-server
-          - home-assistant-otbr
-          - garage
-          - yas3p
-          - linkwarden
-          - memos
-          - paperless-ngx
       version:
         default: "auto"
         description: Can be used to set a specific version. Use 'auto' for automatic version calculation

@@ -1,14 +1,5 @@
 chart-dirs:
-  - ddb-proxy
   - foundryvtt
-  - garage
-  - home-assistant-matter-server
-  - home-assistant-otbr
-  - linkwarden
-  - memos
-  - node-red
-  - paperless-ngx
-  - yas3p
-target-branch: master
+target-branch: release/foundryvtt-v14
 use-helmignore: true
 remote: origin
