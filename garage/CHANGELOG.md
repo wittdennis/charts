@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-2.3.2 - 2026-04-17
+#### Bug Fixes
+- (**deps**) update dxflrs/amd64_garage docker tag to v2.3.0 - (354966f) - wittdennis-renovate[bot]
+
+- - -
+
 ## garage-2.3.1 - 2026-03-25
 #### Bug Fixes
 - (**garage**) rename web httproute to fix reuse of httproute name - (d30b2e5) - Dewet Diener
