@@ -1,6 +1,6 @@
 # linkwarden
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.14.0](https://img.shields.io/badge/AppVersion-2.14.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.14.1](https://img.shields.io/badge/AppVersion-2.14.1-informational?style=flat-square)
 
 Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, read, annotate, and fully preserve what matters, all in one place.
 
@@ -16,10 +16,10 @@ Linkwarden is a self-hosted, open-source collaborative bookmark manager to colle
 | deployment.kind | string | `"StatefulSet"` |  |
 | env | object | `{}` | Additional env values to pass to the container |
 | fullnameOverride | string | `""` |  |
-| image | object | `{"pullPolicy":"IfNotPresent","registry":"docker.io","repository":"denniswitt/linkwarden-rootless","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
+| image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"wittdennis/linkwarden-rootless","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
-| image.registry | string | `"docker.io"` | The registry where the image is hosted |
-| image.repository | string | `"denniswitt/linkwarden-rootless"` | Repository of the image |
+| image.registry | string | `"ghcr.io"` | The registry where the image is hosted |
+| image.repository | string | `"wittdennis/linkwarden-rootless"` | Repository of the image |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
@@ -85,7 +85,6 @@ Linkwarden is a self-hosted, open-source collaborative bookmark manager to colle
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | replicaCount | int | `1` | This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ If you want to create a HA setup with more than one replica you have to disable persistence and use S3 storage instead |
 | resources | object | `{}` |  |
-| route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | Block for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
 | route.additionalRules | object | `{}` | Any custom rule you want to specify |
 | route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
 | route.enabled | bool | `false` | Flag to control if route should be created |

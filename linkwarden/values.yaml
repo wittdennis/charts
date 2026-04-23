@@ -106,9 +106,9 @@ env: {}
 # -- This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   # -- The registry where the image is hosted
-  registry: docker.io
+  registry: ghcr.io
   # -- Repository of the image
-  repository: denniswitt/linkwarden-rootless
+  repository: wittdennis/linkwarden-rootless
   # -- This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
@@ -185,7 +185,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-# -- Block for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/
+  # -- Block for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/
 route:
   # -- Flag to control if route should be created
   enabled: false
