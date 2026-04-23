@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-1.0.1 - 2026-04-23
+#### Bug Fixes
+- (**deps**) update docker.io/denniswitt/linkwarden-rootless docker tag to v2.14.1 - (4144a41) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- (**linkwarden**) switch to ghcr for container image - (bf62ebe) - Dennis Witt
+
+- - -
+
 ## linkwarden-1.0.0 - 2026-03-27
 #### Features
 - (**linkwarden**) add startupProbe to handle slow app start - (23b89f9) - Dennis Witt
