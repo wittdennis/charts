@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.1.4 - 2026-04-27
+#### Bug Fixes
+- (**deps**) update neosmemo/memos docker tag to v0.28.0 - (7693551) - wittdennis-renovate[bot]
+
+- - -
+
 ## memos-1.1.3 - 2026-04-20
 #### Bug Fixes
 - (**deps**) update neosmemo/memos docker tag to v0.27.1 - (853a3f3) - wittdennis-renovate[bot]
