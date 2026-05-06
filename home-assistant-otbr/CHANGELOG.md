@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-1.3.5 - 2026-05-06
+#### Bug Fixes
+- (**deps**) update ghcr.io/wittdennis/homeassistant-otbr docker tag to v3.0.5 - (cb0c0fb) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-otbr-1.3.4 - 2026-04-11
 #### Bug Fixes
 - (**deps**) update ghcr.io/wittdennis/homeassistant-otbr docker tag to v3.0.4 - (d16eb0e) - wittdennis-renovate[bot]
