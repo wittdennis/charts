@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-4.1.13 - 2026-05-18
+#### Bug Fixes
+- (**deps**) update ghcr.io/matter-js/matterjs-server docker tag to v0.7.0 - (220c9e4) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-matter-server-4.1.12 - 2026-05-08
 #### Bug Fixes
 - (**deps**) update ghcr.io/matter-js/matterjs-server docker tag to v0.6.8 - (e209adb) - wittdennis-renovate[bot]
