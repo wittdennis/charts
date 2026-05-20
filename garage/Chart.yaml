@@ -11,6 +11,6 @@ keywords:
   - read-after-write-consistency
   - s3-compatible
 sources:
+  - https://github.com/wittdennis/charts/tree/main/garage
   - https://git.deuxfleurs.fr/Deuxfleurs/garage.git
-  - https://github.com/wittdennis/charts/tree/master/garage
 maintainers: []
