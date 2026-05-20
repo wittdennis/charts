@@ -20,7 +20,7 @@ version: 1.2.0
 # It is recommended to use it with quotes.
 appVersion: "0.0.25" # renovate: datasource=docker depName=ghcr.io/mrprimate/ddb-proxy versioning=docker
 sources:
-  - https://github.com/wittdennis/charts/tree/master/ddb-proxy
+  - https://github.com/wittdennis/charts/tree/main/ddb-proxy
 keywords:
   - foundry
   - foundryvtt
