@@ -20,14 +20,14 @@ version: 15.0.2
 # It is recommended to use it with quotes.
 appVersion: "14.361.0" # renovate: datasource=docker depName=ghcr.io/felddy/foundryvtt versioning=docker
 sources:
-  - https://github.com/wittdennis/charts/tree/master/foundryvtt
+  - https://github.com/wittdennis/charts/tree/main/foundryvtt
 keywords:
   - foundry
   - vtt
   - ttrpg
   - virtual tabletop
   - tabletop roleplaying game
-icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/foundryvtt/assets/fvtt.png
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/foundryvtt/assets/fvtt.png
 annotations:
   artifacthub.io/alternativeName: foundry
   artifacthub.io/license: MIT
