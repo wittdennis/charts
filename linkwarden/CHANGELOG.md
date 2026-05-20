@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-1.0.2 - 2026-05-20
+#### Bug Fixes
+- (**linkwarden**) use correct main branch in chart urls - (ca9522d) - Dennis Witt
+
+- - -
+
 ## linkwarden-1.0.1 - 2026-04-23
 #### Bug Fixes
 - (**deps**) update docker.io/denniswitt/linkwarden-rootless docker tag to v2.14.1 - (4144a41) - wittdennis-renovate[bot]
