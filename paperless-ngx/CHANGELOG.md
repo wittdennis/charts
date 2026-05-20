@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.1.7 - 2026-05-20
+#### Bug Fixes
+- (**paperless-ngx**) use correct main branch in chart urls - (f442005) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.1.6 - 2026-04-27
 #### Bug Fixes
 - (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v2.20.15 - (940dc47) - wittdennis-renovate[bot]
