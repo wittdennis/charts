@@ -6,7 +6,7 @@ A Helm chart for MrPrimates D&D Beyond Proxy
 
 ## Source Code
 
-* <https://github.com/wittdennis/charts/tree/master/ddb-proxy>
+* <https://github.com/wittdennis/charts/tree/main/ddb-proxy>
 
 ## Values
 
