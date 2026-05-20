@@ -24,8 +24,8 @@ version: 1.5.5
 # It is recommended to use it with quotes.
 appVersion: "4.1.10" # renovate: datasource=docker depName=nodered/node-red versioning=semver
 sources:
-  - https://github.com/wittdennis/charts/tree/master/node-red
-icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/node-red/assets/icon.png
+  - https://github.com/wittdennis/charts/tree/main/node-red
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/node-red/assets/icon.png
 keywords:
   - low-code
   - flows
