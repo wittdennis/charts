@@ -6,8 +6,8 @@ type: application
 version: 1.0.1
 appVersion: "2.14.1" # renovate: datasource=docker depName=docker.io/denniswitt/linkwarden-rootless versioning=semver
 sources:
-  - https://github.com/wittdennis/charts/tree/master/linkwarden
-icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/linkwarden/assets/icon.png
+  - https://github.com/wittdennis/charts/tree/main/linkwarden
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/linkwarden/assets/icon.png
 keywords:
   - bookmarks
   - archival
