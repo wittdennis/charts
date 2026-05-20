@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-1.5.6 - 2026-05-20
+#### Bug Fixes
+- (**node-red**) use correct main branch in chart urls - (93e885a) - Dennis Witt
+
+- - -
+
 ## node-red-1.5.5 - 2026-05-10
 #### Bug Fixes
 - (**deps**) update nodered/node-red docker tag to v4.1.10 - (60dca8c) - wittdennis-renovate[bot]
