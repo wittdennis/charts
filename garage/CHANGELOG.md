@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## garage-2.3.3 - 2026-05-20
+#### Bug Fixes
+- (**garage**) use correct main branch in chart urls - (57d2ec7) - Dennis Witt
+
+- - -
+
 ## garage-2.3.2 - 2026-04-17
 #### Bug Fixes
 - (**deps**) update dxflrs/amd64_garage docker tag to v2.3.0 - (354966f) - wittdennis-renovate[bot]
