@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-matter-server-4.1.14 - 2026-05-20
+#### Bug Fixes
+- (**home-assistant-matter-server**) use correct main branch in chart urls - (2b5b9ab) - Dennis Witt
+
+- - -
+
 ## home-assistant-matter-server-4.1.13 - 2026-05-18
 #### Bug Fixes
 - (**deps**) update ghcr.io/matter-js/matterjs-server docker tag to v0.7.0 - (220c9e4) - wittdennis-renovate[bot]
