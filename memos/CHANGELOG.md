@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.1.5 - 2026-05-20
+#### Bug Fixes
+- (**memos**) use correct main branch in chart urls - (859e6cc) - Dennis Witt
+
+- - -
+
 ## memos-1.1.4 - 2026-04-27
 #### Bug Fixes
 - (**deps**) update neosmemo/memos docker tag to v0.28.0 - (7693551) - wittdennis-renovate[bot]
