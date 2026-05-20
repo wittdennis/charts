@@ -20,9 +20,9 @@ version: 4.1.13
 # It is recommended to use it with quotes.
 appVersion: "0.7.0" # renovate: datasource=docker depName=ghcr.io/matter-js/matterjs-server versioning=docker
 sources:
-  - https://github.com/wittdennis/charts/tree/master/home-assistant-matter-server
+  - https://github.com/wittdennis/charts/tree/main/home-assistant-matter-server
   - https://github.com/matter-js/matterjs-server
-icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/home-assistant-matter-server/assets/icon.png
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/home-assistant-matter-server/assets/icon.png
 keywords:
   - home-assistant
   - matter
