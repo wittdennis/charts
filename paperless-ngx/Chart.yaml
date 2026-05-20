@@ -5,9 +5,9 @@ type: application
 version: 1.1.6
 appVersion: "2.20.15" # renovate: datasource=docker depName=ghcr.io/paperless-ngx/paperless-ngx versioning=docker
 sources:
-  - https://github.com/wittdennis/charts/tree/master/paperless-ngx
+  - https://github.com/wittdennis/charts/tree/main/paperless-ngx
   - https://github.com/paperless-ngx/paperless-ngx
-icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/paperless-ngx/assets/icon.png
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/paperless-ngx/assets/icon.png
 keywords:
   - paperless-ngx
   - documents
