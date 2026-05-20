@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## ddb-proxy-1.2.1 - 2026-05-20
+#### Bug Fixes
+- (**ddb-proxy**) use correct main branch in chart urls - (bcaced9) - Dennis Witt
+
+- - -
+
 ## ddb-proxy-1.2.0 - 2026-03-16
 #### Features
 - (**foundry**) add route block for gateway api usage - (54f19a8) - Dennis Witt
