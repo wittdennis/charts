@@ -5,8 +5,8 @@ type: application
 version: 1.1.4
 appVersion: "0.28.0" # renovate: datasource=docker depName=neosmemo/memos versioning=docker
 sources:
-  - https://github.com/wittdennis/charts/tree/master/memos
-icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/master/memos/assets/icon.png
+  - https://github.com/wittdennis/charts/tree/main/memos
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/memos/assets/icon.png
 keywords:
   - notes
   - keep
