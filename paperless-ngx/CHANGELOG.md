@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.2.0 - 2026-05-21
+#### Features
+- (**paperless-ngx**) add value to specify deployment strategy - (ab5e4fa) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.1.7 - 2026-05-20
 #### Bug Fixes
 - (**paperless-ngx**) use correct main branch in chart urls - (f442005) - Dennis Witt
