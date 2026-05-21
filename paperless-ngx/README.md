@@ -46,6 +46,7 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | database.userSecret | object | `{"key":null,"name":null}` | When `engine` isn't sqlite use this to specify a secret containing the user for the connection |
 | database.userSecret.key | string | `nil` | Key of the user |
 | database.userSecret.name | string | `nil` | Name of the secret |
+| deploymentStrategy | object | `{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"}` | Deployment strategy to use |
 | email | object | `{"sending":{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}}` | Configuration for email |
 | email.sending | object | `{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}` | Configuration for sending emails |
 | email.sending.from | string | `nil` | From email. Defaults to `email.sending.user` if not set |
