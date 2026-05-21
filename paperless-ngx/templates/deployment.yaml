@@ -12,7 +12,10 @@ spec:
     matchLabels:
       {{- include "paperless-ngx.selectorLabels" . | nindent 6 }}
   strategy:
-    {{- toYaml .Values.deploymentStrategy | nindent 4 }}
+    type: {{ .Values.deploymentStrategy.type }}
+    {{- with omit .Values.deploymentStrategy "type" }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
