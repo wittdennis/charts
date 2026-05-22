@@ -218,6 +218,8 @@ spec:
             {{- end }}
             - name: PAPERLESS_TIME_ZONE
               value: {{ .Values.tweaks.timezone | quote }}
+            - name: PAPERLESS_DATE_ORDER
+              value: {{ .Values.documentConsumption.dateOrder | quote }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
