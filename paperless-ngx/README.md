@@ -47,6 +47,8 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | database.userSecret.key | string | `nil` | Key of the user |
 | database.userSecret.name | string | `nil` | Name of the secret |
 | deploymentStrategy | object | `{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"}` | Deployment strategy to use |
+| documentConsumption | object | `{"dateOrder":"DMY"}` | Settings to define how documents should be consumed by paperless |
+| documentConsumption.dateOrder | string | `"DMY"` | Paperless will try to determine the document creation date from its contents. Specify the date format Paperless should expect to see within your documents. This option defaults to DMY which translates to day first, month second, and year last order. Characters D, M, or Y can be shuffled to meet the required order. |
 | email | object | `{"sending":{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}}` | Configuration for email |
 | email.sending | object | `{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}` | Configuration for sending emails |
 | email.sending.from | string | `nil` | From email. Defaults to `email.sending.user` if not set |
