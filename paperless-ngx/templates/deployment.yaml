@@ -13,8 +13,9 @@ spec:
       {{- include "paperless-ngx.selectorLabels" . | nindent 6 }}
   strategy:
     type: {{ .Values.deploymentStrategy.type }}
-    {{- with omit .Values.deploymentStrategy "type" }}
-    {{- toYaml . | nindent 4 }}
+    {{- if and (eq .Values.deploymentStrategy.type "RollingUpdate") .Values.deploymentStrategy.rollingUpdate }}
+    rollingUpdate:
+      {{- toYaml .Values.deploymentStrategy.rollingUpdate | nindent 6 }}
     {{- end }}
   template:
     metadata:
