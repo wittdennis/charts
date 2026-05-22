@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.3.0 - 2026-05-22
+#### Features
+- (**paperless-ngx**) add date order option - (e16b088) - Dennis Witt
+- (**paperless-ngx**) add timezone configuration - (ad5f41f) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.2.2 - 2026-05-22
 #### Bug Fixes
 - (**paperless-ngx**) remove rollingupdate block when strategy is changed - (791c490) - Dennis Witt
