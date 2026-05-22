@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-1.2.2 - 2026-05-22
+#### Bug Fixes
+- (**paperless-ngx**) remove rollingupdate block when strategy is changed - (791c490) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.2.1 - 2026-05-21
 #### Bug Fixes
 - (**paperless-ngx**) omit fields that aren't present in deploymentStrategy key - (c6fe011) - Dennis Witt
