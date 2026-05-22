@@ -216,6 +216,8 @@ spec:
             - name: PAPERLESS_OCR_USER_ARGS
               value: {{ .Values.ocr.userArgs | quote }}
             {{- end }}
+            - name: PAPERLESS_TIME_ZONE
+              value: {{ .Values.tweaks.timezone | quote }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

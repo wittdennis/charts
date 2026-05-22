@@ -97,6 +97,8 @@ auth:
 tweaks:
   # -- A comma-separated list of Django apps to be included in Django's INSTALLED_APPS
   apps: ~
+  # -- Set the timezone
+  timezone: utc
 
 # -- Configuration for email
 email:

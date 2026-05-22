@@ -155,7 +155,8 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` |  |
-| tweaks | object | `{"apps":null}` | Various software tweaks for the paperless application |
+| tweaks | object | `{"apps":null,"timezone":"utc"}` | Various software tweaks for the paperless application |
 | tweaks.apps | string | `nil` | A comma-separated list of Django apps to be included in Django's INSTALLED_APPS |
+| tweaks.timezone | string | `"utc"` | Set the timezone |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
