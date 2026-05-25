@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## foundryvtt-15.0.4 - 2026-05-25
+#### Bug Fixes
+- (**deps**) update ghcr.io/felddy/foundryvtt docker tag to v14.363.0 - (27532e0) - wittdennis-renovate[bot]
+
+- - -
+
 ## foundryvtt-15.0.3 - 2026-05-20
 #### Bug Fixes
 - (**foundryvtt**) use correct main branch in chart urls - (ec6c306) - Dennis Witt
