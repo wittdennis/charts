@@ -184,9 +184,22 @@ livenessProbe:
 # --  This is to setup the readiness probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 readinessProbe:
   initialDelaySeconds: 30
+  failureThreshold: 18
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 5
   httpGet:
     path: /
     port: http
+# -- This is to setup the startup probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+    scheme: HTTP
+  failureThreshold: 18 # 18 × 10s = 3 min ceiling
+  periodSeconds: 10
+  timeoutSeconds: 5
 
 nodeSelector: {}
 
