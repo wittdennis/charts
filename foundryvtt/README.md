@@ -55,7 +55,7 @@ A Helm chart for Foundry VTT
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| readinessProbe | object | `{"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":30}` | This is to setup the readiness probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
+| readinessProbe | object | `{"failureThreshold":18,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":30,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":5}` | This is to setup the readiness probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | resources | object | `{}` | Resources for the foundry container |
 | route | object | `{"additionalRules":[],"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
 | route.additionalRules | list | `[]` | Any custom rule you want to specify |
@@ -80,6 +80,7 @@ A Helm chart for Foundry VTT
 | serviceAccount.automount | bool | `false` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `nil` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template. |
+| startupProbe | object | `{"failureThreshold":18,"httpGet":{"path":"/","port":"http","scheme":"HTTP"},"periodSeconds":10,"timeoutSeconds":5}` | This is to setup the startup probe more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | storage | object | `{"className":null,"size":"10Gi"}` | This configures the storage for the data drive |
 | storage.className | string | `nil` | The storage class name to use |
 | storage.size | string | `"10Gi"` | The size the pv should have |
