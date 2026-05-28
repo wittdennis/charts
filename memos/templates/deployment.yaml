@@ -50,6 +50,8 @@ spec:
                   name: {{ .Values.memos.existingDsnSecret.name }}
                   key: {{ .Values.memos.existingDsnSecret.key }}
             {{- end }}
+            - name: MEMOS_LOG_LEVEL
+              value: {{ .Values.memos.logLevel | quote }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
