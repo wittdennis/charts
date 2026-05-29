@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-2.0.0 - 2026-05-29
+#### Bug Fixes
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**deps**) update ghcr.io/wittdennis/homeassistant-otbr docker tag to v4 - (be287cf) - wittdennis-renovate[bot]
+#### Miscellaneous Chores
+- add notice for Thread 1.4 requirement - (237a93c) - Dennis Witt
+
+- - -
+
 ## home-assistant-otbr-1.3.6 - 2026-05-20
 #### Bug Fixes
 - (**home-assistant-otbr**) use correct main branch in chart urls - (3a7e578) - Dennis Witt
