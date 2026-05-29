@@ -1,8 +1,10 @@
 # home-assistant-otbr
 
-![Version: 1.3.6](https://img.shields.io/badge/Version-1.3.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.5](https://img.shields.io/badge/AppVersion-3.0.5-informational?style=flat-square)
+![Version: 1.3.6](https://img.shields.io/badge/Version-1.3.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.0.0](https://img.shields.io/badge/AppVersion-4.0.0-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+A Helm chart for the Home Assistant OpenThread BorderRouter Addon running as standalone container.
+
+Attention with version 2.0.0 of the chart Thread 1.4 will be used by default. Make sure your Thread Adapter supports it.
 
 ## Source Code
 
