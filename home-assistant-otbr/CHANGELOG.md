@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## home-assistant-otbr-2.0.1 - 2026-06-09
+#### Bug Fixes
+- (**deps**) update ghcr.io/wittdennis/homeassistant-otbr docker tag to v4.0.1 - (4dd70c4) - wittdennis-renovate[bot]
+
+- - -
+
 ## home-assistant-otbr-2.0.0 - 2026-05-29
 #### Bug Fixes
 - <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**deps**) update ghcr.io/wittdennis/homeassistant-otbr docker tag to v4 - (be287cf) - wittdennis-renovate[bot]
