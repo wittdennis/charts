@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## node-red-2.0.0 - 2026-06-10
+#### Bug Fixes
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**deps**) update nodered/node-red docker tag to v5 - (45083e8) - wittdennis-renovate[bot]
+
+- - -
+
 ## node-red-1.5.7 - 2026-06-04
 #### Bug Fixes
 - (**deps**) update nodered/node-red docker tag to v4.1.11 - (b2ed77d) - wittdennis-renovate[bot]
