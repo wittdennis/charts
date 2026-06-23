@@ -46,3 +46,4 @@ yas3p = { path = "yas3p" }
 linkwarden = { path = "linkwarden" }
 memos = { path = "memos" }
 paperless-ngx = { path = "paperless-ngx" }
+filebrowser = { path = "filebrowser" }

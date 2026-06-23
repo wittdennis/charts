@@ -18,6 +18,7 @@ on:
           - linkwarden
           - memos
           - paperless-ngx
+          - filebrowser
       version:
         default: "auto"
         description: Can be used to set a specific version. Use 'auto' for automatic version calculation
