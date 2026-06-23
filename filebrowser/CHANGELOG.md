@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## filebrowser-1.0.1 - 2026-06-23
+#### Bug Fixes
+- (**filebrowser**) metadata key for config pvc - (f7b37c6) - Dennis Witt
+
+- - -
+
 ## filebrowser-1.0.0 - 2026-06-23
 #### Features
 - (**filebrowser**) add new chart for filebrowser - (740f51b) - Dennis Witt
