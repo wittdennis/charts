@@ -1,0 +1,159 @@
+---
+# Source: filebrowser/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: filebrowser-shadowsea
+  labels:
+    helm.sh/chart: filebrowser-0.1.0
+    app.kubernetes.io/name: filebrowser
+    app.kubernetes.io/instance: filebrowser-shadowsea
+    app.kubernetes.io/version: "v2.63.16"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
+
+---
+# Source: filebrowser/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: filebrowser-shadowsea
+  labels:
+    helm.sh/chart: filebrowser-0.1.0
+    app.kubernetes.io/name: filebrowser
+    app.kubernetes.io/instance: filebrowser-shadowsea
+    app.kubernetes.io/version: "v2.63.16"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: filebrowser
+    app.kubernetes.io/instance: filebrowser-shadowsea
+
+---
+# Source: filebrowser/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebrowser-shadowsea
+  labels:
+    helm.sh/chart: filebrowser-0.1.0
+    app.kubernetes.io/name: filebrowser
+    app.kubernetes.io/instance: filebrowser-shadowsea
+    app.kubernetes.io/version: "v2.63.16"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: filebrowser
+      app.kubernetes.io/instance: filebrowser-shadowsea
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: filebrowser-0.1.0
+        app.kubernetes.io/name: filebrowser
+        app.kubernetes.io/instance: filebrowser-shadowsea
+        app.kubernetes.io/version: "v2.63.16"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      serviceAccountName: filebrowser-shadowsea
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: filebrowser
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          image: "docker.io/filebrowser/filebrowser:v2.63.16"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: FB_ADDRESS
+              value: "0.0.0.0"
+            - name: FB_PORT
+              value: "8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - name: filebrowser-data
+              mountPath: /srv
+            - name: filebrowser-config
+              mountPath: /database
+            - name: filebrowser-config
+              mountPath: /config
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: filebrowser-data
+          persistentVolumeClaim:
+            claimName: data-shadowsea-foundryvtt-0
+        - name: filebrowser-config
+          emptyDir: {}
+
+---
+# Source: filebrowser/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: filebrowser-shadowsea
+  labels:
+    helm.sh/chart: filebrowser-0.1.0
+    app.kubernetes.io/name: filebrowser
+    app.kubernetes.io/instance: filebrowser-shadowsea
+    app.kubernetes.io/version: "v2.63.16"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    cert-manager.io/cluster-issuer: shadowsea-xyz-letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - "explorer.vtt.shadowsea.xyz"
+      secretName: explorer-foundry-shadowsea-ingress-tls
+  rules:
+    - host: "explorer.vtt.shadowsea.xyz"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: filebrowser-shadowsea
+                port:
+                  number: 80
