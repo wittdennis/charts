@@ -2,7 +2,7 @@
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
-metaconfig:
+metadata:
   name: {{ include "filebrowser.configPvcName" . }}
   labels:
     {{- include "filebrowser.labels" . | nindent 4 }}
