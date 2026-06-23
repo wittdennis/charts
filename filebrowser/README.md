@@ -1,44 +1,40 @@
-# node-red
+# filebrowser
 
-![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 5.0.0](https://img.shields.io/badge/AppVersion-5.0.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.63.16](https://img.shields.io/badge/AppVersion-v2.63.16-informational?style=flat-square)
 
-A Helm chart for node-red.
-Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
-
-It provides a browser-based editor that makes it easy to wire together flows using the wide range of nodes in the palette that can be deployed to its runtime in a single-click.
+A Helm chart for filebrowser.
+File Browser provides a file managing interface within a specified directory and it can be used to upload, delete, preview and edit your files.
+It is a create-your-own-cloud-kind of software where you can just install it on your server, direct it to a path and access your files through a nice web interface.
 
 ## Source Code
 
-* <https://github.com/wittdennis/charts/tree/main/node-red>
+* <https://github.com/wittdennis/charts/tree/main/filebrowser>
+* <https://github.com/filebrowser/filebrowser>
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
 | env | object | `{}` | Additional env values to pass to the container |
 | fullnameOverride | string | `""` |  |
-| image | object | `{"pullPolicy":"IfNotPresent","repository":"nodered/node-red","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
+| image | object | `{"pullPolicy":"IfNotPresent","registry":"docker.io","repository":"filebrowser/filebrowser","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
 | livenessProbe | object | `{"httpGet":{"path":"/","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
-| metrics | object | `{"enabled":false,"path":"/metrics","serviceMonitor":{"additionalLabels":{},"basicAuth":{},"enabled":false,"interval":"30s","metricRelabelings":[],"namespace":"","relabelings":[],"selector":{}}}` | Setting to control metrics collection |
-| metrics.enabled | bool | `false` | Enable metrics service for node-red (requires: https://flows.nodered.org/node/node-red-contrib-prometheus-exporter) |
-| metrics.serviceMonitor.additionalLabels | object | `{}` | Prometheus ServiceMonitor labels |
-| metrics.serviceMonitor.basicAuth | object | `{}` | Prometheus basicAuth configuration for ServiceMonitor endpoint |
-| metrics.serviceMonitor.enabled | bool | `false` | Enable a prometheus ServiceMonitor |
-| metrics.serviceMonitor.interval | string | `"30s"` | Prometheus ServiceMonitor interval |
-| metrics.serviceMonitor.metricRelabelings | list | `[]` | Prometheus [MetricRelabelConfigs] to apply to samples before ingestion |
-| metrics.serviceMonitor.namespace | string | `""` | Prometheus ServiceMonitor namespace |
-| metrics.serviceMonitor.relabelings | list | `[]` | Prometheus [RelabelConfigs] to apply to samples before scraping |
-| metrics.serviceMonitor.selector | object | `{}` | Prometheus ServiceMonitor selector |
 | nameOverride | string | `""` | This is to override the chart name. |
 | nodeSelector | object | `{}` |  |
-| persistence | object | `{"className":null,"size":"5Gi"}` | Settings for storage |
-| persistence.className | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |
-| persistence.size | string | `"5Gi"` | Size for the persistent volume claim. |
+| persistence | object | `{"config":{"accessMode":"ReadWriteOnce","className":null,"enabled":true,"existingVolumeClaim":null,"size":"5Gi"},"data":{"accessMode":"ReadWriteOnce","className":null,"enabled":true,"existingVolumeClaim":null,"size":"5Gi"}}` | Settings for storage |
+| persistence.config.className | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |
+| persistence.config.enabled | bool | `true` | When false an emptyDir will be provisioned. Use this only for dev purposes |
+| persistence.config.size | string | `"5Gi"` | Size for the persistent volume claim. |
+| persistence.data | object | `{"accessMode":"ReadWriteOnce","className":null,"enabled":true,"existingVolumeClaim":null,"size":"5Gi"}` | Settings for the data pvc |
+| persistence.data.className | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |
+| persistence.data.enabled | bool | `true` | When false an emptyDir will be provisioned. Use this only for dev purposes |
+| persistence.data.size | string | `"5Gi"` | Size for the persistent volume claim. |
 | podAnnotations | object | `{}` | This is for setting Kubernetes Annotations to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
 | podLabels | object | `{}` | This is for setting Kubernetes Labels to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
 | podSecurityContext.fsGroup | int | `1000` |  |
