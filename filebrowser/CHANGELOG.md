@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## filebrowser-1.0.2 - 2026-06-27
+#### Bug Fixes
+- (**deps**) update filebrowser/filebrowser docker tag to v2.63.17 - (dd61edd) - wittdennis-renovate[bot]
+
+- - -
+
 ## filebrowser-1.0.1 - 2026-06-23
 #### Bug Fixes
 - (**filebrowser**) metadata key for config pvc - (f7b37c6) - Dennis Witt
