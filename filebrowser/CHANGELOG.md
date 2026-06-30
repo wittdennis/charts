@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## filebrowser-1.0.3 - 2026-06-30
+#### Bug Fixes
+- (**filebrowser**) correctly set storage class - (8d84105) - Dennis Witt
+
+- - -
+
 ## filebrowser-1.0.2 - 2026-06-27
 #### Bug Fixes
 - (**deps**) update filebrowser/filebrowser docker tag to v2.63.17 - (dd61edd) - wittdennis-renovate[bot]

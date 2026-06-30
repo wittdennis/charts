@@ -5,7 +5,7 @@ description: |
   File Browser provides a file managing interface within a specified directory and it can be used to upload, delete, preview and edit your files.
   It is a create-your-own-cloud-kind of software where you can just install it on your server, direct it to a path and access your files through a nice web interface.
 type: application
-version: 1.0.2
+version: 1.0.3
 appVersion: "v2.63.17" # renovate: datasource=docker depName=filebrowser/filebrowser versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/filebrowser
