@@ -7,8 +7,8 @@ metadata:
   labels:
     {{- include "filebrowser.labels" . | nindent 4 }}
 spec:
-  {{- if .Values.persistence.storageClass }}
-  storageClassName: {{ .Values.persistence.data.storageClass | quote }}
+  {{- if .Values.persistence.data.className }}
+  storageClassName: {{ .Values.persistence.data.className | quote }}
   {{- end }}
   accessModes:
     - {{ .Values.persistence.data.accessMode | quote }}
