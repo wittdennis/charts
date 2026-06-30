@@ -22,7 +22,7 @@ on:
 
 jobs:
   conventional-compliance:
-    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@f78634d1cc51dd41e41a0901e75ded32775e6fc7 # 2.0.29
+    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@4779feea823ff0c0a60f79fcec6371d359fc8db1 # 2.0.30
 
   release:
     runs-on: ubuntu-24.04
