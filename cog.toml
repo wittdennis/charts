@@ -47,3 +47,4 @@ linkwarden = { path = "linkwarden" }
 memos = { path = "memos" }
 paperless-ngx = { path = "paperless-ngx" }
 filebrowser = { path = "filebrowser" }
+radicale = { path = "radicale" }
