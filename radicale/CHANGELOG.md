@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## radicale-1.0.0 - 2026-07-16
+#### Features
+- add radicale chart - (8f48137) - Dennis Witt
+#### Miscellaneous Chores
+- (**version**) radicale-0.1.0-1.0.0 - (2f5f7c2) - github-actions
+
+- - -
+
 ## radicale-0.1.0-1.0.0 - 2026-07-16
 #### Features
 - add radicale chart - (8f48137) - Dennis Witt
