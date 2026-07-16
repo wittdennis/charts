@@ -21,6 +21,6 @@ version: 2.0.1
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "4.0.1" # renovate: datasource=docker depName=ghcr.io/wittdennis/homeassistant-otbr versioning=docker
+appVersion: "4.1.0" # renovate: datasource=docker depName=ghcr.io/wittdennis/homeassistant-otbr versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/home-assistant-otbr
