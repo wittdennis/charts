@@ -10,6 +10,7 @@ chart-dirs:
   - paperless-ngx
   - yas3p
   - filebrowser
+  - radicale
 target-branch: main
 use-helmignore: true
 remote: origin
