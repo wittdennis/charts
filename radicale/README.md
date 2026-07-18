@@ -37,6 +37,7 @@ This chart uses the official, rootless ghcr.io/kozea/radicale image.
 | config.rights.type | string | `"owner_only"` | Rights backend: authenticated | owner_only | owner_write | from_file. See https://radicale.org/v3.html#rights |
 | config.web | object | `{"enabled":true}` | Built-in web interface. |
 | config.web.enabled | bool | `true` | Enable the web UI (radicale web type internal); false disables it. |
+| deploymentStrategy | object | `{"type":"Recreate"}` | Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes. |
 | env | object | `{}` | Additional env values to pass to the container |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"kozea/radicale","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
