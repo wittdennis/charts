@@ -14,8 +14,8 @@ spec:
   template:
     metadata:
       annotations:
-        {{- if and .Values.config.create (not .Values.config.existingSecret) }}
-        checksum/config: {{ .Values.config.content | sha256sum }}
+        {{- if .Values.config.create }}
+        checksum/config: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
         {{- end }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
@@ -46,7 +46,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 5232
+              containerPort: {{ include "radicale.containerPort" . }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
@@ -58,10 +58,20 @@ spec:
             - name: tmp
               mountPath: /tmp
             - name: data
-              mountPath: /var/lib/radicale
-            {{- if or .Values.config.create .Values.config.existingSecret }}
+              mountPath: {{ include "radicale.dataMountPath" . }}
+            {{- if .Values.config.create }}
             - name: config
               mountPath: /etc/radicale
+              readOnly: true
+            {{- end }}
+            {{- if and .Values.config.create (eq .Values.config.auth.type "htpasswd") }}
+            - name: auth
+              mountPath: {{ dir (include "radicale.authFilePath" .) }}
+              readOnly: true
+            {{- end }}
+            {{- if and .Values.config.create (eq .Values.config.rights.type "from_file") }}
+            - name: rights
+              mountPath: {{ dir (include "radicale.rightsFilePath" .) }}
               readOnly: true
             {{- end }}
           {{- with .Values.volumeMounts }}
@@ -77,13 +87,43 @@ spec:
         {{- else }}
           emptyDir: {}
         {{- end }}
-        {{- if or .Values.config.create .Values.config.existingSecret }}
+        {{- if .Values.config.create }}
         - name: config
           secret:
-            secretName: {{ .Values.config.existingSecret | default (include "radicale.configSecretName" .) }}
+            secretName: {{ include "radicale.configSecretName" . }}
             items:
-              - key: {{ .Values.config.existingSecretKey }}
+              - key: config
                 path: config
+        {{- end }}
+        {{- if and .Values.config.create (eq .Values.config.auth.type "htpasswd") }}
+        - name: auth
+          secret:
+            {{- if .Values.config.auth.htpasswd.existingSecret }}
+            secretName: {{ .Values.config.auth.htpasswd.existingSecret }}
+            items:
+              - key: {{ .Values.config.auth.htpasswd.existingSecretKey }}
+                path: {{ base (include "radicale.authFilePath" .) }}
+            {{- else }}
+            secretName: {{ include "radicale.configSecretName" . }}
+            items:
+              - key: htpasswd
+                path: {{ base (include "radicale.authFilePath" .) }}
+            {{- end }}
+        {{- end }}
+        {{- if and .Values.config.create (eq .Values.config.rights.type "from_file") }}
+        - name: rights
+          secret:
+            {{- if .Values.config.rights.file.existingSecret }}
+            secretName: {{ .Values.config.rights.file.existingSecret }}
+            items:
+              - key: {{ .Values.config.rights.file.existingSecretKey }}
+                path: {{ base (include "radicale.rightsFilePath" .) }}
+            {{- else }}
+            secretName: {{ include "radicale.configSecretName" . }}
+            items:
+              - key: rights
+                path: {{ base (include "radicale.rightsFilePath" .) }}
+            {{- end }}
         {{- end }}
       {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}

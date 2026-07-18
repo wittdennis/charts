@@ -25,25 +25,53 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-# -- Radicale configuration file. Stored in a Secret (it can hold auth credentials) and mounted at /etc/radicale/config, which Radicale loads automatically.
+# -- Radicale configuration.
 config:
-  # -- When false no Secret is created and Radicale falls back to its own defaults. Ignored when existingSecret is set.
+  # -- When false no Secret is created and Radicale falls back to its own defaults.
   create: true
-  # -- Use an existing Secret instead of rendering content below. The key referenced by existingSecretKey is mounted as /etc/radicale/config.
-  existingSecret: ""
-  # -- Key within the Secret (generated or existing) that holds the config file.
-  existingSecretKey: config
-  # -- Contents of the Radicale configuration file. See https://radicale.org/v3.html#configuration
-  # By default authentication is disabled. Configure an auth backend before exposing Radicale.
-  content: |
-    [server]
-    hosts = 0.0.0.0:5232, [::]:5232
 
-    [auth]
-    type = none
+  # -- Authentication backend. By default auth is disabled; configure a backend before exposing Radicale.
+  auth:
+    # -- Auth backend: none | htpasswd. See https://radicale.org/v3.html#authentication
+    type: none
+    # -- htpasswd options (used when type is htpasswd). The chart mounts the users file and sets htpasswd_filename automatically.
+    htpasswd:
+      # -- Inline users as username -> password. Stored in the generated Secret and read with plain encryption.
+      users: {}
+      #   alice: changeme
+      # -- Existing Secret holding a pre-hashed htpasswd file. Takes precedence over users.
+      existingSecret: ""
+      # -- Key within existingSecret that holds the htpasswd file.
+      existingSecretKey: htpasswd
+      # -- Encryption of the existingSecret htpasswd file: bcrypt | argon2 | md5 | sha256 | sha512 | plain | autodetect. Ignored for inline users (always plain).
+      encryption: bcrypt
 
-    [storage]
-    filesystem_folder = /var/lib/radicale/collections
+  # -- Authorization backend.
+  rights:
+    # -- Rights backend: authenticated | owner_only | owner_write | from_file. See https://radicale.org/v3.html#rights
+    type: owner_only
+    # -- Custom rules file (used when type is from_file). The chart mounts it and sets the file path automatically.
+    file:
+      # -- Inline rights rules content. Stored in the generated Secret.
+      content: ""
+      # -- Existing Secret holding the rights file. Takes precedence over content.
+      existingSecret: ""
+      # -- Key within existingSecret that holds the rights file.
+      existingSecretKey: rights
+
+  # -- Built-in web interface.
+  web:
+    # -- Enable the web UI (radicale web type internal); false disables it.
+    enabled: true
+
+  # -- Logging.
+  logging:
+    # -- Log level: trace | debug | info | notice | warning | error | critical | alert
+    level: info
+
+  # -- Custom HTTP response headers as name -> value (e.g. for CORS). Rendered under [headers].
+  headers: {}
+  #   Access-Control-Allow-Origin: "*"
 
 # -- This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:

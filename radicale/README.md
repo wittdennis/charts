@@ -1,6 +1,6 @@
 # radicale
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.7.6](https://img.shields.io/badge/AppVersion-3.7.6-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.7.6](https://img.shields.io/badge/AppVersion-3.7.6-informational?style=flat-square)
 
 A Helm chart for Radicale.
 Radicale is a small but powerful CalDAV (calendars, to-do lists) and CardDAV (contacts) server.
@@ -17,11 +17,26 @@ This chart uses the official, rootless ghcr.io/kozea/radicale image.
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
 | autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
-| config | object | `{"content":"[server]\nhosts = 0.0.0.0:5232, [::]:5232\n\n[auth]\ntype = none\n\n[storage]\nfilesystem_folder = /var/lib/radicale/collections\n","create":true,"existingSecret":"","existingSecretKey":"config"}` | Radicale configuration file. Stored in a Secret (it can hold auth credentials) and mounted at /etc/radicale/config, which Radicale loads automatically. |
-| config.content | string | `"[server]\nhosts = 0.0.0.0:5232, [::]:5232\n\n[auth]\ntype = none\n\n[storage]\nfilesystem_folder = /var/lib/radicale/collections\n"` | Contents of the Radicale configuration file. See https://radicale.org/v3.html#configuration By default authentication is disabled. Configure an auth backend before exposing Radicale. |
-| config.create | bool | `true` | When false no Secret is created and Radicale falls back to its own defaults. Ignored when existingSecret is set. |
-| config.existingSecret | string | `""` | Use an existing Secret instead of rendering content below. The key referenced by existingSecretKey is mounted as /etc/radicale/config. |
-| config.existingSecretKey | string | `"config"` | Key within the Secret (generated or existing) that holds the config file. |
+| config | object | `{"auth":{"htpasswd":{"encryption":"bcrypt","existingSecret":"","existingSecretKey":"htpasswd","users":{}},"type":"none"},"create":true,"headers":{},"logging":{"level":"info"},"rights":{"file":{"content":"","existingSecret":"","existingSecretKey":"rights"},"type":"owner_only"},"web":{"enabled":true}}` | Radicale configuration. Rendered entirely from the typed settings below; there is no way to supply a raw config file. |
+| config.auth | object | `{"htpasswd":{"encryption":"bcrypt","existingSecret":"","existingSecretKey":"htpasswd","users":{}},"type":"none"}` | Authentication backend. By default auth is disabled; configure a backend before exposing Radicale. |
+| config.auth.htpasswd | object | `{"encryption":"bcrypt","existingSecret":"","existingSecretKey":"htpasswd","users":{}}` | htpasswd options (used when type is htpasswd). The chart mounts the users file and sets htpasswd_filename automatically. |
+| config.auth.htpasswd.encryption | string | `"bcrypt"` | Encryption of the existingSecret htpasswd file: bcrypt | argon2 | md5 | sha256 | sha512 | plain | autodetect. Ignored for inline users (always plain). |
+| config.auth.htpasswd.existingSecret | string | `""` | Existing Secret holding a pre-hashed htpasswd file. Takes precedence over users. |
+| config.auth.htpasswd.existingSecretKey | string | `"htpasswd"` | Key within existingSecret that holds the htpasswd file. |
+| config.auth.htpasswd.users | object | `{}` | Inline users as username -> password. Stored in the generated Secret and read with plain encryption. |
+| config.auth.type | string | `"none"` | Auth backend: none | htpasswd. See https://radicale.org/v3.html#authentication |
+| config.create | bool | `true` | When false no Secret is created and Radicale falls back to its own defaults. |
+| config.headers | object | `{}` | Custom HTTP response headers as name -> value (e.g. for CORS). Rendered under [headers]. |
+| config.logging | object | `{"level":"info"}` | Logging. |
+| config.logging.level | string | `"info"` | Log level: trace | debug | info | notice | warning | error | critical | alert |
+| config.rights | object | `{"file":{"content":"","existingSecret":"","existingSecretKey":"rights"},"type":"owner_only"}` | Authorization backend. |
+| config.rights.file | object | `{"content":"","existingSecret":"","existingSecretKey":"rights"}` | Custom rules file (used when type is from_file). The chart mounts it and sets the file path automatically. |
+| config.rights.file.content | string | `""` | Inline rights rules content. Stored in the generated Secret. |
+| config.rights.file.existingSecret | string | `""` | Existing Secret holding the rights file. Takes precedence over content. |
+| config.rights.file.existingSecretKey | string | `"rights"` | Key within existingSecret that holds the rights file. |
+| config.rights.type | string | `"owner_only"` | Rights backend: authenticated | owner_only | owner_write | from_file. See https://radicale.org/v3.html#rights |
+| config.web | object | `{"enabled":true}` | Built-in web interface. |
+| config.web.enabled | bool | `true` | Enable the web UI (radicale web type internal); false disables it. |
 | env | object | `{}` | Additional env values to pass to the container |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"kozea/radicale","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
