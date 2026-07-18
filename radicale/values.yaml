@@ -5,6 +5,13 @@
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
+# -- Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes.
+deploymentStrategy:
+  type: Recreate
+  # rollingUpdate:
+  #   maxUnavailable: 25%
+  #   maxSurge: 25%
+
 # -- Additional env values to pass to the container
 env: {}
 # - name: TZ
