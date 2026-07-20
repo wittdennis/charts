@@ -5,7 +5,7 @@ description: |
   Radicale is a small but powerful CalDAV (calendars, to-do lists) and CardDAV (contacts) server.
   This chart uses the official, rootless ghcr.io/kozea/radicale image.
 type: application
-version: 2.0.1
+version: 2.0.2
 appVersion: "3.7.7" # renovate: datasource=docker depName=ghcr.io/kozea/radicale
 sources:
   - https://github.com/wittdennis/charts/tree/main/radicale
