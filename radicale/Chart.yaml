@@ -6,7 +6,7 @@ description: |
   This chart uses the official, rootless ghcr.io/kozea/radicale image.
 type: application
 version: 2.0.1
-appVersion: "3.7.6" # renovate: datasource=docker depName=ghcr.io/kozea/radicale
+appVersion: "3.7.7" # renovate: datasource=docker depName=ghcr.io/kozea/radicale
 sources:
   - https://github.com/wittdennis/charts/tree/main/radicale
   - https://github.com/Kozea/Radicale
