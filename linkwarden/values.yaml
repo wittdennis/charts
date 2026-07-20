@@ -108,7 +108,7 @@ image:
   # -- The registry where the image is hosted
   registry: ghcr.io
   # -- Repository of the image
-  repository: wittdennis/linkwarden-rootless
+  repository: linkwarden/linkwarden
   # -- This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
