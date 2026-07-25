@@ -1,17 +1,5 @@
 chart-dirs:
-  - calibre-web
-  - ddb-proxy
-  - foundryvtt
-  - garage
-  - home-assistant-matter-server
-  - home-assistant-otbr
-  - linkwarden
-  - memos
-  - node-red
-  - paperless-ngx
-  - yas3p
-  - filebrowser
-  - radicale
+  - .
 target-branch: main
 use-helmignore: true
 remote: origin
