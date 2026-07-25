@@ -9,6 +9,10 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 * <https://github.com/wittdennis/charts/tree/main/paperless-ngx>
 * <https://github.com/paperless-ngx/paperless-ngx>
 
+## Requirements
+
+Helm 4. The bundled `values.schema.json` is written against JSON Schema draft 2020-12, which earlier Helm releases cannot parse.
+
 ## Upgrading to 2.0.0
 
 Chart 2.0.0 moves from paperless-ngx 2.20.15 to 3.0.2. The application release contains breaking changes, so read this section before upgrading. Upstream reference: [v3 migration guide](https://docs.paperless-ngx.com/migration-v3/).
@@ -252,8 +256,8 @@ The `huggingface` backend is different from the other two: it runs the embedding
 | redis.prefix | string | `nil` | Prefix to be used in Redis for keys and channels. Useful for sharing one Redis server among multiple Paperless instances. |
 | replicaCount | int | `1` | This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ |
 | resources | object | `{}` |  |
-| route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
-| route.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route | object | `{"additionalRules":[],"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
+| route.additionalRules | list | `[]` | Any custom rules you want to specify. Appended to the rules of the HTTPRoute. |
 | route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
 | route.enabled | bool | `false` | Flag to control if route should be created |
 | route.filters | list | `[]` | Filter that should be added to the default rule |

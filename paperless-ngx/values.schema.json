@@ -1,0 +1,495 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "paperless-ngx chart values",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "secretRef": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "key": { "type": ["string", "null"] }
+      }
+    },
+    "stringMap": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" }
+    },
+    "objectList": {
+      "type": ["array", "null"],
+      "items": { "type": "object" }
+    },
+    "quantity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nonNegativeNumber": {
+      "description": "A non-negative number. The string form is accepted because helm --set passes fractional values as strings.",
+      "anyOf": [
+        { "type": "number", "minimum": 0 },
+        { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" }
+      ]
+    },
+    "persistentVolume": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "accessMode", "size"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "existingVolumeClaim": { "type": ["string", "null"] },
+        "storageClass": { "type": ["string", "null"] },
+        "accessMode": {
+          "type": "string",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany", "ReadWriteOncePod"]
+        },
+        "size": { "$ref": "#/$defs/quantity" }
+      }
+    },
+    "seccompProfile": {
+      "type": ["object", "null"],
+      "properties": {
+        "type": { "type": "string", "enum": ["RuntimeDefault", "Unconfined", "Localhost"] },
+        "localhostProfile": { "type": ["string", "null"] }
+      }
+    }
+  },
+  "required": [
+    "redis",
+    "database",
+    "hosting",
+    "auth",
+    "tweaks",
+    "email",
+    "ocr",
+    "documentConsumption",
+    "ai",
+    "image",
+    "serviceAccount",
+    "persistence",
+    "securityContext",
+    "service",
+    "route",
+    "ingress",
+    "autoscaling",
+    "deploymentStrategy"
+  ],
+  "properties": {
+    "global": {
+      "description": "Reserved by Helm for values shared with parent or sibling charts.",
+      "type": ["object", "null"]
+    },
+
+    "redis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "connectionUrl": { "type": ["string", "null"] },
+        "connectionSecret": { "$ref": "#/$defs/secretRef" },
+        "prefix": { "type": ["string", "null"] }
+      }
+    },
+
+    "database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine"],
+      "properties": {
+        "engine": { "type": "string", "enum": ["sqlite", "postgresql", "mariadb"] },
+        "host": { "type": ["string", "null"] },
+        "user": { "type": ["string", "null"] },
+        "userSecret": { "$ref": "#/$defs/secretRef" },
+        "password": { "type": ["string", "null"] },
+        "passwordSecret": { "$ref": "#/$defs/secretRef" },
+        "port": { "type": ["integer", "null"], "minimum": 1, "maximum": 65535 },
+        "databaseName": { "type": ["string", "null"] },
+        "options": {
+          "description": "Comma-delimited key=value pairs passed to the database driver.",
+          "type": ["string", "null"]
+        },
+        "enableReadCache": { "type": "boolean" },
+        "readCacheTTL": { "type": "integer", "minimum": 1, "maximum": 31536000 }
+      }
+    },
+
+    "hosting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["secretKey"],
+      "properties": {
+        "secretKey": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["create", "key"],
+          "properties": {
+            "create": { "type": "boolean" },
+            "name": { "type": ["string", "null"] },
+            "key": { "type": "string", "minLength": 1 }
+          }
+        },
+        "trustedProxies": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "trustedClientIpHeader": { "type": ["string", "null"] }
+      }
+    },
+
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowSignup": { "type": "boolean" },
+        "defaultGroups": { "type": ["string", "null"] },
+        "rememberSession": { "type": "boolean" },
+        "cookieAge": { "type": "integer", "minimum": 0 },
+        "sso": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "providersSecret": { "$ref": "#/$defs/secretRef" },
+            "autoSignup": { "type": "boolean" },
+            "allowSignup": { "type": "boolean" },
+            "syncGroups": { "type": "boolean" },
+            "defaultGroups": { "type": ["string", "null"] },
+            "disableRegularLogin": { "type": "boolean" },
+            "autoRedirect": { "type": "boolean" },
+            "emailVerification": {
+              "type": "string",
+              "enum": ["none", "optional", "mandatory"]
+            }
+          }
+        }
+      }
+    },
+
+    "tweaks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apps": { "type": ["string", "null"] },
+        "timezone": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "email": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sending": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "host": { "type": "string" },
+            "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+            "user": { "type": ["string", "null"] },
+            "passwordSecret": { "$ref": "#/$defs/secretRef" },
+            "from": { "type": ["string", "null"] },
+            "useTls": { "type": "boolean" }
+          }
+        }
+      }
+    },
+
+    "ocr": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "language": { "type": "string", "minLength": 1 },
+        "mode": { "type": "string", "enum": ["auto", "redo", "force", "off"] },
+        "archiveFileGeneration": { "type": "string", "enum": ["auto", "always", "never"] },
+        "cleanMode": { "type": "string", "enum": ["clean", "clean-final", "none"] },
+        "deskew": { "type": "boolean" },
+        "rotatePages": { "type": "boolean" },
+        "rotatePagesThreshold": { "$ref": "#/$defs/nonNegativeNumber" },
+        "outputType": { "type": "string", "enum": ["pdf", "pdfa", "pdf-1", "pdf-2", "pdf-3"] },
+        "pageLimit": { "type": ["integer", "null"], "minimum": 1 },
+        "imageDpi": { "type": ["integer", "null"], "minimum": 1 },
+        "maxImagePixels": { "type": ["integer", "null"], "minimum": 1 },
+        "colorConversionStrategy": {
+          "type": ["string", "null"],
+          "enum": [null, "CMYK", "Gray", "LeaveColorUnchanged", "RGB", "UseDeviceIndependentColor"]
+        },
+        "userArgs": { "type": ["string", "null"] },
+        "skipArchiveFile": {
+          "description": "Removed in chart 2.0.0. Declared so the template can reject it with migration instructions instead of a generic schema error. Use archiveFileGeneration.",
+          "type": ["string", "null"]
+        }
+      }
+    },
+
+    "documentConsumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dateOrder": {
+          "type": "string",
+          "enum": ["DMY", "DYM", "MDY", "MYD", "YDM", "YMD"]
+        },
+        "pollingInterval": {
+          "description": "Seconds between polls, or 0 to use native filesystem notifications.",
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "stabilityDelay": { "$ref": "#/$defs/nonNegativeNumber" },
+        "deleteDuplicates": { "type": "boolean" }
+      }
+    },
+
+    "ai": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "backend": {
+          "description": "Validated against the supported backends by the chart templates, which also enforce that it is set when enabled is true.",
+          "type": ["string", "null"]
+        },
+        "model": { "type": ["string", "null"] },
+        "endpoint": { "type": ["string", "null"] },
+        "apiKeySecret": { "$ref": "#/$defs/secretRef" },
+        "outputLanguage": { "type": ["string", "null"] },
+        "contextSize": { "type": "integer", "minimum": 1 },
+        "requestTimeout": { "type": "integer", "minimum": 1 },
+        "allowInternalEndpoints": { "type": "boolean" },
+        "embedding": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "backend": {
+              "description": "Validated against the supported embedding backends by the chart templates.",
+              "type": ["string", "null"]
+            },
+            "model": { "type": ["string", "null"] },
+            "endpoint": { "type": ["string", "null"] },
+            "chunkSize": { "type": "integer", "minimum": 1 },
+            "indexCron": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+
+    "replicaCount": { "type": "integer", "minimum": 0 },
+
+    "deploymentStrategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "enum": ["RollingUpdate", "Recreate"] },
+        "rollingUpdate": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "maxUnavailable": { "type": ["integer", "string"] },
+            "maxSurge": { "type": ["integer", "string"] }
+          }
+        }
+      }
+    },
+
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry", "repository"],
+      "properties": {
+        "registry": { "type": "string", "minLength": 1 },
+        "repository": { "type": "string", "minLength": 1 },
+        "pullPolicy": { "type": "string", "enum": ["Always", "Never", "IfNotPresent"] },
+        "tag": {
+          "description": "Empty string falls back to the chart appVersion.",
+          "type": "string"
+        }
+      }
+    },
+
+    "imagePullSecrets": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": { "name": { "type": "string" } }
+      }
+    },
+
+    "nameOverride": { "type": "string" },
+    "fullnameOverride": { "type": "string" },
+
+    "serviceAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["create"],
+      "properties": {
+        "create": { "type": "boolean" },
+        "automount": { "type": "boolean" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "name": { "type": "string" }
+      }
+    },
+
+    "podAnnotations": { "$ref": "#/$defs/stringMap" },
+    "podLabels": { "$ref": "#/$defs/stringMap" },
+
+    "persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data", "media", "consume", "export"],
+      "properties": {
+        "data": { "$ref": "#/$defs/persistentVolume" },
+        "media": { "$ref": "#/$defs/persistentVolume" },
+        "consume": { "$ref": "#/$defs/persistentVolume" },
+        "export": { "$ref": "#/$defs/persistentVolume" }
+      }
+    },
+
+    "podSecurityContext": {
+      "description": "Rendered verbatim into the pod spec, so any Kubernetes PodSecurityContext field is accepted.",
+      "type": ["object", "null"],
+      "properties": {
+        "runAsNonRoot": { "type": "boolean" },
+        "runAsUser": { "type": "integer" },
+        "runAsGroup": { "type": "integer" },
+        "fsGroup": { "type": "integer" },
+        "fsGroupChangePolicy": { "type": "string", "enum": ["OnRootMismatch", "Always"] },
+        "seccompProfile": { "$ref": "#/$defs/seccompProfile" }
+      }
+    },
+
+    "securityContext": {
+      "description": "Rendered verbatim into the container spec, so any Kubernetes SecurityContext field is accepted. runAsUser, runAsGroup and readOnlyRootFilesystem are also read by the chart itself.",
+      "type": "object",
+      "required": ["runAsUser", "runAsGroup", "readOnlyRootFilesystem"],
+      "properties": {
+        "allowPrivilegeEscalation": { "type": "boolean" },
+        "readOnlyRootFilesystem": { "type": "boolean" },
+        "seccompProfile": { "$ref": "#/$defs/seccompProfile" },
+        "runAsUser": { "type": "integer" },
+        "runAsGroup": { "type": "integer" },
+        "runAsNonRoot": { "type": "boolean" },
+        "privileged": { "type": "boolean" },
+        "capabilities": {
+          "type": ["object", "null"],
+          "properties": {
+            "drop": { "type": "array", "items": { "type": "string" } },
+            "add": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "port"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer", "ExternalName"]
+        },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
+      }
+    },
+
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "labels": { "$ref": "#/$defs/stringMap" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "hostnames": { "type": ["array", "null"], "items": { "type": "string" } },
+        "parentRefs": { "$ref": "#/$defs/objectList" },
+        "matches": { "$ref": "#/$defs/objectList" },
+        "filters": { "$ref": "#/$defs/objectList" },
+        "additionalRules": {
+          "description": "Appended into the HTTPRoute rules list, so it must be a list of rules.",
+          "$ref": "#/$defs/objectList"
+        }
+      }
+    },
+
+    "ingress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "className": { "type": "string" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "hosts": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["host"],
+            "properties": {
+              "host": { "type": "string", "minLength": 1 },
+              "paths": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["path"],
+                  "properties": {
+                    "path": { "type": "string", "minLength": 1 },
+                    "pathType": {
+                      "type": "string",
+                      "enum": ["Exact", "Prefix", "ImplementationSpecific"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secretName": { "type": "string" },
+              "hosts": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+
+    "resources": {
+      "description": "Rendered verbatim, so any Kubernetes ResourceRequirements field is accepted.",
+      "type": ["object", "null"]
+    },
+
+    "livenessProbe": {
+      "description": "Rendered verbatim, so any Kubernetes Probe field is accepted.",
+      "type": ["object", "null"]
+    },
+    "readinessProbe": {
+      "description": "Rendered verbatim, so any Kubernetes Probe field is accepted.",
+      "type": ["object", "null"]
+    },
+
+    "autoscaling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "minReplicas": { "type": "integer", "minimum": 1 },
+        "maxReplicas": { "type": "integer", "minimum": 1 },
+        "targetCPUUtilizationPercentage": { "type": ["integer", "null"], "minimum": 1, "maximum": 100 },
+        "targetMemoryUtilizationPercentage": { "type": ["integer", "null"], "minimum": 1, "maximum": 100 }
+      }
+    },
+
+    "volumes": { "$ref": "#/$defs/objectList" },
+    "volumeMounts": { "$ref": "#/$defs/objectList" },
+    "nodeSelector": { "$ref": "#/$defs/stringMap" },
+    "tolerations": { "$ref": "#/$defs/objectList" },
+    "affinity": {
+      "description": "Rendered verbatim, so any Kubernetes Affinity field is accepted.",
+      "type": ["object", "null"]
+    }
+  }
+}
