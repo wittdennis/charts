@@ -79,7 +79,7 @@ jobs:
       - name: setup helm-unittest
         run: helm plugin install https://github.com/helm-unittest/helm-unittest --version "$UNITTEST_VERSION" --verify=false
         env:
-          UNITTEST_VERSION: v1.1.1 # renovate: datasource=github-releases depName=helm-unittest/helm-unittest versioning=semver
+          UNITTEST_VERSION: v1.1.2 # renovate: datasource=github-releases depName=helm-unittest/helm-unittest versioning=semver
 
       # Detected here rather than reused from check-multiple: ct honours .helmignore, which excludes
       # the tests directory, so a test-only change would not register as a changed chart.
