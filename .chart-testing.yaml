@@ -1,4 +1,5 @@
 chart-dirs:
+  - calibre-web
   - ddb-proxy
   - foundryvtt
   - garage

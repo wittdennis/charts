@@ -1,0 +1,21 @@
+apiVersion: v2
+name: calibre-web
+description: |
+  A Helm chart for Calibre-Web.
+  Calibre-Web is a web app for browsing, reading and downloading eBooks stored in a Calibre database.
+  This chart expects a rootless image with bundled Calibre binaries so it can run with a read-only root filesystem.
+type: application
+version: 1.0.0
+appVersion: "1.0.0" # renovate: datasource=docker depName=ghcr.io/wittdennis/calibre-web versioning=docker
+sources:
+  - https://github.com/wittdennis/charts/tree/main/calibre-web
+  - https://github.com/janeczku/calibre-web
+  - https://github.com/wittdennis/container-calibre-web
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/calibre-web/assets/icon.svg
+keywords:
+  - calibre
+  - calibre-web
+  - ebook
+  - ebooks
+  - library
+  - reader
