@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## calibre-web-1.0.1 - 2026-07-25
+#### Bug Fixes
+- (**calibre-web**) force replica count to 1 - (8dd7f9e) - Dennis Witt
+
+- - -
+
 ## calibre-web-1.0.0 - 2026-07-25
 #### Features
 - add new chart for calibre-web - (c9d05d6) - Dennis Witt
