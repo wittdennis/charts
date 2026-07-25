@@ -37,6 +37,7 @@ The default for archive generation changed meaning: chart 1.x defaulted to `skip
 | `hosting.trustedProxies`                  | Set to the IPs of your ingress controller or gateway. Without it allauth cannot determine the client IP for login rate limiting and logins may fail with `403 Forbidden`. |
 | `hosting.trustedClientIpHeader`           | For proxies that use a dedicated header such as `X-Real-IP` or `CF-Connecting-IP` instead of `X-Forwarded-For`.   |
 | `database.options`                        | Replaces the removed upstream SSL, timeout and pool size variables with a single comma-delimited option string.   |
+| `ai.*`                                    | Opt-in access to the new AI suggestion and RAG features. Disabled by default — see [AI features](#ai-features).    |
 
 `PAPERLESS_SUPERVISORD_WORKING_DIR` is no longer set — it became a no-op upstream. Read-only root filesystem support still works through `S6_READ_ONLY_ROOT`, and the chart now also mounts an `emptyDir` at `/var/cache/fontconfig`, which paperless-ngx 3.0 expects to be writable.
 
@@ -49,6 +50,60 @@ The default for archive generation changed meaning: chart 1.x defaulted to `skip
 - **Document and thumbnail encryption was removed.** If you ever enabled it, decrypt your documents with the `decrypt_documents` management command *before* upgrading.
 - **Pre- and post-consume scripts** no longer receive positional arguments; use the `DOCUMENT_*` environment variables instead.
 - The image now ships PyTorch regardless of whether the AI features are enabled, so expect a larger image and a higher memory floor.
+
+## AI features
+
+Paperless-ngx 3.0 added LLM-backed suggestions and optional retrieval augmented generation. Everything is off by default; set `ai.enabled` and pick a backend to turn it on.
+
+> Your document content is sent to whichever backend you configure. Hosted providers may be paid services and you are responsible for any usage charges. Prefer a backend inside your own cluster if that matters to you.
+
+`ai.backend` is required when `ai.enabled` is true and must be `openai-like` or `ollama`. The chart fails the render with a helpful message if it is missing or invalid, rather than letting the pod crash-loop on a startup error.
+
+### Ollama running in the cluster
+
+```yaml
+ai:
+  enabled: true
+  backend: ollama
+  endpoint: http://ollama.ai.svc.cluster.local:11434
+  model: llama3.1
+```
+
+`ai.allowInternalEndpoints` must stay `true` for this, since paperless otherwise rejects endpoints that resolve to non-public addresses. It defaults to `true`.
+
+### An OpenAI-compatible provider
+
+```yaml
+ai:
+  enabled: true
+  backend: openai-like
+  model: gpt-4
+  # Optional, to target a provider other than OpenAI
+  endpoint: https://api.example.com/v1
+  apiKeySecret:
+    name: paperless-ai
+    key: api-key
+```
+
+The API key is only read from a secret — create it yourself and reference it. There is no plain-value alternative, deliberately.
+
+### RAG embeddings
+
+Retrieval augmented features need an embedding backend on top of the above. It is configured separately because it does not have to be the same provider as the chat model:
+
+```yaml
+ai:
+  embedding:
+    backend: ollama       # or openai-like, huggingface
+    model: embeddinggemma
+```
+
+The embedding index is written to `data/llm_index` inside the data volume, and `ai.embedding.indexCron` controls when embeddings for all documents are refreshed (daily at 02:10 by default).
+
+The `huggingface` backend is different from the other two: it runs the embedding model **inside the paperless container** instead of calling out to a service. The chart points `HF_HOME` at the data volume for it, because the default cache location is the container home directory, which is neither writable under the chart's default `readOnlyRootFilesystem: true` nor persisted across restarts. Consequences worth planning for:
+
+- The model is downloaded on first use, so the pod needs egress to huggingface.co and a few hundred MB to several GB of extra room in `persistence.data.size` (default `10Gi`).
+- Inference happens in the paperless pod, so give it meaningfully more memory and CPU via `resources`.
 
 {{ template "chart.requirementsSection" . }}
 

@@ -97,6 +97,22 @@ since dropping them changes document processing behavior.
 {{- if hasKey .Values.ocr "skipArchiveFile" }}
 {{- fail "ocr.skipArchiveFile was removed in paperless-ngx 3.0. Use ocr.archiveFileGeneration instead: never -> always, with_text -> auto, always -> never. See https://docs.paperless-ngx.com/migration-v3/" }}
 {{- end }}
+
+{{- if .Values.ai.enabled }}
+{{- $backends := list "openai-like" "ollama" }}
+{{- if not .Values.ai.backend }}
+{{- fail (printf "ai.backend is required when ai.enabled is true. Possible values are %s." (join ", " $backends)) }}
+{{- end }}
+{{- if not (has .Values.ai.backend $backends) }}
+{{- fail (printf "ai.backend must be one of %s, got %q." (join ", " $backends) .Values.ai.backend) }}
+{{- end }}
+{{- $embeddingBackends := list "openai-like" "huggingface" "ollama" }}
+{{- with .Values.ai.embedding.backend }}
+{{- if not (has . $embeddingBackends) }}
+{{- fail (printf "ai.embedding.backend must be one of %s, got %q." (join ", " $embeddingBackends) .) }}
+{{- end }}
+{{- end }}
+{{- end }}
 {{- end }}
 
 {{/*
