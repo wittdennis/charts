@@ -90,6 +90,16 @@ Create name for the data pvc
 {{- end }}
 
 {{/*
+Fail on values that were removed in paperless-ngx 3.0 instead of silently ignoring them,
+since dropping them changes document processing behavior.
+*/}}
+{{- define "paperless-ngx.validateValues" -}}
+{{- if hasKey .Values.ocr "skipArchiveFile" }}
+{{- fail "ocr.skipArchiveFile was removed in paperless-ngx 3.0. Use ocr.archiveFileGeneration instead: never -> always, with_text -> auto, always -> never. See https://docs.paperless-ngx.com/migration-v3/" }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create name for the secret-key secret
 */}}
 {{- define "paperless-ngx.secretKeyName" -}}

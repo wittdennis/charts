@@ -1,0 +1,55 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+{{ template "chart.maintainersSection" . }}
+{{ template "chart.sourcesSection" . }}
+
+## Upgrading to 2.0.0
+
+Chart 2.0.0 moves from paperless-ngx 2.20.15 to 3.0.2. The application release contains breaking changes, so read this section before upgrading. Upstream reference: [v3 migration guide](https://docs.paperless-ngx.com/migration-v3/).
+
+Paperless-ngx 3.0 can only be upgraded from 2.20.15, which is the version chart 1.3.0 shipped. If you are coming from an older chart release, upgrade to chart 1.3.0 first and let it start once.
+
+### Renamed and changed values
+
+| Chart 1.x                                   | Chart 2.0.0                                       | Notes                                                                                |
+| ------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `ocr.skipArchiveFile: never`                | `ocr.archiveFileGeneration: always`               | Upstream split OCR control from archive control. Rendering fails if the old key is still set. |
+| `ocr.skipArchiveFile: with_text`            | `ocr.archiveFileGeneration: auto`                 | New default                                                                          |
+| `ocr.skipArchiveFile: always`               | `ocr.archiveFileGeneration: never`                |                                                                                      |
+| `ocr.mode: skip`                            | `ocr.mode: auto`                                  | `skip` and `skip_noarchive` are gone; the mode set is now `auto`, `redo`, `force`, `off` |
+
+The default for archive generation changed meaning: chart 1.x defaulted to `skipArchiveFile: never`, i.e. *always* produce a PDF/A archive. Chart 2.0.0 follows the new upstream default `archiveFileGeneration: auto`, which **skips the archive for born-digital PDFs that already contain text**. Set `ocr.archiveFileGeneration: always` to keep the previous behavior.
+
+`ocr.skipArchiveFile` is rejected rather than silently ignored — if it is still present in your values, `helm upgrade` fails with a message pointing at its replacement.
+
+### New values
+
+| Value                                     | Why you may want it                                                                                              |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `documentConsumption.pollingInterval`     | Native filesystem notifications are unreliable on NFS/SMB-backed volumes. Set a positive number of seconds to poll the consume directory instead. |
+| `documentConsumption.stabilityDelay`      | Seconds a file must stay unchanged before consumption. Raise it for slow storage or scanners that write incrementally. |
+| `documentConsumption.deleteDuplicates`    | Paperless-ngx 3.0 consumes duplicates and flags them in the UI instead of rejecting them. Set to `true` to restore rejection. |
+| `hosting.trustedProxies`                  | Set to the IPs of your ingress controller or gateway. Without it allauth cannot determine the client IP for login rate limiting and logins may fail with `403 Forbidden`. |
+| `hosting.trustedClientIpHeader`           | For proxies that use a dedicated header such as `X-Real-IP` or `CF-Connecting-IP` instead of `X-Forwarded-For`.   |
+| `database.options`                        | Replaces the removed upstream SSL, timeout and pool size variables with a single comma-delimited option string.   |
+
+`PAPERLESS_SUPERVISORD_WORKING_DIR` is no longer set — it became a no-op upstream. Read-only root filesystem support still works through `S6_READ_ONLY_ROOT`, and the chart now also mounts an `emptyDir` at `/var/cache/fontconfig`, which paperless-ngx 3.0 expects to be writable.
+
+### Application changes the chart cannot handle for you
+
+- **The search index is rebuilt from scratch on first start** (Whoosh was replaced with Tantivy). This happens automatically, but it is CPU-heavy on large document sets and readiness may flap while it runs.
+- **All task history is dropped** during the database migration.
+- **Fulltext search syntax changed**: `note:` became `notes.note:` and `custom_field:` became `custom_fields.value:`. Saved views with an explicit field prefix are migrated automatically; plain unqualified queries that happened to match note or custom field content are not.
+- **OIDC logins** may need `token_auth_method` added to the provider settings in the secret referenced by `auth.sso.providersSecret` if the callback starts failing with `invalid_client`.
+- **Document and thumbnail encryption was removed.** If you ever enabled it, decrypt your documents with the `decrypt_documents` management command *before* upgrading.
+- **Pre- and post-consume scripts** no longer receive positional arguments; use the `DOCUMENT_*` environment variables instead.
+- The image now ships PyTorch regardless of whether the AI features are enabled, so expect a larger image and a higher memory floor.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}

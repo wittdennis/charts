@@ -1,3 +1,4 @@
+{{- include "paperless-ngx.validateValues" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,8 +58,6 @@ spec:
             - name: USERMAP_GID
               value: {{ .Values.securityContext.runAsGroup | quote }}
             {{- if .Values.securityContext.readOnlyRootFilesystem }}
-            - name: PAPERLESS_SUPERVISORD_WORKING_DIR
-              value: /tmp
             - name: PYTHONPYCACHEPREFIX
               value: /tmp/pycache
             - name: S6_READ_ONLY_ROOT
@@ -74,6 +73,14 @@ spec:
             - name: PAPERLESS_URL
               value: https://{{ .host }}
             {{- end }}
+            {{- end }}
+            {{- with .Values.hosting.trustedProxies }}
+            - name: PAPERLESS_TRUSTED_PROXIES
+              value: {{ join "," . | quote }}
+            {{- end }}
+            {{- with .Values.hosting.trustedClientIpHeader }}
+            - name: PAPERLESS_ALLAUTH_TRUSTED_CLIENT_IP_HEADER
+              value: {{ . | quote }}
             {{- end }}
             {{- if .Values.redis.prefix }}
             - name: PAPERLESS_REDIS_PREFIX
@@ -120,6 +127,10 @@ spec:
               value: {{ .Values.database.password }}
             {{- end }}
             {{- end}}
+            {{- with .Values.database.options }}
+            - name: PAPERLESS_DB_OPTIONS
+              value: {{ . | quote }}
+            {{- end }}
             - name: PAPERLESS_DB_READ_CACHE_ENABLED
               value: {{ .Values.database.enableReadCache | quote }}
             - name: PAPERLESS_READ_CACHE_TTL
@@ -184,8 +195,8 @@ spec:
               value: {{ .Values.ocr.language }}
             - name: PAPERLESS_OCR_MODE
               value: {{ .Values.ocr.mode }}
-            - name: PAPERLESS_OCR_SKIP_ARCHIVE_FILE
-              value: {{ .Values.ocr.skipArchiveFile }}
+            - name: PAPERLESS_ARCHIVE_FILE_GENERATION
+              value: {{ .Values.ocr.archiveFileGeneration }}
             - name: PAPERLESS_OCR_CLEAN
               value: {{ .Values.ocr.cleanMode }}
             - name: PAPERLESS_OCR_DESKEW
@@ -220,6 +231,12 @@ spec:
               value: {{ .Values.tweaks.timezone | quote }}
             - name: PAPERLESS_DATE_ORDER
               value: {{ .Values.documentConsumption.dateOrder | quote }}
+            - name: PAPERLESS_CONSUMER_POLLING_INTERVAL
+              value: {{ .Values.documentConsumption.pollingInterval | quote }}
+            - name: PAPERLESS_CONSUMER_STABILITY_DELAY
+              value: {{ .Values.documentConsumption.stabilityDelay | quote }}
+            - name: PAPERLESS_CONSUMER_DELETE_DUPLICATES
+              value: {{ .Values.documentConsumption.deleteDuplicates | quote }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
@@ -232,6 +249,8 @@ spec:
             {{- if .Values.securityContext.readOnlyRootFilesystem }}
             - mountPath: /run
               name: run
+            - mountPath: /var/cache/fontconfig
+              name: fontconfig-cache
             {{- end }}
             - name: paperless-ngx-data
               mountPath: /usr/src/paperless/data
@@ -251,6 +270,8 @@ spec:
         - name: run
           emptyDir:
             medium: Memory
+        - name: fontconfig-cache
+          emptyDir: {}
         {{- end }}
         - name: paperless-ngx-data
         {{- if .Values.persistence.data.enabled }}

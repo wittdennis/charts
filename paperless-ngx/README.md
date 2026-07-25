@@ -1,6 +1,6 @@
 # paperless-ngx
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.20.15](https://img.shields.io/badge/AppVersion-2.20.15-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.0.2](https://img.shields.io/badge/AppVersion-3.0.2-informational?style=flat-square)
 
 A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 
@@ -8,6 +8,48 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 
 * <https://github.com/wittdennis/charts/tree/main/paperless-ngx>
 * <https://github.com/paperless-ngx/paperless-ngx>
+
+## Upgrading to 2.0.0
+
+Chart 2.0.0 moves from paperless-ngx 2.20.15 to 3.0.2. The application release contains breaking changes, so read this section before upgrading. Upstream reference: [v3 migration guide](https://docs.paperless-ngx.com/migration-v3/).
+
+Paperless-ngx 3.0 can only be upgraded from 2.20.15, which is the version chart 1.3.0 shipped. If you are coming from an older chart release, upgrade to chart 1.3.0 first and let it start once.
+
+### Renamed and changed values
+
+| Chart 1.x                                   | Chart 2.0.0                                       | Notes                                                                                |
+| ------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `ocr.skipArchiveFile: never`                | `ocr.archiveFileGeneration: always`               | Upstream split OCR control from archive control. Rendering fails if the old key is still set. |
+| `ocr.skipArchiveFile: with_text`            | `ocr.archiveFileGeneration: auto`                 | New default                                                                          |
+| `ocr.skipArchiveFile: always`               | `ocr.archiveFileGeneration: never`                |                                                                                      |
+| `ocr.mode: skip`                            | `ocr.mode: auto`                                  | `skip` and `skip_noarchive` are gone; the mode set is now `auto`, `redo`, `force`, `off` |
+
+The default for archive generation changed meaning: chart 1.x defaulted to `skipArchiveFile: never`, i.e. *always* produce a PDF/A archive. Chart 2.0.0 follows the new upstream default `archiveFileGeneration: auto`, which **skips the archive for born-digital PDFs that already contain text**. Set `ocr.archiveFileGeneration: always` to keep the previous behavior.
+
+`ocr.skipArchiveFile` is rejected rather than silently ignored — if it is still present in your values, `helm upgrade` fails with a message pointing at its replacement.
+
+### New values
+
+| Value                                     | Why you may want it                                                                                              |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `documentConsumption.pollingInterval`     | Native filesystem notifications are unreliable on NFS/SMB-backed volumes. Set a positive number of seconds to poll the consume directory instead. |
+| `documentConsumption.stabilityDelay`      | Seconds a file must stay unchanged before consumption. Raise it for slow storage or scanners that write incrementally. |
+| `documentConsumption.deleteDuplicates`    | Paperless-ngx 3.0 consumes duplicates and flags them in the UI instead of rejecting them. Set to `true` to restore rejection. |
+| `hosting.trustedProxies`                  | Set to the IPs of your ingress controller or gateway. Without it allauth cannot determine the client IP for login rate limiting and logins may fail with `403 Forbidden`. |
+| `hosting.trustedClientIpHeader`           | For proxies that use a dedicated header such as `X-Real-IP` or `CF-Connecting-IP` instead of `X-Forwarded-For`.   |
+| `database.options`                        | Replaces the removed upstream SSL, timeout and pool size variables with a single comma-delimited option string.   |
+
+`PAPERLESS_SUPERVISORD_WORKING_DIR` is no longer set — it became a no-op upstream. Read-only root filesystem support still works through `S6_READ_ONLY_ROOT`, and the chart now also mounts an `emptyDir` at `/var/cache/fontconfig`, which paperless-ngx 3.0 expects to be writable.
+
+### Application changes the chart cannot handle for you
+
+- **The search index is rebuilt from scratch on first start** (Whoosh was replaced with Tantivy). This happens automatically, but it is CPU-heavy on large document sets and readiness may flap while it runs.
+- **All task history is dropped** during the database migration.
+- **Fulltext search syntax changed**: `note:` became `notes.note:` and `custom_field:` became `custom_fields.value:`. Saved views with an explicit field prefix are migrated automatically; plain unqualified queries that happened to match note or custom field content are not.
+- **OIDC logins** may need `token_auth_method` added to the provider settings in the secret referenced by `auth.sso.providersSecret` if the callback starts failing with `invalid_client`.
+- **Document and thumbnail encryption was removed.** If you ever enabled it, decrypt your documents with the `decrypt_documents` management command *before* upgrading.
+- **Pre- and post-consume scripts** no longer receive positional arguments; use the `DOCUMENT_*` environment variables instead.
+- The image now ships PyTorch regardless of whether the AI features are enabled, so expect a larger image and a higher memory floor.
 
 ## Values
 
@@ -31,11 +73,12 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | auth.sso.providersSecret.name | string | `nil` | Name of the secret |
 | auth.sso.syncGroups | bool | `false` | Sync groups from the third party authentication system (e.g. OIDC) to Paperless-ngx. For more info see: https://docs.paperless-ngx.com/configuration/?h=redis#PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS |
 | autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
-| database | object | `{"databaseName":null,"enableReadCache":false,"engine":"sqlite","host":null,"password":null,"passwordSecret":{"key":null,"name":null},"port":null,"readCacheTTL":3600,"user":null,"userSecret":{"key":null,"name":null}}` | Database configuration |
+| database | object | `{"databaseName":null,"enableReadCache":false,"engine":"sqlite","host":null,"options":null,"password":null,"passwordSecret":{"key":null,"name":null},"port":null,"readCacheTTL":3600,"user":null,"userSecret":{"key":null,"name":null}}` | Database configuration |
 | database.databaseName | string | `nil` | Can be used to configure a custom name for the database defaults to paperless |
 | database.enableReadCache | bool | `false` | Caches the database read query results into Redis. This can significantly improve application response times by caching database queries, at the cost of slightly increased memory usage. |
 | database.engine | string | `"sqlite"` | Engine to use for the database (possible values sqlite (default), postgresql, mariadb) |
 | database.host | string | `nil` | When `engine` isn't sqlite set host for your database |
+| database.options | string | `nil` | Advanced connection options as a comma-delimited key-value string (e.g. `sslmode=require,pool.max_size=10`). Dot-notation produces nested option dictionaries. Applies to all engines including sqlite. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_DB_OPTIONS |
 | database.password | string | `nil` | When `engine` isn't sqlite use this to set the db user password for the connection |
 | database.passwordSecret | object | `{"key":null,"name":null}` | When `engine` isn't sqlite use this to specify a secret containing the user password for the connection |
 | database.passwordSecret.key | string | `nil` | Key of the password |
@@ -47,8 +90,11 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | database.userSecret.key | string | `nil` | Key of the user |
 | database.userSecret.name | string | `nil` | Name of the secret |
 | deploymentStrategy | object | `{"rollingUpdate":{"maxSurge":"25%","maxUnavailable":"25%"},"type":"RollingUpdate"}` | Deployment strategy to use |
-| documentConsumption | object | `{"dateOrder":"DMY"}` | Settings to define how documents should be consumed by paperless |
+| documentConsumption | object | `{"dateOrder":"DMY","deleteDuplicates":false,"pollingInterval":0,"stabilityDelay":5}` | Settings to define how documents should be consumed by paperless |
 | documentConsumption.dateOrder | string | `"DMY"` | Paperless will try to determine the document creation date from its contents. Specify the date format Paperless should expect to see within your documents. This option defaults to DMY which translates to day first, month second, and year last order. Characters D, M, or Y can be shuffled to meet the required order. |
+| documentConsumption.deleteDuplicates | bool | `false` | Since paperless-ngx 3.0 duplicate documents are consumed and flagged in the UI. When enabled duplicates are instead deleted from the consume directory without being consumed. |
+| documentConsumption.pollingInterval | int | `0` | How the consumer detects new files in the consume directory. `0` uses native filesystem notifications, a positive number polls the directory at that interval in seconds. Use polling when the consume volume is backed by a network filesystem (NFS, SMB/CIFS). |
+| documentConsumption.stabilityDelay | int | `5` | Time in seconds a file must remain unchanged before paperless starts consuming it. Increase for slow storage or scanners that write incrementally. |
 | email | object | `{"sending":{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}}` | Configuration for email |
 | email.sending | object | `{"from":null,"host":"localhost","passwordSecret":{"key":null,"name":null},"port":25,"useTls":false,"user":null}` | Configuration for sending emails |
 | email.sending.from | string | `nil` | From email. Defaults to `email.sending.user` if not set |
@@ -60,11 +106,13 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | email.sending.useTls | bool | `false` | Use tls for email sending |
 | email.sending.user | string | `nil` | User for authentication |
 | fullnameOverride | string | `""` |  |
-| hosting | object | `{"secretKey":{"create":true,"key":"key","name":null}}` | Settings pertaining to hosting |
+| hosting | object | `{"secretKey":{"create":true,"key":"key","name":null},"trustedClientIpHeader":null,"trustedProxies":[]}` | Settings pertaining to hosting |
 | hosting.secretKey | object | `{"create":true,"key":"key","name":null}` | Paperless uses this to make session tokens. If you expose paperless on the internet, you need to change this, since the default secret is well known. |
 | hosting.secretKey.create | bool | `true` | If set to true secret will be created on deploy. When false expects the secret to already exist |
 | hosting.secretKey.key | string | `"key"` | Key of the secret |
 | hosting.secretKey.name | string | `nil` | Name of the secret. Defaults to release name. |
+| hosting.trustedClientIpHeader | string | `nil` | Header containing the real client IP for proxies that don't use `X-Forwarded-For` (e.g. `X-Real-IP`, `CF-Connecting-IP`). Takes precedence over `hosting.trustedProxies`. |
+| hosting.trustedProxies | list | `[]` | IP addresses of reverse proxies that are allowed to set forwarding headers. Without this allauth cannot determine the client IP for login rate limiting when running behind an ingress or gateway, resulting in a 403 on login. |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"paperless-ngx/paperless-ngx","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
@@ -73,19 +121,19 @@ A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 | livenessProbe | object | `{"failureThreshold":10,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":30,"periodSeconds":100}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | nameOverride | string | `""` | This is to override the chart name. |
 | nodeSelector | object | `{}` |  |
-| ocr | object | `{"cleanMode":"clean","colorConversionStrategy":null,"deskew":true,"imageDpi":null,"language":"eng","maxImagePixels":null,"mode":"skip","outputType":"pdfa","pageLimit":null,"rotatePages":true,"rotatePagesThreshold":12,"skipArchiveFile":"never","userArgs":null}` | Settings for ocr |
+| ocr | object | `{"archiveFileGeneration":"auto","cleanMode":"clean","colorConversionStrategy":null,"deskew":true,"imageDpi":null,"language":"eng","maxImagePixels":null,"mode":"auto","outputType":"pdfa","pageLimit":null,"rotatePages":true,"rotatePagesThreshold":12,"userArgs":null}` | Settings for ocr |
+| ocr.archiveFileGeneration | string | `"auto"` | Controls when paperless creates a PDF/A archive version of your documents. Available modes are auto, always, never. `auto` skips the archive for born-digital PDFs that already contain text, `always` archives whenever the parser supports it. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_ARCHIVE_FILE_GENERATION for more info. |
 | ocr.cleanMode | string | `"clean"` | Tells paperless to use unpaper to clean any input document before sending it to tesseract. Available modes: clean, clean-final, none |
 | ocr.colorConversionStrategy | string | `nil` | Controls the Ghostscript color conversion strategy when creating the archive file. This setting will only be utilized if the output is a version of PDF/A. Valid options are: CMYK, Gray, LeaveColorUnchanged, RGB or UseDeviceIndependentColor |
 | ocr.deskew | bool | `true` | Tells paperless to correct skewing (slight rotation of input images mainly due to improper scanning) |
 | ocr.imageDpi | string | `nil` | Paperless will OCR any images you put into the system and convert them into PDF documents. This is useful if your scanner produces images. In order to do so, paperless needs to know the DPI of the image. Most images from scanners will have this information embedded and paperless will detect and use that information. In case this fails, it uses this value as a fallback. |
 | ocr.language | string | `"eng"` | Customize the language that paperless will attempt to use when parsing documents. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_OCR_LANGUAGE for more info. |
 | ocr.maxImagePixels | string | `nil` | Paperless will raise a warning when OCRing images which are over this limit and will not OCR images which are more than twice this limit. Note this does not prevent the document from being consumed, but could result in missing text content. |
-| ocr.mode | string | `"skip"` | Tell paperless when and how to perform ocr on your documents. Three modes are available: skip, redo, force. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_OCR_MODE for more info. |
+| ocr.mode | string | `"auto"` | Tell paperless when and how to perform ocr on your documents. Four modes are available: auto, redo, force, off. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_OCR_MODE for more info. |
 | ocr.outputType | string | `"pdfa"` | Specify the the type of PDF documents that paperless should produce. Available types: pdf, pdfa, pdf-1, pdf-2, pdf-3 |
 | ocr.pageLimit | string | `nil` | Tells paperless to use only the specified amount of pages for OCR. Documents with less than the specified amount of pages get OCR'ed completely. |
 | ocr.rotatePages | bool | `true` | Tells paperless to correct page rotation (90°, 180° and 270° rotation). |
 | ocr.rotatePagesThreshold | int | `12` | Adjust the threshold for automatic page rotation by PAPERLESS_OCR_ROTATE_PAGES. This is an arbitrary value reported by tesseract. "15" is a very conservative value, whereas "2" is a very aggressive option and will often result in correctly rotated pages being rotated as well. |
-| ocr.skipArchiveFile | string | `"never"` | Specify when you would like paperless to skip creating an archived version of your documents. Available modes are never, with_text, always |
 | ocr.userArgs | string | `nil` | OCRmyPDF offers many more options. Use this parameter to specify any additional arguments you wish to pass to OCRmyPDF. Since Paperless uses the API of OCRmyPDF, you have to specify these in a format that can be passed to the API. Specify arguments as a JSON dictionary |
 | persistence | object | `{"consume":{"accessMode":"ReadWriteOnce","enabled":false,"existingVolumeClaim":null,"size":"10Gi","storageClass":null},"data":{"accessMode":"ReadWriteOnce","enabled":true,"existingVolumeClaim":null,"size":"10Gi","storageClass":null},"export":{"accessMode":"ReadWriteOnce","enabled":false,"existingVolumeClaim":null,"size":"10Gi","storageClass":null},"media":{"accessMode":"ReadWriteOnce","enabled":true,"existingVolumeClaim":null,"size":"100Gi","storageClass":null}}` | Configuration for data persistence |
 | persistence.consume | object | `{"accessMode":"ReadWriteOnce","enabled":false,"existingVolumeClaim":null,"size":"10Gi","storageClass":null}` | Setting for the consume directory. Paperless will process documents saved to this |
