@@ -1,0 +1,140 @@
+suite: paperless-ngx.validateValues guards
+# The guards live in templates/_helpers.tpl but a define cannot be rendered on its own,
+# so they are exercised through deployment.yaml, which includes them.
+templates:
+  - templates/deployment.yaml
+tests:
+  # ocr.skipArchiveFile was replaced by ocr.archiveFileGeneration in chart 2.0.0
+  - it: fails when the removed ocr.skipArchiveFile is still set
+    set:
+      ocr.skipArchiveFile: never
+    asserts:
+      - failedTemplate:
+          errorMessage: "ocr.skipArchiveFile was removed in paperless-ngx 3.0. Use ocr.archiveFileGeneration instead: never -> always, with_text -> auto, always -> never. See https://docs.paperless-ngx.com/migration-v3/"
+
+  - it: fails for any value of the removed ocr.skipArchiveFile
+    set:
+      ocr.skipArchiveFile: with_text
+    asserts:
+      - failedTemplate:
+          errorMessage: "ocr.skipArchiveFile was removed in paperless-ngx 3.0. Use ocr.archiveFileGeneration instead: never -> always, with_text -> auto, always -> never. See https://docs.paperless-ngx.com/migration-v3/"
+
+  - it: renders with the default values
+    asserts:
+      - notFailedTemplate: {}
+      - isKind:
+          of: Deployment
+
+  # ai.backend is required once the AI features are enabled
+  - it: fails when ai is enabled without a backend
+    set:
+      ai.enabled: true
+    asserts:
+      - failedTemplate:
+          errorMessage: "ai.backend is required when ai.enabled is true. Possible values are openai-like, ollama."
+
+  - it: fails when ai.backend is not a supported value
+    set:
+      ai.enabled: true
+      ai.backend: anthropic
+    asserts:
+      - failedTemplate:
+          errorMessage: 'ai.backend must be one of openai-like, ollama, got "anthropic".'
+
+  - it: accepts the openai-like backend
+    set:
+      ai.enabled: true
+      ai.backend: openai-like
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_LLM_BACKEND
+            value: openai-like
+
+  - it: accepts the ollama backend
+    set:
+      ai.enabled: true
+      ai.backend: ollama
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_LLM_BACKEND
+            value: ollama
+
+  # ai.embedding.backend is optional, but validated when supplied
+  - it: fails when ai.embedding.backend is not a supported value
+    set:
+      ai.enabled: true
+      ai.backend: ollama
+      ai.embedding.backend: sbert
+    asserts:
+      - failedTemplate:
+          errorMessage: 'ai.embedding.backend must be one of openai-like, huggingface, ollama, got "sbert".'
+
+  - it: accepts the openai-like embedding backend
+    set:
+      ai.enabled: true
+      ai.backend: openai-like
+      ai.embedding.backend: openai-like
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_LLM_EMBEDDING_BACKEND
+            value: openai-like
+
+  - it: accepts the huggingface embedding backend
+    set:
+      ai.enabled: true
+      ai.backend: ollama
+      ai.embedding.backend: huggingface
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_LLM_EMBEDDING_BACKEND
+            value: huggingface
+
+  - it: accepts the ollama embedding backend
+    set:
+      ai.enabled: true
+      ai.backend: ollama
+      ai.embedding.backend: ollama
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_LLM_EMBEDDING_BACKEND
+            value: ollama
+
+  # The ai guards must stay inert while the feature is disabled
+  - it: does not validate ai.backend while ai is disabled
+    set:
+      ai.enabled: false
+      ai.backend: anthropic
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_ENABLED
+            value: "false"
+
+  - it: does not validate ai.embedding.backend while ai is disabled
+    set:
+      ai.enabled: false
+      ai.embedding.backend: sbert
+    asserts:
+      - notFailedTemplate: {}
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PAPERLESS_AI_LLM_EMBEDDING_BACKEND
+            value: sbert

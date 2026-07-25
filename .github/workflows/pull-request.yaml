@@ -56,3 +56,47 @@ jobs:
           fi
         env:
           CHANGED_LIST: ${{ steps.list-changed.outputs.changed_list }}
+
+  unittest:
+    name: helm unittest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: setup helm
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: v4.2.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
+
+      - name: setup helm-unittest
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest --version "$UNITTEST_VERSION"
+        env:
+          UNITTEST_VERSION: v1.1.1 # renovate: datasource=github-releases depName=helm-unittest/helm-unittest versioning=semver
+
+      # Detected here rather than reused from check-multiple: ct honours .helmignore, which excludes
+      # the tests directory, so a test-only change would not register as a changed chart.
+      - name: determine changed charts
+        id: changed
+        run: |
+          charts=""
+          for dir in $(git diff --name-only "$BASE_SHA"...HEAD | cut -d/ -f1 | sort -u); do
+            if [ -f "$dir/Chart.yaml" ]; then
+              charts="$charts $dir"
+            fi
+          done
+          echo "charts=${charts# }" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+
+      # A chart without a tests directory reports zero suites and passes.
+      - name: run unit tests
+        if: steps.changed.outputs.charts != ''
+        run: echo "$CHARTS" | xargs helm unittest --strict
+        env:
+          CHARTS: ${{ steps.changed.outputs.charts }}
