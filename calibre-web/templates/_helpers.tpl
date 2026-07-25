@@ -62,6 +62,15 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Validate the supplied values
+*/}}
+{{- define "calibre-web.validateValues" -}}
+{{- if gt (int .Values.replicaCount) 1 }}
+{{- fail (printf "replicaCount must be 0 or 1, got %d. Calibre-Web stores its settings and the Calibre library in SQLite databases on a single ReadWriteOnce volume; concurrent writers corrupt them." (int .Values.replicaCount)) }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create the name for the config pvc
 */}}
 {{- define "calibre-web.configPvcName" -}}

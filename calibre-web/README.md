@@ -12,14 +12,27 @@ This chart expects a rootless image with bundled Calibre binaries so it can run 
 * <https://github.com/janeczku/calibre-web>
 * <https://github.com/wittdennis/container-calibre-web>
 
+## Requirements
+
+Helm 4. The bundled `values.schema.json` is written against JSON Schema draft 2020-12, which earlier Helm releases cannot parse.
+
+## Single replica
+
+`replicaCount` accepts only `0` and `1`. Calibre-Web keeps its settings in `app.db` and the library metadata in `metadata.db`, both SQLite files on a `ReadWriteOnce` volume, so a second replica would corrupt them. Rendering fails for anything higher. Set `replicaCount: 0` to scale down and release the volume for maintenance.
+
+The deployment strategy defaults to `Recreate` for the same reason: a rolling update would need two pods attached to the same volume at once.
+
+## First start
+
+The library path is not configurable through values — Calibre-Web stores it in `app.db`, which only its own UI writes. On first start, open the app and point it at `/books`, where `persistence.data` is mounted. `persistence.config` holds `app.db` and the cache and must stay writable.
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
 | deploymentStrategy | object | `{"type":"Recreate"}` | Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes. |
-| env | object | `{}` | Additional env values to pass to the container. The image already sets CALIBRE_DBPATH, CACHE_DIRECTORY and the Calibre temp/config paths so it runs on a read-only root filesystem. |
+| env | list | `[]` | Additional env values to pass to the container. The image already sets CALIBRE_DBPATH, CACHE_DIRECTORY and the Calibre temp/config paths so it runs on a read-only root filesystem. |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"wittdennis/calibre-web","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ Custom rootless, read-only image (Calibre-Web + bundled Calibre binaries). |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
@@ -43,10 +56,10 @@ This chart expects a rootless image with bundled Calibre binaries so it can run 
 | podSecurityContext | object | `{"fsGroup":1000,"fsGroupChangePolicy":"OnRootMismatch","runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}` | The LinuxServer image is run rootless as an arbitrary user; PUID/PGID no longer apply and file ownership is handled through fsGroup. |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
-| replicaCount | int | `1` | This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ |
+| replicaCount | int | `1` | Replica count. Only 0 (scaled down) and 1 are valid: the settings db and the Calibre library are SQLite databases on a ReadWriteOnce volume, so a second replica would corrupt them. Anything higher fails the render. |
 | resources | object | `{}` |  |
-| route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
-| route.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route | object | `{"additionalRules":[],"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
+| route.additionalRules | list | `[]` | Any custom rule you want to specify. Spliced into the HTTPRoute rules list, so it has to be a list of rules. |
 | route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
 | route.enabled | bool | `false` | Flag to control if route should be created |
 | route.filters | list | `[]` | Filter that should be added to the default rule |
@@ -62,7 +75,9 @@ This chart expects a rootless image with bundled Calibre binaries so it can run 
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `1000` |  |
 | securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| service | object | `{"port":80,"type":"ClusterIP"}` | This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/ |
+| service | object | `{"annotations":{},"labels":{},"port":80,"type":"ClusterIP"}` | This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/ |
+| service.annotations | object | `{}` | Additional annotations for the service |
+| service.labels | object | `{}` | Additional labels for the service |
 | service.port | int | `80` | This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports |
 | service.type | string | `"ClusterIP"` | This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types |
 | serviceAccount | object | `{"annotations":{},"automount":false,"create":true,"name":""}` | This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/ |
@@ -70,6 +85,7 @@ This chart expects a rootless image with bundled Calibre binaries so it can run 
 | serviceAccount.automount | bool | `false` | Automatically mount a ServiceAccount's API credentials? |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | If not set and create is true, a name is generated using the fullname template |
+| startupProbe | object | `{"failureThreshold":30,"httpGet":{"path":"/","port":"http"},"periodSeconds":10}` | Startup probe. Gives the app time to migrate its settings db and scan the library before the liveness probe takes over. Set to `{}` to disable. |
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |

@@ -1,0 +1,39 @@
+suite: calibre-web.validateValues guards
+# The guards live in templates/_helpers.tpl but a define cannot be rendered on its own,
+# so they are exercised through deployment.yaml, which includes them.
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: renders with the default values
+    asserts:
+      - notFailedTemplate: {}
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  # SQLite app.db + metadata.db on a ReadWriteOnce volume cannot take a second writer
+  - it: fails when replicaCount is greater than one
+    set:
+      replicaCount: 2
+    asserts:
+      - failedTemplate:
+          errorMessage: "replicaCount must be 0 or 1, got 2. Calibre-Web stores its settings and the Calibre library in SQLite databases on a single ReadWriteOnce volume; concurrent writers corrupt them."
+
+  - it: reports the offending replicaCount in the error
+    set:
+      replicaCount: 5
+    asserts:
+      - failedTemplate:
+          errorMessage: "replicaCount must be 0 or 1, got 5. Calibre-Web stores its settings and the Calibre library in SQLite databases on a single ReadWriteOnce volume; concurrent writers corrupt them."
+
+  # Scaling to zero is a valid way to release the volume for maintenance
+  - it: allows scaling down to zero
+    set:
+      replicaCount: 0
+    asserts:
+      - notFailedTemplate: {}
+      - equal:
+          path: spec.replicas
+          value: 0

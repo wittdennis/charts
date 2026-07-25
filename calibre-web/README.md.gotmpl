@@ -1,0 +1,27 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+{{ template "chart.maintainersSection" . }}
+{{ template "chart.sourcesSection" . }}
+
+## Requirements
+
+Helm 4. The bundled `values.schema.json` is written against JSON Schema draft 2020-12, which earlier Helm releases cannot parse.
+
+## Single replica
+
+`replicaCount` accepts only `0` and `1`. Calibre-Web keeps its settings in `app.db` and the library metadata in `metadata.db`, both SQLite files on a `ReadWriteOnce` volume, so a second replica would corrupt them. Rendering fails for anything higher. Set `replicaCount: 0` to scale down and release the volume for maintenance.
+
+The deployment strategy defaults to `Recreate` for the same reason: a rolling update would need two pods attached to the same volume at once.
+
+## First start
+
+The library path is not configurable through values — Calibre-Web stores it in `app.db`, which only its own UI writes. On first start, open the app and point it at `/books`, where `persistence.data` is mounted. `persistence.config` holds `app.db` and the cache and must stay writable.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}

@@ -22,3 +22,6 @@
 *.tmproj
 .vscode/
 assets/
+README.md.gotmpl
+# helm-unittest suites. Anchored so templates/tests/ (the chart test hooks) still ships.
+/tests/

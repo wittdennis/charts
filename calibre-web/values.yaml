@@ -2,7 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+# -- Replica count. Only 0 (scaled down) and 1 are valid: the settings db and the Calibre library are
+# SQLite databases on a ReadWriteOnce volume, so a second replica would corrupt them. Anything higher
+# fails the render.
 replicaCount: 1
 
 # -- Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes.
@@ -14,7 +16,7 @@ deploymentStrategy:
 
 # -- Additional env values to pass to the container. The image already sets CALIBRE_DBPATH,
 # CACHE_DIRECTORY and the Calibre temp/config paths so it runs on a read-only root filesystem.
-env: {}
+env: []
 # - name: TZ
 #   value: Europe/Berlin
 
@@ -83,6 +85,10 @@ service:
   type: ClusterIP
   # -- This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
   port: 80
+  # -- Additional annotations for the service
+  annotations: {}
+  # -- Additional labels for the service
+  labels: {}
 
 # -- This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/
 route:
@@ -112,8 +118,8 @@ route:
   # -- Filter that should be added to the default rule
   filters: []
 
-  # -- Any custom rule you want to specify
-  additionalRules: {}
+  # -- Any custom rule you want to specify. Spliced into the HTTPRoute rules list, so it has to be a list of rules.
+  additionalRules: []
 
 # -- This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -155,14 +161,6 @@ persistence:
     existingVolumeClaim: ~
     accessMode: ReadWriteOnce
 
-# -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -184,6 +182,14 @@ readinessProbe:
   httpGet:
     path: /
     port: http
+# -- Startup probe. Gives the app time to migrate its settings db and scan the library before the
+# liveness probe takes over. Set to `{}` to disable.
+startupProbe:
+  httpGet:
+    path: /
+    port: http
+  failureThreshold: 30
+  periodSeconds: 10
 
 # -- Additional volumes on the output Deployment definition.
 volumes: []

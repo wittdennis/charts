@@ -1,3 +1,4 @@
+{{- include "calibre-web.validateValues" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,9 +6,7 @@ metadata:
   labels:
     {{- include "calibre-web.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "calibre-web.selectorLabels" . | nindent 6 }}
@@ -55,6 +54,10 @@ spec:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
