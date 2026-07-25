@@ -20,6 +20,7 @@ on:
           - paperless-ngx
           - filebrowser
           - radicale
+          - calibre-web
       version:
         default: "auto"
         description: Can be used to set a specific version. Use 'auto' for automatic version calculation
