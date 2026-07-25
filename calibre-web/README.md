@@ -1,6 +1,6 @@
 # calibre-web
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.26](https://img.shields.io/badge/AppVersion-0.6.26-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for Calibre-Web.
 Calibre-Web is a web app for browsing, reading and downloading eBooks stored in a Calibre database.
@@ -10,6 +10,7 @@ This chart expects a rootless image with bundled Calibre binaries so it can run 
 
 * <https://github.com/wittdennis/charts/tree/main/calibre-web>
 * <https://github.com/janeczku/calibre-web>
+* <https://github.com/wittdennis/container-calibre-web>
 
 ## Values
 
@@ -20,7 +21,7 @@ This chart expects a rootless image with bundled Calibre binaries so it can run 
 | deploymentStrategy | object | `{"type":"Recreate"}` | Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes. |
 | env | object | `{}` | Additional env values to pass to the container. The image already sets CALIBRE_DBPATH, CACHE_DIRECTORY and the Calibre temp/config paths so it runs on a read-only root filesystem. |
 | fullnameOverride | string | `""` |  |
-| image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"wittdennis/calibre-web","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ NOTE: points at a custom rootless, read-only image built from the accompanying Dockerfile (Calibre-Web + bundled Calibre binaries). Set this to wherever you publish that image. |
+| image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"wittdennis/calibre-web","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ Custom rootless, read-only image (Calibre-Web + bundled Calibre binaries). |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
