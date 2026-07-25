@@ -368,8 +368,8 @@ route:
   # -- Filter that should be added to the default rule
   filters: []
 
-  # -- Any custom rule you want to specify
-  additionalRules: {}
+  # -- Any custom rules you want to specify. Appended to the rules of the HTTPRoute.
+  additionalRules: []
 
 # -- This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:

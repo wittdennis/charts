@@ -8,6 +8,10 @@
 {{ template "chart.maintainersSection" . }}
 {{ template "chart.sourcesSection" . }}
 
+## Requirements
+
+Helm 4. The bundled `values.schema.json` is written against JSON Schema draft 2020-12, which earlier Helm releases cannot parse.
+
 ## Upgrading to 2.0.0
 
 Chart 2.0.0 moves from paperless-ngx 2.20.15 to 3.0.2. The application release contains breaking changes, so read this section before upgrading. Upstream reference: [v3 migration guide](https://docs.paperless-ngx.com/migration-v3/).
