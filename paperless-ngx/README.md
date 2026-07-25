@@ -38,6 +38,7 @@ The default for archive generation changed meaning: chart 1.x defaulted to `skip
 | `hosting.trustedProxies`                  | Set to the IPs of your ingress controller or gateway. Without it allauth cannot determine the client IP for login rate limiting and logins may fail with `403 Forbidden`. |
 | `hosting.trustedClientIpHeader`           | For proxies that use a dedicated header such as `X-Real-IP` or `CF-Connecting-IP` instead of `X-Forwarded-For`.   |
 | `database.options`                        | Replaces the removed upstream SSL, timeout and pool size variables with a single comma-delimited option string.   |
+| `ai.*`                                    | Opt-in access to the new AI suggestion and RAG features. Disabled by default — see [AI features](#ai-features).    |
 
 `PAPERLESS_SUPERVISORD_WORKING_DIR` is no longer set — it became a no-op upstream. Read-only root filesystem support still works through `S6_READ_ONLY_ROOT`, and the chart now also mounts an `emptyDir` at `/var/cache/fontconfig`, which paperless-ngx 3.0 expects to be writable.
 
@@ -51,11 +52,83 @@ The default for archive generation changed meaning: chart 1.x defaulted to `skip
 - **Pre- and post-consume scripts** no longer receive positional arguments; use the `DOCUMENT_*` environment variables instead.
 - The image now ships PyTorch regardless of whether the AI features are enabled, so expect a larger image and a higher memory floor.
 
+## AI features
+
+Paperless-ngx 3.0 added LLM-backed suggestions and optional retrieval augmented generation. Everything is off by default; set `ai.enabled` and pick a backend to turn it on.
+
+> Your document content is sent to whichever backend you configure. Hosted providers may be paid services and you are responsible for any usage charges. Prefer a backend inside your own cluster if that matters to you.
+
+`ai.backend` is required when `ai.enabled` is true and must be `openai-like` or `ollama`. The chart fails the render with a helpful message if it is missing or invalid, rather than letting the pod crash-loop on a startup error.
+
+### Ollama running in the cluster
+
+```yaml
+ai:
+  enabled: true
+  backend: ollama
+  endpoint: http://ollama.ai.svc.cluster.local:11434
+  model: llama3.1
+```
+
+`ai.allowInternalEndpoints` must stay `true` for this, since paperless otherwise rejects endpoints that resolve to non-public addresses. It defaults to `true`.
+
+### An OpenAI-compatible provider
+
+```yaml
+ai:
+  enabled: true
+  backend: openai-like
+  model: gpt-4
+  # Optional, to target a provider other than OpenAI
+  endpoint: https://api.example.com/v1
+  apiKeySecret:
+    name: paperless-ai
+    key: api-key
+```
+
+The API key is only read from a secret — create it yourself and reference it. There is no plain-value alternative, deliberately.
+
+### RAG embeddings
+
+Retrieval augmented features need an embedding backend on top of the above. It is configured separately because it does not have to be the same provider as the chat model:
+
+```yaml
+ai:
+  embedding:
+    backend: ollama       # or openai-like, huggingface
+    model: embeddinggemma
+```
+
+The embedding index is written to `data/llm_index` inside the data volume, and `ai.embedding.indexCron` controls when embeddings for all documents are refreshed (daily at 02:10 by default).
+
+The `huggingface` backend is different from the other two: it runs the embedding model **inside the paperless container** instead of calling out to a service. The chart points `HF_HOME` at the data volume for it, because the default cache location is the container home directory, which is neither writable under the chart's default `readOnlyRootFilesystem: true` nor persisted across restarts. Consequences worth planning for:
+
+- The model is downloaded on first use, so the pod needs egress to huggingface.co and a few hundred MB to several GB of extra room in `persistence.data.size` (default `10Gi`).
+- Inference happens in the paperless pod, so give it meaningfully more memory and CPU via `resources`.
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| ai | object | `{"allowInternalEndpoints":true,"apiKeySecret":{"key":null,"name":null},"backend":null,"contextSize":8192,"embedding":{"backend":null,"chunkSize":1024,"endpoint":null,"indexCron":"10 2 * * *","model":null},"enabled":false,"endpoint":null,"model":null,"outputLanguage":null,"requestTimeout":120}` | Settings for the AI features. Note that hosted providers may be paid services and that your document content is sent to whichever backend you configure. See: https://docs.paperless-ngx.com/configuration/#ai |
+| ai.allowInternalEndpoints | bool | `true` | When set to false paperless blocks endpoint urls that resolve to non public addresses. Keep this enabled when the backend runs inside the cluster. |
+| ai.apiKeySecret | object | `{"key":null,"name":null}` | Secret containing the api key for the backend. Typically required for `openai-like`, optional for others. |
+| ai.apiKeySecret.key | string | `nil` | Key containing the api key |
+| ai.apiKeySecret.name | string | `nil` | Name of the secret |
+| ai.backend | string | `nil` | Backend to use for the LLM. Possible values are `openai-like` and `ollama`. Required when `ai.enabled` is true. |
+| ai.contextSize | int | `8192` | Context size to use for prompts and RAG retrieval. Also sent as `num_ctx` to ollama backends. |
+| ai.embedding | object | `{"backend":null,"chunkSize":1024,"endpoint":null,"indexCron":"10 2 * * *","model":null}` | Settings for the RAG embeddings. Only needed for the retrieval augmented features, the embedding index is stored in the data volume. |
+| ai.embedding.backend | string | `nil` | Backend to use for embeddings. Possible values are `openai-like`, `huggingface` and `ollama`. When unset no embeddings are created. `huggingface` runs the model in the paperless container and downloads it into the data volume on first use. |
+| ai.embedding.chunkSize | int | `1024` | Chunk size used when splitting document text for embeddings. Lower this when your backend rejects or truncates larger inputs. |
+| ai.embedding.endpoint | string | `nil` | Endpoint of the embedding backend. Falls back to `ai.endpoint` when unset. |
+| ai.embedding.indexCron | string | `"10 2 * * *"` | Cron expression for refreshing the embeddings of all documents. Only runs when `ai.enabled` and `ai.embedding.backend` are set. |
+| ai.embedding.model | string | `nil` | Model to use for embeddings. Defaults to `text-embedding-3-small` for `openai-like`, `sentence-transformers/all-MiniLM-L6-v2` for `huggingface` and `embeddinggemma` for `ollama`. |
+| ai.enabled | bool | `false` | Enables the AI features, including AI based suggestions. Required for any other setting in this block to take effect. |
+| ai.endpoint | string | `nil` | Endpoint of the backend. Required for `ollama`, optional for `openai-like` to target a custom provider or local gateway. |
+| ai.model | string | `nil` | Model to use for the backend. Defaults to `gpt-3.5-turbo` for `openai-like` and `llama3.1` for `ollama`. |
+| ai.outputLanguage | string | `nil` | Language to use for AI suggestions. Defaults to the user's UI language when unset. |
+| ai.requestTimeout | int | `120` | Timeout in seconds for requests to the backend. Increase this for slow or local inference servers. |
 | auth | object | `{"allowSignup":false,"cookieAge":1209600,"defaultGroups":"None","rememberSession":true,"sso":{"allowSignup":true,"autoRedirect":false,"autoSignup":false,"defaultGroups":null,"disableRegularLogin":false,"emailVerification":"optional","providersSecret":{"key":null,"name":null},"syncGroups":false}}` | Authentication settings |
 | auth.allowSignup | bool | `false` | Allow users to signup for a new Paperless-ngx account. |
 | auth.cookieAge | int | `1209600` | Login session cookie expiration. Applies if PAPERLESS_ACCOUNT_SESSION_REMEMBER is enabled |

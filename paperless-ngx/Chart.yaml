@@ -45,6 +45,11 @@ annotations:
       description: "hosting.trustedProxies and hosting.trustedClientIpHeader to let allauth determine the client IP behind an ingress or gateway, avoiding 403 errors on login."
     - kind: added
       description: "database.options, replacing the upstream database SSL, timeout and pool size variables removed in paperless-ngx 3.0."
+    - kind: added
+      description: "Support for the paperless-ngx 3.0 AI features under the ai key, covering LLM suggestions and RAG embeddings. Disabled by default."
+      links:
+        - name: AI features
+          url: https://github.com/wittdennis/charts/tree/main/paperless-ngx#ai-features
     - kind: fixed
       description: "Mount an emptyDir at /var/cache/fontconfig, which paperless-ngx 3.0 expects to be writable when readOnlyRootFilesystem is enabled."
     - kind: removed

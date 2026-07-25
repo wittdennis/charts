@@ -237,6 +237,60 @@ spec:
               value: {{ .Values.documentConsumption.stabilityDelay | quote }}
             - name: PAPERLESS_CONSUMER_DELETE_DUPLICATES
               value: {{ .Values.documentConsumption.deleteDuplicates | quote }}
+            - name: PAPERLESS_AI_ENABLED
+              value: {{ .Values.ai.enabled | quote }}
+            {{- if .Values.ai.enabled }}
+            - name: PAPERLESS_AI_LLM_BACKEND
+              value: {{ .Values.ai.backend | quote }}
+            {{- with .Values.ai.model }}
+            - name: PAPERLESS_AI_LLM_MODEL
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.ai.endpoint }}
+            - name: PAPERLESS_AI_LLM_ENDPOINT
+              value: {{ . | quote }}
+            {{- end }}
+            {{- if .Values.ai.apiKeySecret.name }}
+            - name: PAPERLESS_AI_LLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: {{ .Values.ai.apiKeySecret.key }}
+                  name: {{ .Values.ai.apiKeySecret.name }}
+            {{- end }}
+            {{- with .Values.ai.outputLanguage }}
+            - name: PAPERLESS_AI_LLM_OUTPUT_LANGUAGE
+              value: {{ . | quote }}
+            {{- end }}
+            - name: PAPERLESS_AI_LLM_CONTEXT_SIZE
+              value: {{ printf "%d" (.Values.ai.contextSize | int64) | quote }}
+            - name: PAPERLESS_AI_LLM_REQUEST_TIMEOUT
+              value: {{ printf "%d" (.Values.ai.requestTimeout | int64) | quote }}
+            - name: PAPERLESS_AI_LLM_ALLOW_INTERNAL_ENDPOINTS
+              value: {{ .Values.ai.allowInternalEndpoints | quote }}
+            {{- with .Values.ai.embedding.backend }}
+            - name: PAPERLESS_AI_LLM_EMBEDDING_BACKEND
+              value: {{ . | quote }}
+            {{- if eq . "huggingface" }}
+            {{- /* Default cache lives in the container home dir, which is neither writable nor persisted */}}
+            - name: HF_HOME
+              value: /usr/src/paperless/data/.cache/huggingface
+            {{- end }}
+            {{- end }}
+            {{- with .Values.ai.embedding.model }}
+            - name: PAPERLESS_AI_LLM_EMBEDDING_MODEL
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.ai.embedding.endpoint }}
+            - name: PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT
+              value: {{ . | quote }}
+            {{- end }}
+            - name: PAPERLESS_AI_LLM_EMBEDDING_CHUNK_SIZE
+              value: {{ printf "%d" (.Values.ai.embedding.chunkSize | int64) | quote }}
+            {{- with .Values.ai.embedding.indexCron }}
+            - name: PAPERLESS_LLM_INDEX_TASK_CRON
+              value: {{ . | quote }}
+            {{- end }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

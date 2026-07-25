@@ -177,6 +177,45 @@ documentConsumption:
   # -- Since paperless-ngx 3.0 duplicate documents are consumed and flagged in the UI. When enabled duplicates are instead deleted from the consume directory without being consumed.
   deleteDuplicates: false
 
+# -- Settings for the AI features. Note that hosted providers may be paid services and that your document
+# content is sent to whichever backend you configure. See: https://docs.paperless-ngx.com/configuration/#ai
+ai:
+  # -- Enables the AI features, including AI based suggestions. Required for any other setting in this block to take effect.
+  enabled: false
+  # -- Backend to use for the LLM. Possible values are `openai-like` and `ollama`. Required when `ai.enabled` is true.
+  backend: ~
+  # -- Model to use for the backend. Defaults to `gpt-3.5-turbo` for `openai-like` and `llama3.1` for `ollama`.
+  model: ~
+  # -- Endpoint of the backend. Required for `ollama`, optional for `openai-like` to target a custom provider or local gateway.
+  endpoint: ~
+  # -- Secret containing the api key for the backend. Typically required for `openai-like`, optional for others.
+  apiKeySecret:
+    # -- Name of the secret
+    name: ~
+    # -- Key containing the api key
+    key: ~
+  # -- Language to use for AI suggestions. Defaults to the user's UI language when unset.
+  outputLanguage: ~
+  # -- Context size to use for prompts and RAG retrieval. Also sent as `num_ctx` to ollama backends.
+  contextSize: 8192
+  # -- Timeout in seconds for requests to the backend. Increase this for slow or local inference servers.
+  requestTimeout: 120
+  # -- When set to false paperless blocks endpoint urls that resolve to non public addresses. Keep this enabled when the backend runs inside the cluster.
+  allowInternalEndpoints: true
+  # -- Settings for the RAG embeddings. Only needed for the retrieval augmented features, the embedding index is stored in the data volume.
+  embedding:
+    # -- Backend to use for embeddings. Possible values are `openai-like`, `huggingface` and `ollama`. When unset no embeddings are created.
+    # `huggingface` runs the model in the paperless container and downloads it into the data volume on first use.
+    backend: ~
+    # -- Model to use for embeddings. Defaults to `text-embedding-3-small` for `openai-like`, `sentence-transformers/all-MiniLM-L6-v2` for `huggingface` and `embeddinggemma` for `ollama`.
+    model: ~
+    # -- Endpoint of the embedding backend. Falls back to `ai.endpoint` when unset.
+    endpoint: ~
+    # -- Chunk size used when splitting document text for embeddings. Lower this when your backend rejects or truncates larger inputs.
+    chunkSize: 1024
+    # -- Cron expression for refreshing the embeddings of all documents. Only runs when `ai.enabled` and `ai.embedding.backend` are set.
+    indexCron: "10 2 * * *"
+
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
