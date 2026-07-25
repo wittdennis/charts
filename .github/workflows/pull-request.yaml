@@ -74,8 +74,10 @@ jobs:
         with:
           version: v4.2.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
 
+      # helm 4 verifies plugin signatures by default. Git sources cannot be verified at all, and the
+      # release tarballs ship detached GPG signatures rather than the provenance file helm expects.
       - name: setup helm-unittest
-        run: helm plugin install https://github.com/helm-unittest/helm-unittest --version "$UNITTEST_VERSION"
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest --version "$UNITTEST_VERSION" --verify=false
         env:
           UNITTEST_VERSION: v1.1.1 # renovate: datasource=github-releases depName=helm-unittest/helm-unittest versioning=semver
 
