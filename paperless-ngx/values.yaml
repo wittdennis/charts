@@ -41,6 +41,10 @@ database:
   port: ~
   # -- Can be used to configure a custom name for the database defaults to paperless
   databaseName: ~
+  # -- Advanced connection options as a comma-delimited key-value string (e.g. `sslmode=require,pool.max_size=10`).
+  # Dot-notation produces nested option dictionaries. Applies to all engines including sqlite.
+  # See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_DB_OPTIONS
+  options: ~
   # -- Caches the database read query results into Redis. This can significantly improve application response times by caching database queries, at the cost of slightly increased memory usage.
   enableReadCache: false
   # -- Specifies how long (in seconds) read data should be cached. Allowed values are between 1 (one second) and 31536000 (one year).
@@ -56,6 +60,12 @@ hosting:
     name: ~
     # -- Key of the secret
     key: key
+  # -- IP addresses of reverse proxies that are allowed to set forwarding headers. Without this allauth cannot
+  # determine the client IP for login rate limiting when running behind an ingress or gateway, resulting in a 403 on login.
+  trustedProxies: []
+  # -- Header containing the real client IP for proxies that don't use `X-Forwarded-For` (e.g. `X-Real-IP`, `CF-Connecting-IP`).
+  # Takes precedence over `hosting.trustedProxies`.
+  trustedClientIpHeader: ~
 
 # -- Authentication settings
 auth:
@@ -125,10 +135,12 @@ email:
 ocr:
   # -- Customize the language that paperless will attempt to use when parsing documents. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_OCR_LANGUAGE for more info.
   language: eng
-  # -- Tell paperless when and how to perform ocr on your documents. Three modes are available: skip, redo, force. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_OCR_MODE for more info.
-  mode: skip
-  # -- Specify when you would like paperless to skip creating an archived version of your documents. Available modes are never, with_text, always
-  skipArchiveFile: never
+  # -- Tell paperless when and how to perform ocr on your documents. Four modes are available: auto, redo, force, off. See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_OCR_MODE for more info.
+  mode: auto
+  # -- Controls when paperless creates a PDF/A archive version of your documents. Available modes are auto, always, never.
+  # `auto` skips the archive for born-digital PDFs that already contain text, `always` archives whenever the parser supports it.
+  # See: https://docs.paperless-ngx.com/configuration/#PAPERLESS_ARCHIVE_FILE_GENERATION for more info.
+  archiveFileGeneration: auto
   # -- Tells paperless to use unpaper to clean any input document before sending it to tesseract. Available modes: clean, clean-final, none
   cleanMode: clean
   # -- Tells paperless to correct skewing (slight rotation of input images mainly due to improper scanning)
@@ -157,6 +169,13 @@ documentConsumption:
   # -- Paperless will try to determine the document creation date from its contents. Specify the date format Paperless should expect to see within your documents.
   # This option defaults to DMY which translates to day first, month second, and year last order. Characters D, M, or Y can be shuffled to meet the required order.
   dateOrder: DMY
+  # -- How the consumer detects new files in the consume directory. `0` uses native filesystem notifications, a positive
+  # number polls the directory at that interval in seconds. Use polling when the consume volume is backed by a network filesystem (NFS, SMB/CIFS).
+  pollingInterval: 0
+  # -- Time in seconds a file must remain unchanged before paperless starts consuming it. Increase for slow storage or scanners that write incrementally.
+  stabilityDelay: 5
+  # -- Since paperless-ngx 3.0 duplicate documents are consumed and flagged in the UI. When enabled duplicates are instead deleted from the consume directory without being consumed.
+  deleteDuplicates: false
 
 # -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1

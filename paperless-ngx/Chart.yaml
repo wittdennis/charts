@@ -17,3 +17,35 @@ keywords:
   - dms
   - document-management
   - document-management-system
+annotations:
+  artifacthub.io/links: |
+    - name: Chart 2.0.0 migration guide
+      url: https://github.com/wittdennis/charts/tree/main/paperless-ngx#upgrading-to-200
+    - name: Paperless-ngx v3 migration guide
+      url: https://docs.paperless-ngx.com/migration-v3/
+  artifacthub.io/changes: |
+    - kind: changed
+      description: "Upgrade paperless-ngx to 3.0.2. Read the migration guide before upgrading, the application release has breaking changes."
+      links:
+        - name: Chart migration guide
+          url: https://github.com/wittdennis/charts/tree/main/paperless-ngx#upgrading-to-200
+        - name: Paperless-ngx v3 migration guide
+          url: https://docs.paperless-ngx.com/migration-v3/
+    - kind: removed
+      description: "ocr.skipArchiveFile was replaced by ocr.archiveFileGeneration. Rendering fails while the old value is still set."
+    - kind: changed
+      description: "ocr.archiveFileGeneration defaults to auto, which no longer creates a PDF/A archive for born-digital PDFs that already contain text. Set it to always to keep the previous behavior."
+    - kind: changed
+      description: "ocr.mode now defaults to auto. The skip and skip_noarchive modes were removed upstream."
+    - kind: added
+      description: "documentConsumption.pollingInterval and documentConsumption.stabilityDelay to control how the consume directory is watched, for volumes backed by a network filesystem."
+    - kind: added
+      description: "documentConsumption.deleteDuplicates to restore rejection of duplicate documents, which paperless-ngx 3.0 now consumes by default."
+    - kind: added
+      description: "hosting.trustedProxies and hosting.trustedClientIpHeader to let allauth determine the client IP behind an ingress or gateway, avoiding 403 errors on login."
+    - kind: added
+      description: "database.options, replacing the upstream database SSL, timeout and pool size variables removed in paperless-ngx 3.0."
+    - kind: fixed
+      description: "Mount an emptyDir at /var/cache/fontconfig, which paperless-ngx 3.0 expects to be writable when readOnlyRootFilesystem is enabled."
+    - kind: removed
+      description: "PAPERLESS_SUPERVISORD_WORKING_DIR is no longer set, it became a no-op upstream."
