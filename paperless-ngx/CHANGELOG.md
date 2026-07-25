@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-2.0.0 - 2026-07-25
+#### Features
+- (**paperless-ngx**) add options to configure AI settings - (73462ba) - Dennis Witt
+- <span style="background-color: #d73a49; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.85em;">BREAKING</span>(**paperless-ngx**) chart migrations for paperless v3. See chart migration guide - (c12a528) - Dennis Witt
+#### Bug Fixes
+- (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v3 - (b752a37) - wittdennis-renovate[bot]
+#### Tests
+- (**paperless-ngx**) add values schema - (705e799) - Dennis Witt
+- (**paperless-ngx**) add test suite - (4242763) - Dennis Witt
+
+- - -
+
 ## paperless-ngx-1.3.0 - 2026-05-22
 #### Features
 - (**paperless-ngx**) add date order option - (e16b088) - Dennis Witt
