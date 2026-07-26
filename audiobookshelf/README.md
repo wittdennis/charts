@@ -124,7 +124,7 @@ Audiobookshelf serves from `/audiobookshelf` and rewrites requests that arrive w
 | replicaCount | int | `1` | Replica count. Only 0 (scaled down) and 1 are valid: Audiobookshelf keeps its database in a SQLite file on a ReadWriteOnce volume, so a second replica would corrupt it. Anything higher fails the render. |
 | resources | object | `{}` |  |
 | route | object | `{"additionalRules":[],"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
-| route.additionalRules | list | `[]` | Any custom rule you want to specify. Spliced into the HTTPRoute rules list, so it has to be a list of rules. |
+| route.additionalRules | list | `[]` | Any custom rule you want to specify. |
 | route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
 | route.enabled | bool | `false` | Flag to control if route should be created |
 | route.filters | list | `[]` | Filter that should be added to the default rule |
