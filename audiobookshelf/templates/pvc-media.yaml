@@ -1,0 +1,20 @@
+{{- range .Values.mediaMounts }}
+{{- if not .existingClaim }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "audiobookshelf.mediaPvcName" (dict "root" $ "name" .name) }}
+  labels:
+    {{- include "audiobookshelf.labels" $ | nindent 4 }}
+spec:
+  {{- if .className }}
+  storageClassName: {{ .className | quote }}
+  {{- end }}
+  accessModes:
+    - {{ .accessMode | default "ReadWriteOnce" | quote }}
+  resources:
+    requests:
+      storage: {{ .size | quote }}
+{{- end }}
+{{- end }}

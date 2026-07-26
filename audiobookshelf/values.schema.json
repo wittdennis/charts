@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "audiobookshelf chart values",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "stringMap": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" }
+    },
+    "objectList": {
+      "type": ["array", "null"],
+      "items": { "type": "object" }
+    },
+    "quantity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accessMode": {
+      "type": "string",
+      "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany", "ReadWriteOncePod"]
+    },
+    "seccompProfile": {
+      "type": ["object", "null"],
+      "properties": {
+        "type": { "type": "string", "enum": ["RuntimeDefault", "Unconfined", "Localhost"] },
+        "localhostProfile": { "type": ["string", "null"] }
+      }
+    },
+    "persistentVolume": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "accessMode", "size"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "existingVolumeClaim": { "type": ["string", "null"] },
+        "className": { "type": ["string", "null"] },
+        "accessMode": { "$ref": "#/$defs/accessMode" },
+        "size": { "$ref": "#/$defs/quantity" }
+      }
+    },
+    "mediaMount": {
+      "description": "Either existingClaim or size has to be supplied. That rule lives in the templates rather than here, so the rejection names the offending entry instead of producing a bare schema error.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "mountPath"],
+      "properties": {
+        "name": {
+          "description": "Doubles as the volume name and, when the chart provisions the claim, as its name suffix.",
+          "type": "string",
+          "minLength": 1
+        },
+        "mountPath": { "type": "string", "minLength": 1 },
+        "existingClaim": {
+          "description": "Mount a claim that already exists. Suppresses provisioning for this entry.",
+          "type": ["string", "null"]
+        },
+        "subPath": { "type": ["string", "null"] },
+        "readOnly": { "type": "boolean" },
+        "className": { "type": ["string", "null"] },
+        "accessMode": { "$ref": "#/$defs/accessMode" },
+        "size": { "$ref": "#/$defs/quantity" }
+      }
+    },
+    "probe": {
+      "description": "Rendered verbatim, so any Kubernetes Probe field is accepted.",
+      "type": ["object", "null"]
+    },
+    "optionalSetting": {
+      "description": "Passed to the container as an environment variable when non-empty, so the application default applies otherwise. Kubernetes only accepts strings, so quote numeric values.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "image",
+    "serviceAccount",
+    "persistence",
+    "audiobookshelf",
+    "binaries",
+    "securityContext",
+    "service",
+    "route",
+    "ingress",
+    "deploymentStrategy"
+  ],
+  "properties": {
+    "global": {
+      "description": "Reserved by Helm for values shared with parent or sibling charts.",
+      "type": ["object", "null"]
+    },
+
+    "replicaCount": {
+      "description": "Only 0 and 1 are accepted. The upper bound is enforced by the templates rather than here, so the rejection carries the reason instead of a bare schema error.",
+      "type": "integer",
+      "minimum": 0
+    },
+
+    "deploymentStrategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "enum": ["RollingUpdate", "Recreate"] },
+        "rollingUpdate": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "maxUnavailable": { "type": ["integer", "string"] },
+            "maxSurge": { "type": ["integer", "string"] }
+          }
+        }
+      }
+    },
+
+    "env": {
+      "description": "Rendered verbatim into the container env list, after the entries the chart derives, so an entry here wins.",
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "value": {
+            "description": "Kubernetes only accepts strings here, so quote numeric values.",
+            "type": "string"
+          },
+          "valueFrom": { "type": "object" }
+        }
+      }
+    },
+
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry", "repository"],
+      "properties": {
+        "registry": { "type": "string", "minLength": 1 },
+        "repository": { "type": "string", "minLength": 1 },
+        "pullPolicy": { "type": "string", "enum": ["Always", "Never", "IfNotPresent"] },
+        "tag": {
+          "description": "Empty string falls back to the chart appVersion.",
+          "type": "string"
+        }
+      }
+    },
+
+    "imagePullSecrets": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": { "name": { "type": "string" } }
+      }
+    },
+
+    "nameOverride": { "type": "string", "maxLength": 63 },
+    "fullnameOverride": { "type": "string", "maxLength": 63 },
+
+    "serviceAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["create"],
+      "properties": {
+        "create": { "type": "boolean" },
+        "automount": { "type": "boolean" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "name": { "type": "string" }
+      }
+    },
+
+    "podAnnotations": { "$ref": "#/$defs/stringMap" },
+    "podLabels": { "$ref": "#/$defs/stringMap" },
+
+    "podSecurityContext": {
+      "description": "Rendered verbatim into the pod spec, so any Kubernetes PodSecurityContext field is accepted.",
+      "type": ["object", "null"],
+      "properties": {
+        "runAsNonRoot": { "type": "boolean" },
+        "runAsUser": { "type": "integer" },
+        "runAsGroup": { "type": "integer" },
+        "fsGroup": { "type": "integer" },
+        "fsGroupChangePolicy": { "type": "string", "enum": ["OnRootMismatch", "Always"] },
+        "seccompProfile": { "$ref": "#/$defs/seccompProfile" }
+      }
+    },
+
+    "securityContext": {
+      "description": "Rendered verbatim into the container spec, so any Kubernetes SecurityContext field is accepted. The application only writes to /config, /metadata and /tmp, so readOnlyRootFilesystem can stay true.",
+      "type": "object",
+      "properties": {
+        "allowPrivilegeEscalation": { "type": "boolean" },
+        "readOnlyRootFilesystem": { "type": "boolean" },
+        "seccompProfile": { "$ref": "#/$defs/seccompProfile" },
+        "runAsUser": { "type": "integer" },
+        "runAsGroup": { "type": "integer" },
+        "runAsNonRoot": { "type": "boolean" },
+        "privileged": { "type": "boolean" },
+        "capabilities": {
+          "type": ["object", "null"],
+          "properties": {
+            "drop": { "type": "array", "items": { "type": "string" } },
+            "add": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "port"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer", "ExternalName"]
+        },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "labels": { "$ref": "#/$defs/stringMap" }
+      }
+    },
+
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "labels": { "$ref": "#/$defs/stringMap" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "hostnames": { "type": ["array", "null"], "items": { "type": "string" } },
+        "parentRefs": { "$ref": "#/$defs/objectList" },
+        "matches": { "$ref": "#/$defs/objectList" },
+        "filters": { "$ref": "#/$defs/objectList" },
+        "additionalRules": {
+          "description": "Appended into the HTTPRoute rules list, so it must be a list of rules.",
+          "$ref": "#/$defs/objectList"
+        }
+      }
+    },
+
+    "ingress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "className": { "type": "string" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "hosts": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["host"],
+            "properties": {
+              "host": { "type": "string", "minLength": 1 },
+              "paths": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["path"],
+                  "properties": {
+                    "path": { "type": "string", "minLength": 1 },
+                    "pathType": {
+                      "type": "string",
+                      "enum": ["Exact", "Prefix", "ImplementationSpecific"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secretName": { "type": "string" },
+              "hosts": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+
+    "persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["config", "metadata"],
+      "properties": {
+        "config": { "$ref": "#/$defs/persistentVolume" },
+        "metadata": { "$ref": "#/$defs/persistentVolume" }
+      }
+    },
+
+    "mediaMounts": {
+      "description": "Volumes holding the audio files. Uniqueness of the names, and the collision with the chart's own volume names, are enforced by the templates so the rejection names the offending entry.",
+      "type": ["array", "null"],
+      "items": { "$ref": "#/$defs/mediaMount" }
+    },
+
+    "audiobookshelf": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "timezone": { "$ref": "#/$defs/optionalSetting" },
+        "routerBasePath": { "$ref": "#/$defs/optionalSetting" },
+        "backupPath": { "$ref": "#/$defs/optionalSetting" },
+        "podcast": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "downloadTimeout": { "$ref": "#/$defs/optionalSetting" }
+          }
+        },
+        "sqlite": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cacheSize": { "$ref": "#/$defs/optionalSetting" },
+            "mmapSize": { "$ref": "#/$defs/optionalSetting" },
+            "tempStore": { "$ref": "#/$defs/optionalSetting" }
+          }
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "logging": { "type": "string", "enum": ["", "log", "benchmark"] },
+            "profiling": { "$ref": "#/$defs/optionalSetting" }
+          }
+        }
+      }
+    },
+
+    "binaries": {
+      "description": "Both paths are required once skipCheck is true. That rule lives in the templates so the rejection explains why.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skipCheck"],
+      "properties": {
+        "skipCheck": { "type": "boolean" },
+        "ffmpegPath": { "type": "string" },
+        "ffprobePath": { "type": "string" }
+      }
+    },
+
+    "resources": {
+      "description": "Rendered verbatim, so any Kubernetes ResourceRequirements field is accepted.",
+      "type": ["object", "null"]
+    },
+
+    "livenessProbe": { "$ref": "#/$defs/probe" },
+    "readinessProbe": { "$ref": "#/$defs/probe" },
+    "startupProbe": { "$ref": "#/$defs/probe" },
+
+    "volumes": { "$ref": "#/$defs/objectList" },
+    "volumeMounts": { "$ref": "#/$defs/objectList" },
+    "nodeSelector": { "$ref": "#/$defs/stringMap" },
+    "tolerations": { "$ref": "#/$defs/objectList" },
+    "affinity": {
+      "description": "Rendered verbatim, so any Kubernetes Affinity field is accepted.",
+      "type": ["object", "null"]
+    }
+  }
+}

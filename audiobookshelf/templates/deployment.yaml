@@ -1,0 +1,177 @@
+{{- include "audiobookshelf.validateValues" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "audiobookshelf.fullname" . }}
+  labels:
+    {{- include "audiobookshelf.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "audiobookshelf.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.deploymentStrategy.type }}
+    {{- if and (eq .Values.deploymentStrategy.type "RollingUpdate") .Values.deploymentStrategy.rollingUpdate }}
+    rollingUpdate:
+      {{- toYaml .Values.deploymentStrategy.rollingUpdate | nindent 6 }}
+    {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "audiobookshelf.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "audiobookshelf.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- /* The image defaults to port 80, which a non-root container cannot bind. */}}
+            - name: PORT
+              value: "8080"
+            - name: CONFIG_PATH
+              value: /config
+            - name: METADATA_PATH
+              value: /metadata
+            {{- /* Shown as the installation source in the web client. */}}
+            - name: SOURCE
+              value: helm
+            {{- with .Values.audiobookshelf.timezone }}
+            - name: TZ
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.routerBasePath }}
+            - name: ROUTER_BASE_PATH
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.backupPath }}
+            - name: BACKUP_PATH
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.podcast.downloadTimeout }}
+            - name: PODCAST_DOWNLOAD_TIMEOUT
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.sqlite.cacheSize }}
+            - name: SQLITE_CACHE_SIZE
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.sqlite.mmapSize }}
+            - name: SQLITE_MMAP_SIZE
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.sqlite.tempStore }}
+            - name: SQLITE_TEMP_STORE
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.query.logging }}
+            - name: QUERY_LOGGING
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.audiobookshelf.query.profiling }}
+            - name: QUERY_PROFILING
+              value: {{ . | quote }}
+            {{- end }}
+            {{- if .Values.binaries.skipCheck }}
+            - name: SKIP_BINARIES_CHECK
+              value: "1"
+            {{- end }}
+            {{- with .Values.binaries.ffmpegPath }}
+            - name: FFMPEG_PATH
+              value: {{ . | quote }}
+            {{- end }}
+            {{- with .Values.binaries.ffprobePath }}
+            - name: FFPROBE_PATH
+              value: {{ . | quote }}
+            {{- end }}
+          {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: config
+              mountPath: /config
+            - name: metadata
+              mountPath: /metadata
+          {{- range .Values.mediaMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              {{- with .subPath }}
+              subPath: {{ . }}
+              {{- end }}
+              {{- if .readOnly }}
+              readOnly: true
+              {{- end }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: config
+        {{- if .Values.persistence.config.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingVolumeClaim | default (include "audiobookshelf.configPvcName" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        - name: metadata
+        {{- if .Values.persistence.metadata.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.metadata.existingVolumeClaim | default (include "audiobookshelf.metadataPvcName" .) }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- range .Values.mediaMounts }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .existingClaim | default (include "audiobookshelf.mediaPvcName" (dict "root" $ "name" .name)) }}
+      {{- end }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

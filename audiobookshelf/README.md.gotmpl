@@ -1,0 +1,78 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+{{ template "chart.maintainersSection" . }}
+{{ template "chart.sourcesSection" . }}
+
+## Requirements
+
+Helm 4. The bundled `values.schema.json` is written against JSON Schema draft 2020-12, which earlier Helm releases cannot parse.
+
+## Single replica
+
+`replicaCount` accepts only `0` and `1`. Audiobookshelf keeps its libraries, users and listening progress in a single SQLite database on a `ReadWriteOnce` volume, so a second replica would corrupt it. Rendering fails for anything higher. Set `replicaCount: 0` to scale down and release the volumes for maintenance.
+
+The deployment strategy defaults to `Recreate` for the same reason: a rolling update would need two pods attached to the same volumes at once.
+
+## Media volumes
+
+Libraries are added in the app UI against paths inside the container, so the chart cannot know how many volumes are needed or where they belong. `mediaMounts` supplies them, and each entry either reuses a volume you already have or is provisioned by the chart.
+
+The default provisions a single 50Gi volume at `/audiobooks`, so a plain `helm install` works on any cluster with a default storage class:
+
+```yaml
+mediaMounts:
+  - name: audiobooks
+    mountPath: /audiobooks
+    size: 50Gi
+    accessMode: ReadWriteOnce
+    className: ~
+```
+
+Point it at storage you already have with `existingClaim` instead. The chart provisions nothing for those entries:
+
+```yaml
+mediaMounts:
+  - name: audiobooks
+    mountPath: /audiobooks
+    existingClaim: media-audiobooks
+    readOnly: true
+  - name: podcasts
+    mountPath: /podcasts
+    size: 20Gi
+```
+
+`mediaMounts` is a list, so supplying your own replaces the default entry rather than adding to it. `name` doubles as the volume name and as the suffix of any claim the chart creates, so it has to be unique and cannot be `tmp`, `config` or `metadata`. An entry with neither `existingClaim` nor `size` fails the render.
+
+## First start
+
+Open the app, create the root user, then add a library for each `mediaMounts` path. The library paths are not configurable through values — Audiobookshelf stores them in its own database, which only its UI writes.
+
+`persistence.config` holds the database and must stay writable. `persistence.metadata` holds the cache, streams, covers, downloads, logs and, unless `audiobookshelf.backupPath` says otherwise, the backups — so it grows with the size of the library.
+
+## The ffmpeg check
+
+Audiobookshelf checks for ffmpeg and ffprobe on startup and accepts only version 5.1. The image ships a newer build, so the check usually rejects it and downloads its own copy. With the default read-only root filesystem that copy lands in the config volume, which means the first start needs network egress to GitHub and takes noticeably longer — hence the five minute budget on the startup probe.
+
+To skip the download and use the binaries already in the image, set all three:
+
+```yaml
+binaries:
+  skipCheck: true
+  ffmpegPath: /usr/bin/ffmpeg
+  ffprobePath: /usr/bin/ffprobe
+```
+
+Both paths are required once `skipCheck` is true, because Audiobookshelf exits during startup when the check is skipped without them. The render fails rather than letting the pod crash-loop.
+
+## Serving under a subpath
+
+Audiobookshelf serves from `/audiobookshelf` and rewrites requests that arrive without the prefix, so it answers at the root as well and needs no configuration for the common case. Set `audiobookshelf.routerBasePath` to serve it somewhere else.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
