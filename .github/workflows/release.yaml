@@ -14,7 +14,6 @@ on:
           - home-assistant-matter-server
           - home-assistant-otbr
           - garage
-          - yas3p
           - linkwarden
           - memos
           - paperless-ngx
