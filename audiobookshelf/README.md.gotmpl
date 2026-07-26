@@ -71,7 +71,13 @@ Both paths are required once `skipCheck` is true, because Audiobookshelf exits d
 
 ## Serving under a subpath
 
-Audiobookshelf serves from `/audiobookshelf` and rewrites requests that arrive without the prefix, so it answers at the root as well and needs no configuration for the common case. Set `audiobookshelf.routerBasePath` to serve it somewhere else.
+Audiobookshelf serves from `/audiobookshelf`. Its server rewrites requests that arrive without the prefix, so it answers at the root as well and no configuration is needed — but the web client sends the address bar to `/audiobookshelf` once it boots, and there is no way to change that with the official image.
+
+The prefix is not a runtime setting. `client/nuxt.config.js` reads `ROUTER_BASE_PATH` while the client bundle is generated and bakes it into the router base, the axios base URL and the icon hrefs, and the upstream Dockerfile does not set it for that build. The server's own `ROUTER_BASE_PATH` moves only the Express mount point, so pointing it anywhere else leaves the HTML asking for `/audiobookshelf/_nuxt/…` while the server answers elsewhere, and every asset 404s. The chart therefore exposes no value for it.
+
+Changing the prefix means building the client yourself with `ROUTER_BASE_PATH` set, and serving that image with the same value in its environment — set it in the image, or through `env` if your build only passes it at build time. Building at `/` serves the app from the root, at the cost of two protocol-relative icon links (`//favicon.ico`), because the config concatenates the base path onto those hrefs.
+
+Whichever prefix is in effect, the ingress or HTTPRoute has to pass the path through unmodified. The client requests assets under the baked-in prefix and the server mounts `/healthcheck` under its own, so a rewrite filter on the proxy breaks both.
 
 {{ template "chart.requirementsSection" . }}
 

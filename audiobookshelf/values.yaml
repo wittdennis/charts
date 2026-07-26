@@ -185,9 +185,6 @@ mediaMounts:
 audiobookshelf:
   # -- Time zone of the container, e.g. Europe/Berlin.
   timezone: ""
-  # -- Path to serve the app under. Audiobookshelf defaults to /audiobookshelf and rewrites
-  # requests that do not carry the prefix, so it answers on / either way.
-  routerBasePath: ""
   # -- Where backups are written. Empty leaves them under the metadata volume in
   # /metadata/backups. Point this at a media mount to keep backups off that volume.
   backupPath: ""

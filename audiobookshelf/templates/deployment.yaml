@@ -57,10 +57,6 @@ spec:
             - name: TZ
               value: {{ . | quote }}
             {{- end }}
-            {{- with .Values.audiobookshelf.routerBasePath }}
-            - name: ROUTER_BASE_PATH
-              value: {{ . | quote }}
-            {{- end }}
             {{- with .Values.audiobookshelf.backupPath }}
             - name: BACKUP_PATH
               value: {{ . | quote }}

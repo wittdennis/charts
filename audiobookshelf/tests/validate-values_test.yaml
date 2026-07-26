@@ -283,16 +283,11 @@ tests:
           path: spec.template.spec.containers[0].env
           content:
             name: BACKUP_PATH
-      - notContains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: ROUTER_BASE_PATH
 
   - it: forwards the optional settings once they are set
     set:
       audiobookshelf:
         timezone: Europe/Berlin
-        routerBasePath: /abs
         backupPath: /audiobooks/backups
         podcast:
           downloadTimeout: "60000"
@@ -309,11 +304,6 @@ tests:
           content:
             name: TZ
             value: Europe/Berlin
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: ROUTER_BASE_PATH
-            value: /abs
       - contains:
           path: spec.template.spec.containers[0].env
           content:

@@ -308,7 +308,6 @@
       "additionalProperties": false,
       "properties": {
         "timezone": { "$ref": "#/$defs/optionalSetting" },
-        "routerBasePath": { "$ref": "#/$defs/optionalSetting" },
         "backupPath": { "$ref": "#/$defs/optionalSetting" },
         "podcast": {
           "type": "object",
