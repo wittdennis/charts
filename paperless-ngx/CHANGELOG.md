@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## paperless-ngx-2.0.1 - 2026-07-26
+#### Bug Fixes
+- (**deps**) update ghcr.io/paperless-ngx/paperless-ngx docker tag to v3.0.3 - (946accf) - wittdennis-renovate[bot]
+
+- - -
+
 ## paperless-ngx-2.0.0 - 2026-07-25
 #### Features
 - (**paperless-ngx**) add options to configure AI settings - (73462ba) - Dennis Witt
