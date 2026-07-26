@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## calibre-web-1.0.2 - 2026-07-26
+#### Bug Fixes
+- (**deps**) update ghcr.io/wittdennis/calibre-web docker tag to v1.0.1 - (38119b8) - wittdennis-renovate[bot]
+
+- - -
+
 ## calibre-web-1.0.1 - 2026-07-25
 #### Bug Fixes
 - (**calibre-web**) force replica count to 1 - (8dd7f9e) - Dennis Witt
