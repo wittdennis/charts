@@ -183,7 +183,7 @@ readinessProbe:
     path: /
     port: http
 # -- Startup probe. Gives the app time to migrate its settings db and scan the library before the
-# liveness probe takes over. Set to `{}` to disable.
+# liveness probe takes over. Set to `null` to disable
 startupProbe:
   httpGet:
     path: /
