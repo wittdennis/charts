@@ -1,0 +1,18 @@
+{{- if and .Values.persistence.config.enabled (not .Values.persistence.config.existingVolumeClaim) }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "audiobookshelf.configPvcName" . }}
+  labels:
+    {{- include "audiobookshelf.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.config.className }}
+  storageClassName: {{ .Values.persistence.config.className | quote }}
+  {{- end }}
+  accessModes:
+    - {{ .Values.persistence.config.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.config.size | quote }}
+{{- end }}

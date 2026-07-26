@@ -49,3 +49,4 @@ paperless-ngx = { path = "paperless-ngx" }
 filebrowser = { path = "filebrowser" }
 radicale = { path = "radicale" }
 calibre-web = { path = "calibre-web" }
+audiobookshelf = { path = "audiobookshelf" }

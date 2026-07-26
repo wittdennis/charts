@@ -1,0 +1,336 @@
+suite: audiobookshelf.validateValues guards
+# The guards live in templates/_helpers.tpl but a define cannot be rendered on its own,
+# so they are exercised through deployment.yaml, which includes them.
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: renders with the default values
+    asserts:
+      - notFailedTemplate: {}
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  # A single SQLite database on a ReadWriteOnce volume cannot take a second writer
+  - it: fails when replicaCount is greater than one
+    set:
+      replicaCount: 2
+    asserts:
+      - failedTemplate:
+          errorMessage: "replicaCount must be 0 or 1, got 2. Audiobookshelf stores its library, users and progress in a SQLite database on a single ReadWriteOnce volume; concurrent writers corrupt it."
+
+  - it: reports the offending replicaCount in the error
+    set:
+      replicaCount: 5
+    asserts:
+      - failedTemplate:
+          errorMessage: "replicaCount must be 0 or 1, got 5. Audiobookshelf stores its library, users and progress in a SQLite database on a single ReadWriteOnce volume; concurrent writers corrupt it."
+
+  # Scaling to zero is a valid way to release the volume for maintenance
+  - it: allows scaling down to zero
+    set:
+      replicaCount: 0
+    asserts:
+      - notFailedTemplate: {}
+      - equal:
+          path: spec.replicas
+          value: 0
+
+  # Audiobookshelf exits during startup when the check is skipped without both paths
+  - it: fails when the binary check is skipped without either path
+    set:
+      binaries.skipCheck: true
+    asserts:
+      - failedTemplate:
+          errorMessage: "binaries.ffmpegPath is required when binaries.skipCheck is true. Audiobookshelf exits during startup when the binary check is skipped without both paths set. In the upstream image they are /usr/bin/ffmpeg and /usr/bin/ffprobe."
+
+  - it: fails when the binary check is skipped with only ffmpegPath
+    set:
+      binaries.skipCheck: true
+      binaries.ffmpegPath: /usr/bin/ffmpeg
+    asserts:
+      - failedTemplate:
+          errorMessage: "binaries.ffprobePath is required when binaries.skipCheck is true. Audiobookshelf exits during startup when the binary check is skipped without both paths set. In the upstream image they are /usr/bin/ffmpeg and /usr/bin/ffprobe."
+
+  - it: fails when the binary check is skipped with only ffprobePath
+    set:
+      binaries.skipCheck: true
+      binaries.ffprobePath: /usr/bin/ffprobe
+    asserts:
+      - failedTemplate:
+          errorMessage: "binaries.ffmpegPath is required when binaries.skipCheck is true. Audiobookshelf exits during startup when the binary check is skipped without both paths set. In the upstream image they are /usr/bin/ffmpeg and /usr/bin/ffprobe."
+
+  - it: passes both paths through once the binary check is skipped
+    set:
+      binaries.skipCheck: true
+      binaries.ffmpegPath: /usr/bin/ffmpeg
+      binaries.ffprobePath: /usr/bin/ffprobe
+    asserts:
+      - notFailedTemplate: {}
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: SKIP_BINARIES_CHECK
+            value: "1"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: FFMPEG_PATH
+            value: /usr/bin/ffmpeg
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: FFPROBE_PATH
+            value: /usr/bin/ffprobe
+
+  # The binary check is what downloads ffmpeg into the config volume, so leaving it on must
+  # not silently set the env var that disables it
+  - it: does not set SKIP_BINARIES_CHECK by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: SKIP_BINARIES_CHECK
+            value: "1"
+
+  # mediaMounts names double as volume names
+  - it: fails when a mediaMounts entry shadows a chart volume
+    set:
+      mediaMounts:
+        - name: config
+          mountPath: /audiobooks
+          size: 1Gi
+    asserts:
+      - failedTemplate:
+          errorMessage: 'mediaMounts name "config" is reserved by the chart. Pick another name; the mountPath is what libraries are added against.'
+
+  - it: fails when two mediaMounts entries share a name
+    set:
+      mediaMounts:
+        - name: media
+          mountPath: /audiobooks
+          size: 1Gi
+        - name: media
+          mountPath: /podcasts
+          size: 1Gi
+    asserts:
+      - failedTemplate:
+          errorMessage: 'mediaMounts contains more than one entry named "media". Names double as volume names and have to be unique.'
+
+  - it: fails when a mediaMounts entry has neither existingClaim nor size
+    set:
+      mediaMounts:
+        - name: audiobooks
+          mountPath: /audiobooks
+    asserts:
+      - failedTemplate:
+          errorMessage: 'mediaMounts entry "audiobooks" needs either existingClaim, to mount a volume you already have, or size, to have the chart provision one.'
+
+  - it: mounts the provisioned claim for the default media volume
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: audiobooks
+            mountPath: /audiobooks
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: audiobooks
+            persistentVolumeClaim:
+              claimName: RELEASE-NAME-audiobookshelf-audiobooks
+
+  - it: mounts an existing claim as given and honours subPath and readOnly
+    set:
+      mediaMounts:
+        - name: audiobooks
+          mountPath: /audiobooks
+          existingClaim: media-audiobooks
+          subPath: books
+          readOnly: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: audiobooks
+            mountPath: /audiobooks
+            subPath: books
+            readOnly: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: audiobooks
+            persistentVolumeClaim:
+              claimName: media-audiobooks
+
+  - it: accepts an empty mediaMounts list
+    set:
+      mediaMounts: []
+    asserts:
+      - notFailedTemplate: {}
+      - equal:
+          path: spec.template.spec.containers[0].volumeMounts
+          value:
+            - name: tmp
+              mountPath: /tmp
+            - name: config
+              mountPath: /config
+            - name: metadata
+              mountPath: /metadata
+
+  # The image listens on 80 by default, which the non-root container cannot bind, so the port
+  # and the env var have to stay in step
+  - it: serves on the unprivileged port it advertises
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0]
+          value:
+            name: http
+            containerPort: 8080
+            protocol: TCP
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PORT
+            value: "8080"
+
+  - it: points every probe at the healthcheck endpoint
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet
+          value:
+            path: /healthcheck
+            port: http
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet
+          value:
+            path: /healthcheck
+            port: http
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet
+          value:
+            path: /healthcheck
+            port: http
+
+  # Helm merges an empty map with the defaults, so only null actually drops the probe
+  - it: allows disabling the startup probe
+    set:
+      startupProbe: null
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: keeps the startup probe when handed an empty map
+    set:
+      startupProbe: {}
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30
+
+  - it: runs rootless on a read-only root filesystem by default
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.runAsNonRoot
+          value: true
+      - equal:
+          path: spec.template.spec.securityContext.runAsUser
+          value: 1000
+      - equal:
+          path: spec.template.spec.automountServiceAccountToken
+          value: false
+
+  # A read-only root filesystem needs somewhere for ffmpeg to write scratch files
+  - it: keeps tmp writable
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: tmp
+            emptyDir: {}
+
+  - it: defaults the strategy to Recreate so the volumes are released on upgrade
+    asserts:
+      - equal:
+          path: spec.strategy.type
+          value: Recreate
+
+  - it: lets an env entry override a value the chart derived
+    set:
+      env:
+        - name: SOURCE
+          value: custom
+    asserts:
+      # Kubernetes takes the last entry for a duplicated name, so the passthrough has to come last
+      - equal:
+          path: spec.template.spec.containers[0].env[-1]
+          value:
+            name: SOURCE
+            value: custom
+
+  - it: leaves the optional settings out until they are set
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TZ
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BACKUP_PATH
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ROUTER_BASE_PATH
+
+  - it: forwards the optional settings once they are set
+    set:
+      audiobookshelf:
+        timezone: Europe/Berlin
+        routerBasePath: /abs
+        backupPath: /audiobooks/backups
+        podcast:
+          downloadTimeout: "60000"
+        sqlite:
+          cacheSize: "-32000"
+          mmapSize: "1073741824"
+          tempStore: "2"
+        query:
+          logging: benchmark
+          profiling: "1"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: TZ
+            value: Europe/Berlin
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: ROUTER_BASE_PATH
+            value: /abs
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: BACKUP_PATH
+            value: /audiobooks/backups
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: PODCAST_DOWNLOAD_TIMEOUT
+            value: "60000"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: SQLITE_CACHE_SIZE
+            value: "-32000"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: QUERY_LOGGING
+            value: benchmark
