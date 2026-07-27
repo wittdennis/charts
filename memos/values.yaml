@@ -6,6 +6,8 @@
 replicaCount: 1
 
 memos:
+  # -- The public url of the instance. If unset, memos runs in private mode and denies anonymous access
+  instanceUrl: ~
   # -- The database driver for memos (see: https://usememos.com/docs/configuration/database)
   databaseDriver: sqlite
   # -- Use this when databaseDriver != sqlite to define a secret where the data source name is contained
