@@ -21,3 +21,5 @@
 .idea/
 *.tmproj
 .vscode/
+# helm-unittest suites. Anchored so templates/tests/ (the chart test hooks) still ships.
+/tests/

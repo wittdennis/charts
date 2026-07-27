@@ -1,0 +1,60 @@
+suite: memos.pvc value dependencies
+templates:
+  - templates/pvc.yaml
+tests:
+  - it: provisions a claim by default
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: PersistentVolumeClaim
+      - equal:
+          path: metadata.name
+          value: RELEASE-NAME-memos
+      - equal:
+          path: spec.accessModes
+          value:
+            - ReadWriteOnce
+      - equal:
+          path: spec.resources.requests.storage
+          value: 10Gi
+
+  # An unset storage class has to stay unset rather than become "", which would pin the
+  # claim to a class-less volume instead of the cluster default
+  - it: leaves the storage class to the cluster default
+    asserts:
+      - notExists:
+          path: spec.storageClassName
+
+  - it: pins the storage class once it is set
+    set:
+      persistence.storageClass: fast
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: fast
+
+  - it: provisions nothing when an existing claim is given
+    set:
+      persistence.existingVolumeClaim: memos-data
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: provisions nothing when persistence is disabled
+    set:
+      persistence.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  # existingVolumeClaim wins either way, so an enabled/disabled mismatch cannot leave a
+  # stray claim behind
+  - it: provisions nothing when persistence is disabled and an existing claim is given
+    set:
+      persistence:
+        enabled: false
+        existingVolumeClaim: memos-data
+    asserts:
+      - hasDocuments:
+          count: 0

@@ -1,0 +1,169 @@
+suite: memos.deployment value dependencies
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: renders with the default values
+    asserts:
+      - notFailedTemplate: {}
+      - isKind:
+          of: Deployment
+      - equal:
+          path: spec.replicas
+          value: 1
+
+  # Without the instance url memos runs in private mode, so the env var must not appear
+  # unless it carries an actual value
+  - it: leaves the instance url out until it is set
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_INSTANCE_URL
+          any: true
+
+  - it: forwards the instance url once it is set
+    set:
+      memos.instanceUrl: https://memos.example.com
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_INSTANCE_URL
+            value: https://memos.example.com
+
+  # sqlite takes its dsn from the data directory, so the secret reference only belongs
+  # to the other drivers
+  - it: does not reference a dsn secret for sqlite
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_DRIVER
+            value: sqlite
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_DSN
+          any: true
+
+  - it: reads the dsn from the secret for mysql
+    set:
+      memos:
+        databaseDriver: mysql
+        existingDsnSecret:
+          name: memos-dsn
+          key: dsn
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_DRIVER
+            value: mysql
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_DSN
+            valueFrom:
+              secretKeyRef:
+                name: memos-dsn
+                key: dsn
+
+  - it: reads the dsn from the secret for postgres
+    set:
+      memos:
+        databaseDriver: postgres
+        existingDsnSecret:
+          name: memos-dsn
+          key: connection-string
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: MEMOS_DSN
+            valueFrom:
+              secretKeyRef:
+                name: memos-dsn
+                key: connection-string
+
+  # The HPA owns the replica count once it is enabled, so the deployment must not fight it
+  - it: drops the replica count when autoscaling is enabled
+    set:
+      autoscaling.enabled: true
+    asserts:
+      - notExists:
+          path: spec.replicas
+
+  - it: keeps the replica count while autoscaling is disabled
+    set:
+      replicaCount: 3
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+
+  - it: mounts the claim the chart provisions
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: memos-data
+            persistentVolumeClaim:
+              claimName: RELEASE-NAME-memos
+
+  - it: mounts an existing claim instead of the provisioned one
+    set:
+      persistence.existingVolumeClaim: memos-data
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: memos-data
+            persistentVolumeClaim:
+              claimName: memos-data
+
+  # Data is lost on restart, but it keeps the chart usable for a throwaway instance
+  - it: falls back to an emptyDir when persistence is disabled
+    set:
+      persistence.enabled: false
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: memos-data
+            emptyDir: {}
+
+  - it: uses the generated service account name when the chart creates one
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: RELEASE-NAME-memos
+
+  - it: falls back to the default service account when the chart creates none
+    set:
+      serviceAccount.create: false
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: default
+
+  - it: uses the given service account name when the chart creates none
+    set:
+      serviceAccount:
+        create: false
+        name: memos
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: memos
+
+  # A read-only root filesystem needs somewhere to write scratch files
+  - it: keeps tmp writable
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: tmp
+            emptyDir: {}

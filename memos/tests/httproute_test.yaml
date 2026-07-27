@@ -1,0 +1,106 @@
+suite: memos.httproute value dependencies
+templates:
+  - templates/httproute.yaml
+tests:
+  - it: renders nothing while the route is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders the default rule once the route is enabled
+    set:
+      route.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: HTTPRoute
+      - lengthEqual:
+          path: spec.rules
+          count: 1
+      - equal:
+          path: spec.rules[0].backendRefs[0]
+          value:
+            name: RELEASE-NAME-memos
+            port: 80
+            weight: 100
+      - equal:
+          path: spec.rules[0].matches
+          value:
+            - path:
+                type: PathPrefix
+                value: /
+
+  # The backend port is the service port, not the container port, so the two have to stay
+  # in step when the service is moved
+  - it: follows the service port
+    set:
+      route.enabled: true
+      service.port: 8080
+    asserts:
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 8080
+
+  - it: renders the hostnames through the template engine
+    set:
+      route:
+        enabled: true
+        hostnames:
+          - "{{ .Release.Name }}.example.com"
+    asserts:
+      - equal:
+          path: spec.hostnames
+          value:
+            - RELEASE-NAME.example.com
+
+  # Custom rules are more specific than the catch-all default rule, so they have to come first
+  - it: puts custom rules ahead of the default rule
+    set:
+      route:
+        enabled: true
+        additionalRules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+            backendRefs:
+              - name: other
+                port: 80
+    asserts:
+      - lengthEqual:
+          path: spec.rules
+          count: 2
+      - equal:
+          path: spec.rules[0].backendRefs[0].name
+          value: other
+      - equal:
+          path: spec.rules[1].backendRefs[0].name
+          value: RELEASE-NAME-memos
+
+  - it: attaches filters to the default rule
+    set:
+      route:
+        enabled: true
+        filters:
+          - type: RequestHeaderModifier
+            requestHeaderModifier:
+              set:
+                - name: X-Forwarded-Proto
+                  value: https
+    asserts:
+      - equal:
+          path: spec.rules[0].filters[0].type
+          value: RequestHeaderModifier
+
+  - it: leaves matches and filters out when they are empty
+    set:
+      route:
+        enabled: true
+        matches: []
+        filters: []
+    asserts:
+      - notExists:
+          path: spec.rules[0].matches
+      - notExists:
+          path: spec.rules[0].filters

@@ -1,0 +1,75 @@
+suite: memos.hpa value dependencies
+templates:
+  - templates/hpa.yaml
+tests:
+  - it: renders nothing while autoscaling is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: targets the deployment once autoscaling is enabled
+    set:
+      autoscaling.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.scaleTargetRef.name
+          value: RELEASE-NAME-memos
+      - equal:
+          path: spec.minReplicas
+          value: 1
+      - equal:
+          path: spec.maxReplicas
+          value: 100
+
+  # The memory target is commented out in the defaults, so only the cpu metric may show up
+  - it: takes only the cpu metric from the defaults
+    set:
+      autoscaling.enabled: true
+    asserts:
+      - lengthEqual:
+          path: spec.metrics
+          count: 1
+      - equal:
+          path: spec.metrics[0].resource
+          value:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 80
+
+  - it: adds the memory metric once its target is set
+    set:
+      autoscaling:
+        enabled: true
+        targetMemoryUtilizationPercentage: 75
+    asserts:
+      - lengthEqual:
+          path: spec.metrics
+          count: 2
+      - equal:
+          path: spec.metrics[1].resource
+          value:
+            name: memory
+            target:
+              type: Utilization
+              averageUtilization: 75
+
+  # An HPA without metrics is rejected by the API server, so dropping the cpu target only
+  # makes sense together with a memory target
+  - it: scales on memory alone when the cpu target is dropped
+    set:
+      autoscaling:
+        enabled: true
+        targetCPUUtilizationPercentage: null
+        targetMemoryUtilizationPercentage: 75
+    asserts:
+      - lengthEqual:
+          path: spec.metrics
+          count: 1
+      - equal:
+          path: spec.metrics[0].resource.name
+          value: memory
