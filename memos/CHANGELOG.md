@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## memos-1.3.0 - 2026-07-27
+#### Features
+- (**memos**) add values schema - (7320bf4) - Dennis Witt
+- (**memos**) add instanceUrl introduced in 0.30.0 - (33fe905) - Dennis Witt
+#### Bug Fixes
+- (**deps**) update neosmemo/memos docker tag to v0.30.0 - (637f624) - wittdennis-renovate[bot]
+#### Tests
+- (**memos**) add unit test - (45c53ff) - Dennis Witt
+
+- - -
+
 ## memos-1.2.1 - 2026-06-05
 #### Bug Fixes
 - (**deps**) update neosmemo/memos docker tag to v0.29.1 - (a97fc9a) - wittdennis-renovate[bot]
