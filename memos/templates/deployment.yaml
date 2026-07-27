@@ -41,6 +41,10 @@ spec:
               containerPort: 5230
               protocol: TCP
           env:
+            {{- with .Values.memos.instanceUrl }}
+            - name: MEMOS_INSTANCE_URL
+              value: {{ . | quote }}
+            {{- end }}
             - name: MEMOS_DRIVER
               value: {{ .Values.memos.databaseDriver }}
             {{- if not (eq .Values.memos.databaseDriver "sqlite") }}
