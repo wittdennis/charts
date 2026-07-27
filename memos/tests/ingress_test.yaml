@@ -1,0 +1,89 @@
+suite: memos.ingress value dependencies
+templates:
+  - templates/ingress.yaml
+tests:
+  - it: renders nothing while the ingress is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders the default host once the ingress is enabled
+    set:
+      ingress.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.rules[0].host
+          value: chart-example.local
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service
+          value:
+            name: RELEASE-NAME-memos
+            port:
+              number: 80
+
+  # The backend port is the service port, not the container port, so the two have to stay
+  # in step when the service is moved
+  - it: follows the service port
+    set:
+      ingress.enabled: true
+      service.port: 8080
+    asserts:
+      - equal:
+          path: spec.rules[0].http.paths[0].backend.service.port.number
+          value: 8080
+
+  # An empty class name has to stay absent rather than render as "", which no controller claims
+  - it: leaves the ingress class to the cluster default
+    set:
+      ingress.enabled: true
+    asserts:
+      - notExists:
+          path: spec.ingressClassName
+
+  - it: pins the ingress class once it is set
+    set:
+      ingress.enabled: true
+      ingress.className: nginx
+    asserts:
+      - equal:
+          path: spec.ingressClassName
+          value: nginx
+
+  - it: leaves the tls block out until a certificate is given
+    set:
+      ingress.enabled: true
+    asserts:
+      - notExists:
+          path: spec.tls
+
+  - it: renders the tls block once a certificate is given
+    set:
+      ingress:
+        enabled: true
+        tls:
+          - secretName: memos-tls
+            hosts:
+              - memos.example.com
+    asserts:
+      - equal:
+          path: spec.tls[0]
+          value:
+            secretName: memos-tls
+            hosts:
+              - memos.example.com
+
+  - it: drops pathType when the host entry omits it
+    set:
+      ingress:
+        enabled: true
+        hosts:
+          - host: memos.example.com
+            paths:
+              - path: /
+    asserts:
+      - notExists:
+          path: spec.rules[0].http.paths[0].pathType
