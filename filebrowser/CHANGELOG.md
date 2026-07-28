@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## filebrowser-1.0.7 - 2026-07-28
+#### Bug Fixes
+- (**deps**) update filebrowser/filebrowser docker tag to v2.63.23 - (0ef7353) - wittdennis-renovate[bot]
+
+- - -
+
 ## filebrowser-1.0.6 - 2026-07-27
 #### Bug Fixes
 - (**deps**) update filebrowser/filebrowser docker tag to v2.63.22 - (c4111b1) - wittdennis-renovate[bot]
