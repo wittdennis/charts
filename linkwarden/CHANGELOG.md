@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## linkwarden-1.0.4 - 2026-07-30
+#### Bug Fixes
+- (**deps**) update ghcr.io/linkwarden/linkwarden docker tag to v2.16.0 - (24507fa) - wittdennis-renovate[bot]
+
+- - -
+
 ## linkwarden-1.0.3 - 2026-07-20
 #### Bug Fixes
 - (**deps**) update ghcr.io/linkwarden/linkwarden docker tag to v2.15.1 - (6730038) - wittdennis-renovate[bot]
