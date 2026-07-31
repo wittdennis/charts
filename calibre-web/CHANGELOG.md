@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## calibre-web-1.0.3 - 2026-07-31
+#### Bug Fixes
+- (**deps**) update ghcr.io/wittdennis/calibre-web docker tag to v1.0.2 - (3308ec5) - wittdennis-renovate[bot]
+#### Documentation
+- (**calibre-web**) update startupProbe disable comment - (2c899a9) - Dennis Witt
+
+- - -
+
 ## calibre-web-1.0.2 - 2026-07-26
 #### Bug Fixes
 - (**deps**) update ghcr.io/wittdennis/calibre-web docker tag to v1.0.1 - (38119b8) - wittdennis-renovate[bot]
