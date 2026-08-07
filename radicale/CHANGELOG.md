@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## radicale-2.0.3 - 2026-08-07
+#### Bug Fixes
+- (**deps**) update ghcr.io/kozea/radicale docker tag to v3.7.8 - (54b4788) - wittdennis-renovate[bot]
+
+- - -
+
 ## radicale-2.0.2 - 2026-07-20
 #### Bug Fixes
 - (**deps**) update ghcr.io/kozea/radicale docker tag to v3.7.7 - (61bb9f2) - wittdennis-renovate[bot]
