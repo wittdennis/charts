@@ -6,7 +6,7 @@ description: |
   This chart expects a rootless image with bundled Calibre binaries so it can run with a read-only root filesystem.
 type: application
 version: 1.0.3
-appVersion: "1.0.2" # renovate: datasource=docker depName=ghcr.io/wittdennis/calibre-web versioning=docker
+appVersion: "1.0.3" # renovate: datasource=docker depName=ghcr.io/wittdennis/calibre-web versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/calibre-web
   - https://github.com/janeczku/calibre-web
