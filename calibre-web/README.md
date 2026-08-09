@@ -6,6 +6,11 @@ A Helm chart for Calibre-Web.
 Calibre-Web is a web app for browsing, reading and downloading eBooks stored in a Calibre database.
 This chart expects a rootless image with bundled Calibre binaries so it can run with a read-only root filesystem.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/calibre-web>

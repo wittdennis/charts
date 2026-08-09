@@ -27,3 +27,14 @@ keywords:
   - vtt
   - ttrpg
   - foundry module
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/ddb-proxy
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: ddb-proxy
+      image: ghcr.io/mrprimate/ddb-proxy:0.0.25 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

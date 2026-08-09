@@ -54,3 +54,13 @@ annotations:
       description: "Mount an emptyDir at /var/cache/fontconfig, which paperless-ngx 3.0 expects to be writable when readOnlyRootFilesystem is enabled."
     - kind: removed
       description: "PAPERLESS_SUPERVISORD_WORKING_DIR is no longer set, it became a no-op upstream."
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/paperless-ngx
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: paperless-ngx
+      image: ghcr.io/paperless-ngx/paperless-ngx:3.0.5 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

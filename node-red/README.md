@@ -7,6 +7,12 @@ Node-RED is a programming tool for wiring together hardware devices, APIs and on
 
 It provides a browser-based editor that makes it easy to wire together flows using the wide range of nodes in the palette that can be deployed to its runtime in a single-click.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/node-red>

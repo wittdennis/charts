@@ -31,3 +31,12 @@ icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/foundr
 annotations:
   artifacthub.io/alternativeName: foundry
   artifacthub.io/license: MIT
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/foundryvtt
+  artifacthub.io/images: |
+    - name: foundryvtt
+      image: ghcr.io/felddy/foundryvtt:14.365.0 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

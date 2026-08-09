@@ -16,3 +16,14 @@ keywords:
   - explorer
   - file management
   - file browser
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/filebrowser
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: filebrowser
+      image: filebrowser/filebrowser:v2.63.23 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

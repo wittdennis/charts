@@ -32,3 +32,14 @@ keywords:
   - node-red
   - nodered
   - graphical programming
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/node-red
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: node-red
+      image: nodered/node-red:5.0.4 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

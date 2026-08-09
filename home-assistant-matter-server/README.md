@@ -4,6 +4,12 @@
 
 Helm chart for home assistant matter server
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/home-assistant-matter-server>

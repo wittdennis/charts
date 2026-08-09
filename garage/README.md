@@ -6,6 +6,12 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 
 **Homepage:** <https://garagehq.deuxfleurs.fr/>
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/garage>

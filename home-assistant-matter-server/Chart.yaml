@@ -27,3 +27,16 @@ keywords:
   - home-assistant
   - matter
   - home automation
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/home-assistant-matter-server
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: home-assistant-matter-server
+      image: ghcr.io/matter-js/matterjs-server:1.4.0 # renovate
+    - name: lock-file-remover
+      image: docker.io/library/busybox:1.38.0 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

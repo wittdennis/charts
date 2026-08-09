@@ -18,3 +18,14 @@ keywords:
   - podcast
   - podcasts
   - library
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/audiobookshelf
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: audiobookshelf
+      image: ghcr.io/advplyr/audiobookshelf:2.36.0 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

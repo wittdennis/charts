@@ -6,6 +6,11 @@ A Helm chart for Audiobookshelf.
 Audiobookshelf is a self-hosted audiobook and podcast server that syncs listening progress across clients.
 Runs rootless with a read-only root filesystem. Libraries are configured in the app UI against the paths supplied through mediaMounts.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/audiobookshelf>
