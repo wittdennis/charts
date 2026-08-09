@@ -1,4 +1,13 @@
 # Changelog
+
+## [1.1.0](https://github.com/wittdennis/charts/compare/filebrowser-1.0.7...filebrowser-1.1.0) (2026-08-09)
+
+
+### Features
+
+* publish chart as oci artifact ([66c2ee4](https://github.com/wittdennis/charts/commit/66c2ee47a02dd44682cccca55bc53b4011108168))
+
+## Changelog
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
