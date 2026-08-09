@@ -4,6 +4,11 @@
 
 A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/paperless-ngx>

@@ -19,3 +19,14 @@ keywords:
   - ebooks
   - library
   - reader
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/calibre-web
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: calibre-web
+      image: ghcr.io/wittdennis/calibre-web:1.0.3 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

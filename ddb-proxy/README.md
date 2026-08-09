@@ -4,6 +4,12 @@
 
 A Helm chart for MrPrimates D&D Beyond Proxy
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/ddb-proxy>

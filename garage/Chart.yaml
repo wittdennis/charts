@@ -13,4 +13,14 @@ keywords:
 sources:
   - https://github.com/wittdennis/charts/tree/main/garage
   - https://git.deuxfleurs.fr/Deuxfleurs/garage.git
-maintainers: []
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/garage
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: garage
+      image: dxflrs/amd64_garage:v2.3.0 # renovate

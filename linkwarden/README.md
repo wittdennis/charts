@@ -4,6 +4,12 @@
 
 Linkwarden is a self-hosted, open-source collaborative bookmark manager to collect, read, annotate, and fully preserve what matters, all in one place.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/linkwarden>

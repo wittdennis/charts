@@ -6,6 +6,12 @@ A Helm chart for the Home Assistant OpenThread BorderRouter Addon running as sta
 
 Attention with version 2.0.0 of the chart Thread 1.4 will be used by default. Make sure your Thread Adapter supports it.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/home-assistant-otbr>

@@ -17,3 +17,14 @@ keywords:
   - carddav
   - calendar
   - contacts
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/radicale
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: radicale
+      image: ghcr.io/kozea/radicale:3.7.8 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

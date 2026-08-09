@@ -6,23 +6,27 @@ Monorepo where I manage all helm charts that I created over time. For documentat
 
 ## Installation
 
-To use these charts, first add this repository to Helm:
+Every chart is published both to the classic Helm repository and as an OCI artifact. Use whichever
+fits your tooling.
+
+### OCI registry
 
 ```sh
-helm repo add wittdennis https://charts.derwitt.dev
-helm repo update
-```
-
-Then, install a chart using:
-
-```sh
-helm install <release-name> wittdennis/<chart-name>
+helm install <release-name> oci://ghcr.io/wittdennis/helm-charts/<chart-name> --version <version>
 ```
 
 For example, to install node-red:
 
 ```sh
-helm install my-node-red wittdennis/node-red
+helm install my-node-red oci://ghcr.io/wittdennis/helm-charts/node-red --version 2.0.3
+```
+
+### Helm repository
+
+```sh
+helm repo add wittdennis https://charts.derwitt.dev
+helm repo update
+helm install <release-name> wittdennis/<chart-name>
 ```
 
 ## Contributing

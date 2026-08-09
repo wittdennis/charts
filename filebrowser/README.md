@@ -6,6 +6,12 @@ A Helm chart for filebrowser.
 File Browser provides a file managing interface within a specified directory and it can be used to upload, delete, preview and edit your files.
 It is a create-your-own-cloud-kind of software where you can just install it on your server, direct it to a path and access your files through a nice web interface.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/filebrowser>

@@ -6,6 +6,12 @@ A Helm chart for Radicale.
 Radicale is a small but powerful CalDAV (calendars, to-do lists) and CardDAV (contacts) server.
 This chart uses the official, rootless ghcr.io/kozea/radicale image.
 
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| Dennis Witt |  | <https://github.com/wittdennis> |
+
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/radicale>

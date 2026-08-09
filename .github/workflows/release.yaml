@@ -40,6 +40,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+      packages: write
     strategy:
       matrix:
         chart: ${{ fromJSON(needs.release-please.outputs.paths_released) }}
@@ -55,15 +56,29 @@ jobs:
           version: v4.2.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
 
       - name: package chart
-        run: helm package "$CHART" -d output
+        id: package
+        run: |
+          set -euo pipefail
+          helm package "$CHART" -d output
+          echo "file=$(ls output/*.tgz)" >> "$GITHUB_OUTPUT"
         env:
           CHART: ${{ matrix.chart }}
 
-      - name: push chart
-        run: |
-          set -euo pipefail
-          FILE="$(ls output/*.tgz)"
-          curl --fail-with-body -u "$AUTH" --data-binary "@$FILE" "$CHARTMUSEUM_URL/api/charts"
+      - name: push chart to chartmuseum
+        run: curl --fail-with-body -u "$AUTH" --data-binary "@$FILE" "$CHARTMUSEUM_URL/api/charts"
         env:
           AUTH: ${{ secrets.CHARTMUSEUM_AUTH }}
           CHARTMUSEUM_URL: ${{ vars.CHARTMUSEUM_URL }}
+          FILE: ${{ steps.package.outputs.file }}
+
+      - name: login to ghcr.io
+        run: helm registry login ghcr.io --username "$USERNAME" --password-stdin <<<"$PASSWORD"
+        env:
+          USERNAME: ${{ github.actor }}
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: push chart to ghcr.io
+        run: helm push "$FILE" "oci://ghcr.io/$OWNER/helm-charts"
+        env:
+          FILE: ${{ steps.package.outputs.file }}
+          OWNER: ${{ github.repository_owner }}

@@ -12,3 +12,14 @@ keywords:
   - keep
   - memos
   - journal
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/memos
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: memos
+      image: neosmemo/memos:0.30.0 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis
