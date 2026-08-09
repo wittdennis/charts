@@ -1,6 +1,6 @@
 # filebrowser
 
-![Version: 1.0.7](https://img.shields.io/badge/Version-1.0.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.63.23](https://img.shields.io/badge/AppVersion-v2.63.23-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.63.23](https://img.shields.io/badge/AppVersion-v2.63.23-informational?style=flat-square)
 
 A Helm chart for filebrowser.
 File Browser provides a file managing interface within a specified directory and it can be used to upload, delete, preview and edit your files.
