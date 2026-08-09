@@ -1,0 +1,38 @@
+name: release-docs
+permissions: {}
+
+on:
+  pull_request:
+    types: ["opened", "reopened", "synchronize", "labeled"]
+
+jobs:
+  helm-docs:
+    name: regenerate chart docs
+    if: "${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: install helm-docs
+        run: |
+          GOBIN=/usr/local/bin/ go install github.com/norwoodj/helm-docs/cmd/helm-docs@$HELM_DOCS_VERSION
+        env:
+          HELM_DOCS_VERSION: v1.14.2 # renovate: datasource=github-releases depName=norwoodj/helm-docs versioning=semver
+
+      - name: regenerate and commit
+        run: |
+          set -euo pipefail
+          helm-docs --skip-version-footer
+          if git diff --quiet; then
+            echo "docs already up to date"
+            exit 0
+          fi
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "docs: regenerate chart readme"
+          git push

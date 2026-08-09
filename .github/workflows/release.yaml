@@ -1,107 +1,69 @@
-name: github-release
+name: release
+permissions: {}
 
 on:
-  workflow_dispatch:
-    inputs:
-      chart:
-        description: The chart to release
-        required: true
-        type: choice
-        options:
-          - foundryvtt
-          - ddb-proxy
-          - node-red
-          - home-assistant-matter-server
-          - home-assistant-otbr
-          - garage
-          - linkwarden
-          - memos
-          - paperless-ngx
-          - filebrowser
-          - radicale
-          - calibre-web
-          - audiobookshelf
-      version:
-        default: "auto"
-        description: Can be used to set a specific version. Use 'auto' for automatic version calculation
-        type: string
-        required: false
-      preview:
-        description: Suffix for a preview version
-        default: ""
-        type: string
-        required: false
+  push:
+    branches:
+      - main
+      - release/**
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  conventional-compliance:
-    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@77479061311bbfdee843a8b8afd48297f9202a5f # 2.0.42
-
-  release:
+  release-please:
+    name: release-please
     runs-on: ubuntu-24.04
-    needs: conventional-compliance
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.RELEASE_TOKEN }}
-
-      - name: setup git config
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-      - name: install cocogitto
-        uses: cocogitto/cocogitto-action@52d0023b4396897f1815648e553db2ab8d782f3a # v4.2.0
-        with:
-          command: help
-
-      - name: install helm-docs
-        run: |
-          GOBIN=/usr/local/bin/ go install github.com/norwoodj/helm-docs/cmd/helm-docs@$HELM_DOCS_VERSION
-        env:
-          HELM_DOCS_VERSION: v1.14.2 # renovate: datasource=github-releases depName=norwoodj/helm-docs versioning=semver
-
-      - name: bump version
+      - name: run release-please
         id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          # Config and manifest are read from the target branch, so a release/** branch keeps its
+          # own version line independent of main.
+          target-branch: ${{ github.ref_name }}
+
+  publish:
+    name: publish ${{ matrix.chart }}
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        chart: ${{ fromJSON(needs.release-please.outputs.paths_released) }}
+    steps:
+      - name: checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: setup helm
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: v4.2.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
+
+      - name: package chart
+        run: helm package "$CHART" -d output
+        env:
+          CHART: ${{ matrix.chart }}
+
+      - name: push chart
         run: |
           set -euo pipefail
-
-          COG_BUMP_ARGS=()
-
-          if [ "${VERSION}" = "auto" ]; then
-            COG_BUMP_ARGS+=(--auto)
-          else
-            COG_BUMP_ARGS+=(--version "$VERSION")
-          fi
-
-          COG_BUMP_ARGS+=(--package "$CHART")
-
-          PREVIEW=false
-          if [ -n "${PRE_RELEASE:-}" ]; then
-            COG_BUMP_ARGS+=(--pre "$PRE_RELEASE")
-            PREVIEW=true
-          fi
-
-          cog bump "${COG_BUMP_ARGS[@]}"
-
-          GIT_VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-
-          {
-            echo "preview=$PREVIEW"
-            echo "version=$GIT_VERSION"
-          } >> "$GITHUB_OUTPUT"
+          FILE="$(ls output/*.tgz)"
+          curl --fail-with-body -u "$AUTH" --data-binary "@$FILE" "$CHARTMUSEUM_URL/api/charts"
         env:
-          CHART: ${{ inputs.chart }}
-          PRE_RELEASE: ${{ inputs.preview }}
-          VERSION: ${{ inputs.version }}
-
-      - name: generate changelog
-        run: cog changelog --at ${{ steps.release.outputs.version }} > GITHUB_CHANGELOG.md
-
-      - uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
-        name: create release
-        with:
-          body_path: GITHUB_CHANGELOG.md
-          tag_name: ${{ steps.release.outputs.version }}
-          token: ${{ secrets.RELEASE_TOKEN }}
-          prerelease: ${{ steps.release.outputs.preview == 'true' }}
+          AUTH: ${{ secrets.CHARTMUSEUM_AUTH }}
+          CHARTMUSEUM_URL: ${{ vars.CHARTMUSEUM_URL }}
