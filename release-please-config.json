@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "helm",
+  "separate-pull-requests": true,
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "include-v-in-release-name": false,
+  "tag-separator": "-",
+  "changelog-sections": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "perf", "section": "Performance Improvements" },
+    { "type": "revert", "section": "Reverts" },
+    { "type": "refactor", "section": "Code Refactoring" },
+    { "type": "docs", "section": "Documentation" },
+    { "type": "build", "section": "Build System", "hidden": true },
+    { "type": "chore", "section": "Miscellaneous Chores", "hidden": true },
+    { "type": "ci", "section": "Continuous Integration", "hidden": true },
+    { "type": "style", "section": "Styles", "hidden": true },
+    { "type": "test", "section": "Tests", "hidden": true }
+  ],
+  "packages": {
+    "audiobookshelf": { "component": "audiobookshelf" },
+    "calibre-web": { "component": "calibre-web" },
+    "ddb-proxy": { "component": "ddb-proxy" },
+    "filebrowser": { "component": "filebrowser" },
+    "foundryvtt": { "component": "foundryvtt" },
+    "garage": { "component": "garage" },
+    "home-assistant-matter-server": { "component": "home-assistant-matter-server" },
+    "home-assistant-otbr": { "component": "home-assistant-otbr" },
+    "linkwarden": { "component": "linkwarden" },
+    "memos": { "component": "memos" },
+    "node-red": { "component": "node-red" },
+    "paperless-ngx": { "component": "paperless-ngx" },
+    "radicale": { "component": "radicale" }
+  }
+}

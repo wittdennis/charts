@@ -9,6 +9,10 @@ on:
     types: ["opened", "reopened", "synchronize", "edited"]
 
 jobs:
+  conventional-compliance:
+    name: conventional commits
+    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@77479061311bbfdee843a8b8afd48297f9202a5f # 2.0.42
+
   check-multiple:
     name: check for multiple chart changes
     runs-on: ubuntu-24.04
