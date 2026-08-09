@@ -580,6 +580,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 - - -
 
+## [15.2.0](https://github.com/wittdennis/charts/compare/foundryvtt-15.1.2...foundryvtt-15.2.0) (2026-08-09)
+
+
+### Features
+
+* publish chart as oci artifact ([66c2ee4](https://github.com/wittdennis/charts/commit/66c2ee47a02dd44682cccca55bc53b4011108168))
+
 ## 0.1.0 - 2024-11-27
 #### Features
 - foundry vtt chart - (0cfbcc8) - Dennis Witt
