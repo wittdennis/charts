@@ -5,7 +5,7 @@ description: |
   Audiobookshelf is a self-hosted audiobook and podcast server that syncs listening progress across clients.
   Runs rootless with a read-only root filesystem. Libraries are configured in the app UI against the paths supplied through mediaMounts.
 type: application
-version: 1.0.2
+version: 1.1.0
 appVersion: "2.36.0" # renovate: datasource=docker depName=ghcr.io/advplyr/audiobookshelf versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/audiobookshelf
