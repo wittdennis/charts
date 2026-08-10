@@ -580,6 +580,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 - - -
 
+## [15.2.1](https://github.com/wittdennis/charts/compare/foundryvtt-15.2.0...foundryvtt-15.2.1) (2026-08-10)
+
+
+### Documentation
+
+* regenerate chart readme ([89457fa](https://github.com/wittdennis/charts/commit/89457fa5857e8eb9d7967110d1845709ea089afd))
+
 ## [15.2.0](https://github.com/wittdennis/charts/compare/foundryvtt-15.1.2...foundryvtt-15.2.0) (2026-08-09)
 
 
