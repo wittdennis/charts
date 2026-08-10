@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/wittdennis/charts/compare/filebrowser-1.1.0...filebrowser-1.1.1) (2026-08-10)
+
+
+### Bug Fixes
+
+* **filebrowser:** pin deployment strategy to recreate ([b6d71fd](https://github.com/wittdennis/charts/commit/b6d71fda2862a1e19131d8f2353373acdbbded9d))
+
 ## [1.1.0](https://github.com/wittdennis/charts/compare/filebrowser-1.0.7...filebrowser-1.1.0) (2026-08-09)
 
 
