@@ -1,12 +1,19 @@
-# Default values for node-red.
+# Default values for filebrowser.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# -- This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+# -- Number of replicas. Only 0 and 1 are accepted, filebrowser keeps its state in a single SQLite database.
 replicaCount: 1
 
+# -- Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes.
+deploymentStrategy:
+  type: Recreate
+  # rollingUpdate:
+  #   maxUnavailable: 25%
+  #   maxSurge: 25%
+
 # -- Additional env values to pass to the container
-env: {}
+env: []
 # - name: TZ
 #   value: Europe/Berlin
 
@@ -102,8 +109,8 @@ route:
   # -- Filter that should be added to the default rule
   filters: []
 
-  # -- Any custom rule you want to specify
-  additionalRules: {}
+  # -- Any custom rule you want to specify. Spliced into the HTTPRoute rules list, so it has to be a list of rules.
+  additionalRules: []
 
 # -- This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -144,14 +151,6 @@ persistence:
     size: 5Gi
     existingVolumeClaim: ~
     accessMode: ReadWriteOnce
-
-# -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

@@ -11,19 +11,28 @@ It is a create-your-own-cloud-kind of software where you can just install it on 
 | Name | Email | Url |
 | ---- | ------ | --- |
 | Dennis Witt |  | <https://github.com/wittdennis> |
-
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/filebrowser>
 * <https://github.com/filebrowser/filebrowser>
+
+## Single replica
+
+`replicaCount` accepts only `0` and `1`. filebrowser keeps its users, shares and settings in a SQLite database on a `ReadWriteOnce` volume, so a second replica would corrupt it. Rendering fails for anything higher. Set `replicaCount: 0` to scale down and release the volumes for maintenance.
+
+The deployment strategy defaults to `Recreate` for the same reason: a rolling update would need two pods attached to the same volume at once. There is no HorizontalPodAutoscaler for the same reason.
+
+## Storage
+
+`persistence.data` is mounted at `/srv` and holds the files filebrowser serves. `persistence.config` holds the SQLite database and is mounted at both `/database` and `/config`, the paths the upstream image looks in.
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| autoscaling | object | `{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80}` | This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/ |
-| env | object | `{}` | Additional env values to pass to the container |
+| deploymentStrategy | object | `{"type":"Recreate"}` | Deployment strategy to use. Defaults to Recreate to avoid PVC multi-attach errors with ReadWriteOnce volumes. |
+| env | list | `[]` | Additional env values to pass to the container |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"docker.io","repository":"filebrowser/filebrowser","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
@@ -51,10 +60,10 @@ It is a create-your-own-cloud-kind of software where you can just install it on 
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
-| replicaCount | int | `1` | This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/ |
+| replicaCount | int | `1` | Number of replicas. Only 0 and 1 are accepted, filebrowser keeps its state in a single SQLite database. |
 | resources | object | `{}` |  |
-| route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
-| route.additionalRules | object | `{}` | Any custom rule you want to specify |
+| route | object | `{"additionalRules":[],"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
+| route.additionalRules | list | `[]` | Any custom rule you want to specify. Spliced into the HTTPRoute rules list, so it has to be a list of rules. |
 | route.annotations | object | `{}` | Additional annotations for the HTTPRoute |
 | route.enabled | bool | `false` | Flag to control if route should be created |
 | route.filters | list | `[]` | Filter that should be added to the default rule |
