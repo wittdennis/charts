@@ -62,6 +62,15 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Validate the supplied values
+*/}}
+{{- define "filebrowser.validateValues" -}}
+{{- if gt (int .Values.replicaCount) 1 }}
+{{- fail (printf "replicaCount must be 0 or 1, got %d. filebrowser stores its users, shares and settings in a SQLite database on a single ReadWriteOnce volume; concurrent writers corrupt it." (int .Values.replicaCount)) }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create the name for the data pvc
 */}}
 {{- define "filebrowser.dataPvcName" -}}

@@ -1,0 +1,23 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+{{ template "chart.maintainersSection" . }}
+{{ template "chart.sourcesSection" . }}
+
+## Single replica
+
+`replicaCount` accepts only `0` and `1`. filebrowser keeps its users, shares and settings in a SQLite database on a `ReadWriteOnce` volume, so a second replica would corrupt it. Rendering fails for anything higher. Set `replicaCount: 0` to scale down and release the volumes for maintenance.
+
+The deployment strategy defaults to `Recreate` for the same reason: a rolling update would need two pods attached to the same volume at once. There is no HorizontalPodAutoscaler for the same reason.
+
+## Storage
+
+`persistence.data` is mounted at `/srv` and holds the files filebrowser serves. `persistence.config` holds the SQLite database and is mounted at both `/database` and `/config`, the paths the upstream image looks in.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
