@@ -30,7 +30,7 @@ jobs:
       - name: setup helm
         uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
         with:
-          version: v4.2.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
+          version: v4.2.4 # renovate: datasource=github-tags depName=helm/helm versioning=semver
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -78,7 +78,7 @@ jobs:
       - name: setup helm
         uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
         with:
-          version: v4.2.3 # renovate: datasource=github-tags depName=helm/helm versioning=semver
+          version: v4.2.4 # renovate: datasource=github-tags depName=helm/helm versioning=semver
 
       # helm 4 verifies plugin signatures by default. Git sources cannot be verified at all, and the
       # release tarballs ship detached GPG signatures rather than the provenance file helm expects.
