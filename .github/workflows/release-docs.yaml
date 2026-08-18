@@ -18,6 +18,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.RELEASE_TOKEN }}
+          fetch-depth: 0
 
       - name: install helm-docs
         run: |
@@ -25,10 +26,27 @@ jobs:
         env:
           HELM_DOCS_VERSION: v1.14.2 # renovate: datasource=github-releases depName=norwoodj/helm-docs versioning=semver
 
+      - name: determine released chart
+        id: chart
+        run: |
+          set -euo pipefail
+          before="$(git show "origin/$BASE_REF:.release-please-manifest.json")"
+          after="$(cat .release-please-manifest.json)"
+          changed="$(jq -n --argjson before "$before" --argjson after "$after" \
+            '[$before | keys[] as $k | select($before[$k] != $after[$k]) | $k]')"
+          count="$(echo "$changed" | jq 'length')"
+          if [ "$count" -ne 1 ]; then
+            echo "Error: expected exactly one chart's manifest entry to change, found: $changed" >&2
+            exit 1
+          fi
+          echo "dir=$(echo "$changed" | jq -r '.[0]')" >> "$GITHUB_OUTPUT"
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+
       - name: regenerate and commit
         run: |
           set -euo pipefail
-          helm-docs --skip-version-footer
+          helm-docs --skip-version-footer --chart-search-root="$CHART_DIR"
           if git diff --quiet; then
             echo "docs already up to date"
             exit 0
@@ -37,3 +55,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -am "docs: regenerate chart readme"
           git push
+        env:
+          CHART_DIR: ${{ steps.chart.outputs.dir }}
