@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/wittdennis/charts/compare/linkwarden-1.1.0...linkwarden-1.1.1) (2026-08-18)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/linkwarden/linkwarden docker tag to v2.16.1 ([47a06b8](https://github.com/wittdennis/charts/commit/47a06b812d920f3d7beadcb3acbc967ce1bf0d4f))
+
 ## [1.1.0](https://github.com/wittdennis/charts/compare/linkwarden-1.0.4...linkwarden-1.1.0) (2026-08-09)
 
 
