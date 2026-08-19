@@ -18,7 +18,7 @@ version: 15.2.2
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "14.366.0" # renovate: datasource=docker depName=ghcr.io/felddy/foundryvtt versioning=docker
+appVersion: "14.367.0" # renovate: datasource=docker depName=ghcr.io/felddy/foundryvtt versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/foundryvtt
 keywords:
@@ -36,7 +36,7 @@ annotations:
   org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/foundryvtt
   artifacthub.io/images: |
     - name: foundryvtt
-      image: ghcr.io/felddy/foundryvtt:14.366.0 # renovate
+      image: ghcr.io/felddy/foundryvtt:14.367.0 # renovate
 maintainers:
   - name: Dennis Witt
     url: https://github.com/wittdennis
