@@ -3,7 +3,7 @@ name: paperless-ngx
 description: A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 type: application
 version: 2.1.0
-appVersion: "3.0.5" # renovate: datasource=docker depName=ghcr.io/paperless-ngx/paperless-ngx versioning=docker
+appVersion: "3.1.0" # renovate: datasource=docker depName=ghcr.io/paperless-ngx/paperless-ngx versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/paperless-ngx
   - https://github.com/paperless-ngx/paperless-ngx
@@ -60,7 +60,7 @@ annotations:
   artifacthub.io/license: MIT
   artifacthub.io/images: |
     - name: paperless-ngx
-      image: ghcr.io/paperless-ngx/paperless-ngx:3.0.5 # renovate
+      image: ghcr.io/paperless-ngx/paperless-ngx:3.1.0 # renovate
 maintainers:
   - name: Dennis Witt
     url: https://github.com/wittdennis
