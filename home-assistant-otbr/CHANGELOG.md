@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.3](https://github.com/wittdennis/charts/compare/home-assistant-otbr-2.1.2...home-assistant-otbr-2.1.3) (2026-08-31)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/wittdennis/homeassistant-otbr docker tag to v4.2.3 ([abccfdf](https://github.com/wittdennis/charts/commit/abccfdfd36b21396cfd1bbe4bc544a5ddca40f27))
+
 ## [2.1.2](https://github.com/wittdennis/charts/compare/home-assistant-otbr-2.1.1...home-assistant-otbr-2.1.2) (2026-08-24)
 
 
