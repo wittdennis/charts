@@ -85,7 +85,7 @@ spec:
             {{- end }}
             {{- if .Values.bluetoothCommissioning.enabled }}
             - --bluetooth-adapter
-            - {{ .Values.bluetoothCommissioning.adapterId }}
+            - {{ .Values.bluetoothCommissioning.adapterId | quote }}
             {{- end }}
             {{- if .Values.networkInterface }}
             - --primary-interface
