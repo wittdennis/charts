@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.1](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.2.0...home-assistant-matter-server-4.2.1) (2026-09-03)
+
+
+### Bug Fixes
+
+* **home-assistant-matter-server:** render adapter ID as string ([c29fa45](https://github.com/wittdennis/charts/commit/c29fa4516cb5264534ee007192f7112579ac1bb0))
+
 ## [4.2.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.1.37...home-assistant-matter-server-4.2.0) (2026-08-09)
 
 
