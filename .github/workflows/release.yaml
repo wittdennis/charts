@@ -65,7 +65,19 @@ jobs:
           CHART: ${{ matrix.chart }}
 
       - name: push chart to chartmuseum
-        run: curl --fail-with-body -u "$AUTH" --data-binary "@$FILE" "$CHARTMUSEUM_URL/api/charts"
+        run: |
+          set -euo pipefail
+          http_code=$(curl -s -o response.json -w '%{http_code}' -u "$AUTH" --data-binary "@$FILE" "$CHARTMUSEUM_URL/api/charts")
+          if [[ "$http_code" == 2* ]]; then
+            exit 0
+          fi
+        
+          if [[ "$http_code" == "409" ]] && grep -q 'already exists' response.json; then
+            echo "chart already exists in chartmuseum, skipping"
+            exit 0
+          fi
+          cat response.json
+          exit 1
         env:
           AUTH: ${{ secrets.CHARTMUSEUM_AUTH }}
           CHARTMUSEUM_URL: ${{ vars.CHARTMUSEUM_URL }}
