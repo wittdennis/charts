@@ -3,7 +3,7 @@ name: garage
 description: S3-compatible object store for small self-hosted geo-distributed deployments.
 type: application
 version: 2.4.0
-appVersion: "v2.3.0" # renovate: datasource=docker depName=dxflrs/amd64_garage versioning=docker
+appVersion: "v2.4.0" # renovate: datasource=docker depName=dxflrs/amd64_garage versioning=docker
 home: https://garagehq.deuxfleurs.fr/
 icon: https://garagehq.deuxfleurs.fr/images/garage-logo.svg
 keywords:
@@ -23,4 +23,4 @@ annotations:
   artifacthub.io/license: MIT
   artifacthub.io/images: |
     - name: garage
-      image: dxflrs/amd64_garage:v2.3.0 # renovate
+      image: dxflrs/amd64_garage:v2.4.0 # renovate
