@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/wittdennis/charts/compare/garage-2.4.1...garage-2.4.2) (2026-09-08)
+
+
+### Bug Fixes
+
+* **deps:** update dxflrs/amd64_garage docker tag to v2.4.1 ([e64419d](https://github.com/wittdennis/charts/commit/e64419d1130ee3b8c40a5bd9bdf4df73ac1a1b23))
+
 ## [2.4.1](https://github.com/wittdennis/charts/compare/garage-2.4.0...garage-2.4.1) (2026-09-07)
 
 
