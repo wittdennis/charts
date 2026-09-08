@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/wittdennis/charts/compare/node-red-2.1.1...node-red-2.1.2) (2026-09-08)
+
+
+### Bug Fixes
+
+* **deps:** update nodered/node-red docker tag to v5.0.7 ([154de80](https://github.com/wittdennis/charts/commit/154de8009139fd17171bb5652d9cb4efd161db62))
+
 ## [2.1.1](https://github.com/wittdennis/charts/compare/node-red-2.1.0...node-red-2.1.1) (2026-09-02)
 
 
