@@ -9,7 +9,7 @@ jobs:
   helm-docs:
     name: regenerate chart docs
     if: "${{ contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: write
     steps:
