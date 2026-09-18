@@ -25,7 +25,7 @@ jobs:
     uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@11429dc3cc02ef0463ad99260ddb4ec467e2a49e # 2.0.57
 
   release:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: conventional-compliance
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
