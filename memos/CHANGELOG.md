@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/wittdennis/charts/compare/memos-1.4.1...memos-2.0.0) (2026-09-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **memos:** If you previously omitted memos.instanceUrl you now have to set it. This is a upstream change from memos.
+
+### Bug Fixes
+
+* **memos:** instanceUrl is now mandatory ([d312af1](https://github.com/wittdennis/charts/commit/d312af190c117f96cd1cb782269addb9b8c33bfb))
+
 ## [1.4.1](https://github.com/wittdennis/charts/compare/memos-1.4.0...memos-1.4.1) (2026-09-26)
 
 
