@@ -3,7 +3,7 @@ name: memos
 description: A Helm chart for memos (https://usememos.com)
 type: application
 version: 1.4.0
-appVersion: "0.30.0" # renovate: datasource=docker depName=neosmemo/memos versioning=docker
+appVersion: "0.31.0" # renovate: datasource=docker depName=neosmemo/memos versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/memos
 icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/memos/assets/icon.png
@@ -19,7 +19,7 @@ annotations:
   artifacthub.io/license: MIT
   artifacthub.io/images: |
     - name: memos
-      image: neosmemo/memos:0.30.0 # renovate
+      image: neosmemo/memos:0.31.0 # renovate
 maintainers:
   - name: Dennis Witt
     url: https://github.com/wittdennis
