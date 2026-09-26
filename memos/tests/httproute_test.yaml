@@ -1,6 +1,8 @@
 suite: memos.httproute value dependencies
 templates:
   - templates/httproute.yaml
+set:
+  memos.instanceUrl: https://memos.example.com
 tests:
   - it: renders nothing while the route is disabled
     asserts:

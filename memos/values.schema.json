@@ -54,12 +54,13 @@
     "memos": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["databaseDriver"],
+      "required": ["databaseDriver", "instanceUrl"],
       "properties": {
         "instanceUrl": {
-          "description": "Empty leaves the instance in private mode, which denies anonymous access.",
-          "type": ["string", "null"],
-          "format": "uri"
+          "description": "The public URL of the instance. Must use http or https.",
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
         },
         "databaseDriver": { "type": "string", "enum": ["sqlite", "mysql", "postgres"] },
         "existingDsnSecret": {

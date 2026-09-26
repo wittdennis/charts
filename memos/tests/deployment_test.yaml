@@ -1,6 +1,8 @@
 suite: memos.deployment value dependencies
 templates:
   - templates/deployment.yaml
+set:
+  memos.instanceUrl: https://memos.example.com
 tests:
   - it: renders with the default values
     asserts:
@@ -11,19 +13,7 @@ tests:
           path: spec.replicas
           value: 1
 
-  # Without the instance url memos runs in private mode, so the env var must not appear
-  # unless it carries an actual value
-  - it: leaves the instance url out until it is set
-    asserts:
-      - notContains:
-          path: spec.template.spec.containers[0].env
-          content:
-            name: MEMOS_INSTANCE_URL
-          any: true
-
-  - it: forwards the instance url once it is set
-    set:
-      memos.instanceUrl: https://memos.example.com
+  - it: always sets the instance url env var
     asserts:
       - contains:
           path: spec.template.spec.containers[0].env
@@ -49,6 +39,7 @@ tests:
   - it: reads the dsn from the secret for mysql
     set:
       memos:
+        instanceUrl: https://memos.example.com
         databaseDriver: mysql
         existingDsnSecret:
           name: memos-dsn
@@ -71,6 +62,7 @@ tests:
   - it: reads the dsn from the secret for postgres
     set:
       memos:
+        instanceUrl: https://memos.example.com
         databaseDriver: postgres
         existingDsnSecret:
           name: memos-dsn

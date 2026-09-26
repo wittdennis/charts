@@ -1,6 +1,8 @@
 suite: memos.hpa value dependencies
 templates:
   - templates/hpa.yaml
+set:
+  memos.instanceUrl: https://memos.example.com
 tests:
   - it: renders nothing while autoscaling is disabled
     asserts:

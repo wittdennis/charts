@@ -1,6 +1,8 @@
 suite: memos.pvc value dependencies
 templates:
   - templates/pvc.yaml
+set:
+  memos.instanceUrl: https://memos.example.com
 tests:
   - it: provisions a claim by default
     asserts:

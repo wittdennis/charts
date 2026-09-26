@@ -1,6 +1,8 @@
 suite: memos.ingress value dependencies
 templates:
   - templates/ingress.yaml
+set:
+  memos.instanceUrl: https://memos.example.com
 tests:
   - it: renders nothing while the ingress is disabled
     asserts:
