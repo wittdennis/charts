@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/wittdennis/charts/compare/calibre-web-1.1.2...calibre-web-1.1.3) (2026-09-26)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/wittdennis/calibre-web docker tag to v1.1.2 ([0e7e04c](https://github.com/wittdennis/charts/commit/0e7e04cc122682a4a7ee4ede03567171b75b056d))
+
 ## [1.1.2](https://github.com/wittdennis/charts/compare/calibre-web-1.1.1...calibre-web-1.1.2) (2026-08-31)
 
 
