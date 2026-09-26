@@ -1,6 +1,6 @@
 # memos
 
-![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.31.0](https://img.shields.io/badge/AppVersion-0.31.0-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.31.0](https://img.shields.io/badge/AppVersion-0.31.0-informational?style=flat-square)
 
 A Helm chart for memos (https://usememos.com)
 
@@ -29,7 +29,7 @@ A Helm chart for memos (https://usememos.com)
 | livenessProbe | object | `{"failureThreshold":10,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":30,"periodSeconds":100}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | memos.databaseDriver | string | `"sqlite"` | The database driver for memos (see: https://usememos.com/docs/configuration/database) |
 | memos.existingDsnSecret | object | `{"key":null,"name":null}` | Use this when databaseDriver != sqlite to define a secret where the data source name is contained |
-| memos.instanceUrl | string | `nil` | The public url of the instance. If unset, memos runs in private mode and denies anonymous access |
+| memos.instanceUrl | required | `nil` | The public url of the instance |
 | memos.logLevel | string | `"warn"` | The log level for memos |
 | nameOverride | string | `""` | This is to override the chart name. |
 | nodeSelector | object | `{}` |  |
