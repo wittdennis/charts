@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/wittdennis/charts/compare/memos-1.4.0...memos-1.4.1) (2026-09-26)
+
+
+### Bug Fixes
+
+* **deps:** update neosmemo/memos docker tag to v0.31.0 ([55b70ad](https://github.com/wittdennis/charts/commit/55b70adc346baca2e5edc57944a33bb6d918359b))
+
 ## [1.4.0](https://github.com/wittdennis/charts/compare/memos-1.3.0...memos-1.4.0) (2026-08-09)
 
 
