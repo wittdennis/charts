@@ -6,6 +6,10 @@
     {
       "matchFileNames": ["*/Chart.yaml", "*/values.yaml"],
       "semanticCommitType": "fix"
+    },
+    {
+      "matchDepNames": ["norwoodj/helm-docs"],
+      "allowedVersions": "/^v\\d+\\.\\d+\\.\\d+$/"
     }
   ]
 }
