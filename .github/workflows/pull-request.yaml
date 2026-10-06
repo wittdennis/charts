@@ -39,7 +39,7 @@ jobs:
       - name: setup chart-testing
         uses: helm/chart-testing-action@6ec842c01de15ebb84c8627d2744a0c2f2755c9f # v2.8.0
         with:
-          version: v3.14.0 # renovate: datasource=github-releases depName=helm/chart-testing versioning=semver
+          version: v3.15.0 # renovate: datasource=github-releases depName=helm/chart-testing versioning=semver
           yamllint_version: v1.38.0 # renovate: datasource=github-releases depName=adrienverge/yamllint versioning=semver
           yamale_version: "6.1.0" # renovate: datasource=github-releases depName=23andMe/yamale versioning=semver
 
