@@ -42,6 +42,7 @@ jobs:
           version: v3.14.0
           yamllint_version: "1.38.0" # renovate: datasource=pypi depName=yamllint versioning=semver
           yamale_version: "6.1.0" # renovate: datasource=github-releases depName=23andMe/yamale versioning=semver
+          uv_version: "0.13.0" # renovate: datasource=github-releases depName=astral-sh/uv versioning=semver
 
       - name: chart-testing list changed
         id: list-changed
