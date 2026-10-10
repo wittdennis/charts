@@ -39,6 +39,12 @@ log:
   # -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
   logLevel: info
 
+# -- Additional command line arguments appended to the matter server container args, e.g. `["--listen-address", "127.0.0.1"]`
+extraArgs: []
+
+# -- Additional environment variables for the matter server container, e.g. `[{"name": "LISTEN_ADDRESS", "value": "127.0.0.1"}]`
+extraEnv: []
+
 # -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # -- This is to override the chart name.
