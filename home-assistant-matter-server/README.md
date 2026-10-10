@@ -24,6 +24,8 @@ Helm chart for home assistant matter server
 | bluetoothCommissioning.adapterId | int | `0` | Id of the bluetooth adapter e.g.: 0 for hci0 |
 | bluetoothCommissioning.enabled | bool | `false` | Flag to control if bluetooth commissioning should be enabled |
 | enableServiceLinks | bool | `true` | Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links |
+| extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--listen-address", "127.0.0.1"]` |
+| extraEnv | list | `[]` | Additional environment variables for the matter server container, e.g. `[{"name": "LISTEN_ADDRESS", "value": "127.0.0.1"}]` |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"matter-js/matterjs-server","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
