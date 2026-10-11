@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.2.1...home-assistant-matter-server-4.3.0) (2026-10-11)
+
+
+### Features
+
+* **home-assistant-matter-server:** add extraArgs and extraEnv values ([31cd99e](https://github.com/wittdennis/charts/commit/31cd99ecec8a3c7106915130483e8e35f9926b56))
+
 ## [4.2.1](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.2.0...home-assistant-matter-server-4.2.1) (2026-09-03)
 
 
