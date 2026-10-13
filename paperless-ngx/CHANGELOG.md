@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.7](https://github.com/wittdennis/charts/compare/paperless-ngx-2.1.6...paperless-ngx-2.1.7) (2026-10-13)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/paperless-ngx/paperless-ngx docker tag to v3.3.1 ([036dd15](https://github.com/wittdennis/charts/commit/036dd153e48e8a9b7fc902c8196cd3777164c092))
+
 ## [2.1.6](https://github.com/wittdennis/charts/compare/paperless-ngx-2.1.5...paperless-ngx-2.1.6) (2026-10-06)
 
 
