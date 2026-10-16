@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/wittdennis/charts/compare/ddb-proxy-1.3.0...ddb-proxy-1.3.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/mrprimate/ddb-proxy docker tag to v7 ([d9b9ef1](https://github.com/wittdennis/charts/commit/d9b9ef1c323dea73d67fd775aec2eed9d0cd50f8))
+
 ## [1.3.0](https://github.com/wittdennis/charts/compare/ddb-proxy-1.2.1...ddb-proxy-1.3.0) (2026-08-09)
 
 
