@@ -20,14 +20,15 @@ Helm chart for home assistant matter server
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| bluetoothCommissioning | object | `{"adapterId":0,"enabled":false}` | Bluetooth settings |
-| bluetoothCommissioning.adapterId | int | `0` | Id of the bluetooth adapter e.g.: 0 for hci0 |
+| bluetoothCommissioning | object | `{"adapterId":0,"enabled":false,"mode":"adapter"}` | Bluetooth settings |
+| bluetoothCommissioning.adapterId | int | `0` | Id of the bluetooth adapter e.g.: 0 for hci0. Only used in adapter mode |
 | bluetoothCommissioning.enabled | bool | `false` | Flag to control if bluetooth commissioning should be enabled |
+| bluetoothCommissioning.mode | string | `"adapter"` | Commissioning mode, possible options are: adapter (local bluetooth adapter of the node), proxy (remote BLE proxy client connecting to the `/ble` WebSocket endpoint) |
 | dashboard.enabled | bool | `true` | Flag to control if the web dashboard should be served |
 | dashboard.productionMode | string | `nil` | Force dashboard production mode, required when served through a reverse proxy. Defaults to true if ingress or route is enabled |
 | enableServiceLinks | bool | `true` | Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links |
-| extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--listen-address", "127.0.0.1"]` |
-| extraEnv | list | `[]` | Additional environment variables for the matter server container, e.g. `[{"name": "LISTEN_ADDRESS", "value": "127.0.0.1"}]` |
+| extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--disable-ota"]` |
+| extraEnv | list | `[]` | Additional environment variables for the matter server container, e.g. `[{"name": "DEFAULT_FABRIC_LABEL", "value": "Home"}]` |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"matter-js/matterjs-server","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
 | image.pullPolicy | string | `"IfNotPresent"` | This sets the pull policy for images. |
@@ -36,6 +37,7 @@ Helm chart for home assistant matter server
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
+| listenAddresses | list | `[]` | IP addresses, interface names or absolute unix socket paths the WebSocket server binds to. Binds on all node interfaces if empty. The kubelet probes and the service reach the server through the node IP, so one of the entries has to cover it. |
 | livenessProbe | object | `{"httpGet":{"path":"/health","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | lockFileRemover | object | `{"enabled":true,"image":{"registry":"docker.io","repository":"library/busybox","tag":"1.38.0"}}` | Init container to remove matter.lock files which can be left behind if the matter-server doesn't shut down cleanly |
 | lockFileRemover.enabled | bool | `true` | Flag to disable the init container |
