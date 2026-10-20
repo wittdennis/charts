@@ -35,9 +35,24 @@ enableServiceLinks: true
 # -- Name of the network interface that should be used
 networkInterface: ~
 
+# -- Port of the WebSocket server and dashboard. Binds on the node directly because the pod uses the host network
+port: 5580
+
+dashboard:
+  # -- Flag to control if the web dashboard should be served
+  enabled: true
+  # -- Force dashboard production mode, required when served through a reverse proxy. Defaults to true if ingress or route is enabled
+  productionMode: ~
+
+timeSync:
+  # -- Push UTC time, time zone and DST to devices that support it. Only enable when the node clock is reliably synced
+  enabled: false
+
 log:
   # -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
   logLevel: info
+  # -- Console log format, possible options are: plain, ansi
+  format: plain
 
 # -- Additional command line arguments appended to the matter server container args, e.g. `["--listen-address", "127.0.0.1"]`
 extraArgs: []
@@ -147,11 +162,11 @@ persistence:
 # -- This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
 readinessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
 # -- Used to define a startup probe. More information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes
 startupProbe: {}

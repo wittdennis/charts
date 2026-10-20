@@ -79,6 +79,22 @@ spec:
           args:
             - --storage-path
             - /data
+            - --port
+            - {{ .Values.port | quote }}
+            {{- if .Values.dashboard.enabled }}
+            {{- $productionMode := .Values.dashboard.productionMode }}
+            {{- if kindIs "invalid" $productionMode }}
+            {{- $productionMode = or .Values.ingress.enabled .Values.route.enabled }}
+            {{- end }}
+            {{- if $productionMode }}
+            - --production-mode
+            {{- end }}
+            {{- else }}
+            - --disable-dashboard
+            {{- end }}
+            {{- if .Values.timeSync.enabled }}
+            - --enable-time-sync
+            {{- end }}
             {{- if .Values.log.logLevel }}
             - --log-level
             - {{ .Values.log.logLevel }}
@@ -94,13 +110,19 @@ spec:
             {{- with .Values.extraArgs }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- with .Values.extraEnv }}
+          {{- if or .Values.log.format .Values.extraEnv }}
           env:
+            {{- if .Values.log.format }}
+            - name: MATTER_LOG_FORMAT
+              value: {{ .Values.log.format | quote }}
+            {{- end }}
+            {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
           ports:
             - name: http
-              containerPort: 5580
+              containerPort: {{ .Values.port }}
               protocol: TCP
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}

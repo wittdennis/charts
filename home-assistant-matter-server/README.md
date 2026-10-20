@@ -1,6 +1,6 @@
 # home-assistant-matter-server
 
-![Version: 4.3.0](https://img.shields.io/badge/Version-4.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.4.0](https://img.shields.io/badge/AppVersion-1.4.0-informational?style=flat-square)
+![Version: 4.3.0](https://img.shields.io/badge/Version-4.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.0](https://img.shields.io/badge/AppVersion-1.5.0-informational?style=flat-square)
 
 Helm chart for home assistant matter server
 
@@ -23,6 +23,8 @@ Helm chart for home assistant matter server
 | bluetoothCommissioning | object | `{"adapterId":0,"enabled":false}` | Bluetooth settings |
 | bluetoothCommissioning.adapterId | int | `0` | Id of the bluetooth adapter e.g.: 0 for hci0 |
 | bluetoothCommissioning.enabled | bool | `false` | Flag to control if bluetooth commissioning should be enabled |
+| dashboard.enabled | bool | `true` | Flag to control if the web dashboard should be served |
+| dashboard.productionMode | string | `nil` | Force dashboard production mode, required when served through a reverse proxy. Defaults to true if ingress or route is enabled |
 | enableServiceLinks | bool | `true` | Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links |
 | extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--listen-address", "127.0.0.1"]` |
 | extraEnv | list | `[]` | Additional environment variables for the matter server container, e.g. `[{"name": "LISTEN_ADDRESS", "value": "127.0.0.1"}]` |
@@ -34,13 +36,14 @@ Helm chart for home assistant matter server
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
-| livenessProbe | object | `{"httpGet":{"path":"/","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
+| livenessProbe | object | `{"httpGet":{"path":"/health","port":"http"}}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | lockFileRemover | object | `{"enabled":true,"image":{"registry":"docker.io","repository":"library/busybox","tag":"1.38.0"}}` | Init container to remove matter.lock files which can be left behind if the matter-server doesn't shut down cleanly |
 | lockFileRemover.enabled | bool | `true` | Flag to disable the init container |
 | lockFileRemover.image | object | `{"registry":"docker.io","repository":"library/busybox","tag":"1.38.0"}` | Sets the image for the initContainer |
 | lockFileRemover.image.registry | string | `"docker.io"` | Container registry where the repository is hosted |
 | lockFileRemover.image.repository | string | `"library/busybox"` | Container repository |
 | lockFileRemover.image.tag | string | `"1.38.0"` | Image tag |
+| log.format | string | `"plain"` | Console log format, possible options are: plain, ansi |
 | log.logLevel | string | `"info"` | Global logging level, possible options are: critical, error, warning, info, debug, verbose |
 | nameOverride | string | `""` | This is to override the chart name. |
 | networkInterface | string | `nil` | Name of the network interface that should be used |
@@ -50,7 +53,8 @@ Helm chart for home assistant matter server
 | persistence.storageClassName | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |
 | podAnnotations | object | `{}` | This is for setting Kubernetes Annotations to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
 | podLabels | object | `{}` | This is for setting Kubernetes Labels to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
-| readinessProbe.httpGet.path | string | `"/"` |  |
+| port | int | `5580` | Port of the WebSocket server and dashboard. Binds on the node directly because the pod uses the host network |
+| readinessProbe.httpGet.path | string | `"/health"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | resources | object | `{}` |  |
 | route | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":[],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | This block is for setting up gateway api http route. More information can be found here: https://gateway-api.sigs.k8s.io/ |
@@ -71,6 +75,7 @@ Helm chart for home assistant matter server
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | startupProbe | object | `{}` | Used to define a startup probe. More information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes |
+| timeSync.enabled | bool | `false` | Push UTC time, time zone and DST to devices that support it. Only enable when the node clock is reliably synced |
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` | Additional volumeMounts on the output Deployment definition. |
 | volumes | list | `[]` | Additional volumes on the output Deployment definition. |
