@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.4.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.3.0...home-assistant-matter-server-4.4.0) (2026-10-20)
+
+
+### Features
+
+* **home-assistant-matter-server:** add listen addresses and ble proxy mode ([a58776c](https://github.com/wittdennis/charts/commit/a58776cebcd823cab9251536be61bd1492cf6a20))
+* **home-assistant-matter-server:** add port, dashboard, time sync and log format values ([f2b2e5b](https://github.com/wittdennis/charts/commit/f2b2e5b22e6a88a980c5a181e04a46248cb714bd))
+* **home-assistant-matter-server:** add values schema ([a123d0d](https://github.com/wittdennis/charts/commit/a123d0d3588b5a0655f871cef744e315f2c7dd7e))
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/matter-js/matterjs-server docker tag to v1.5.0 ([f8614ef](https://github.com/wittdennis/charts/commit/f8614ef9a04faca933b31e02e1609adc504e5f53))
+
 ## [4.3.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.2.1...home-assistant-matter-server-4.3.0) (2026-10-11)
 
 
