@@ -26,7 +26,9 @@ lockFileRemover:
 bluetoothCommissioning:
   # -- Flag to control if bluetooth commissioning should be enabled
   enabled: false
-  # -- Id of the bluetooth adapter e.g.: 0 for hci0
+  # -- Commissioning mode, possible options are: adapter (local bluetooth adapter of the node), proxy (remote BLE proxy client connecting to the `/ble` WebSocket endpoint)
+  mode: adapter
+  # -- Id of the bluetooth adapter e.g.: 0 for hci0. Only used in adapter mode
   adapterId: 0
 
 # -- Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links
@@ -37,6 +39,12 @@ networkInterface: ~
 
 # -- Port of the WebSocket server and dashboard. Binds on the node directly because the pod uses the host network
 port: 5580
+
+# -- IP addresses, interface names or absolute unix socket paths the WebSocket server binds to. Binds on all node interfaces if empty.
+# The kubelet probes and the service reach the server through the node IP, so one of the entries has to cover it.
+listenAddresses: []
+# - eth0
+# - 192.168.1.10
 
 dashboard:
   # -- Flag to control if the web dashboard should be served
@@ -54,10 +62,10 @@ log:
   # -- Console log format, possible options are: plain, ansi
   format: plain
 
-# -- Additional command line arguments appended to the matter server container args, e.g. `["--listen-address", "127.0.0.1"]`
+# -- Additional command line arguments appended to the matter server container args, e.g. `["--disable-ota"]`
 extraArgs: []
 
-# -- Additional environment variables for the matter server container, e.g. `[{"name": "LISTEN_ADDRESS", "value": "127.0.0.1"}]`
+# -- Additional environment variables for the matter server container, e.g. `[{"name": "DEFAULT_FABRIC_LABEL", "value": "Home"}]`
 extraEnv: []
 
 # -- This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/

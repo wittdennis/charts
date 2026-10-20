@@ -81,6 +81,10 @@ spec:
             - /data
             - --port
             - {{ .Values.port | quote }}
+            {{- range .Values.listenAddresses }}
+            - --listen-address
+            - {{ . | quote }}
+            {{- end }}
             {{- if .Values.dashboard.enabled }}
             {{- $productionMode := .Values.dashboard.productionMode }}
             {{- if kindIs "invalid" $productionMode }}
@@ -100,8 +104,14 @@ spec:
             - {{ .Values.log.logLevel }}
             {{- end }}
             {{- if .Values.bluetoothCommissioning.enabled }}
+            {{- if eq .Values.bluetoothCommissioning.mode "adapter" }}
             - --bluetooth-adapter
             - {{ .Values.bluetoothCommissioning.adapterId | quote }}
+            {{- else if eq .Values.bluetoothCommissioning.mode "proxy" }}
+            - --ble-proxy
+            {{- else }}
+            {{- fail "bluetoothCommissioning.mode must be one of: adapter, proxy" }}
+            {{- end }}
             {{- end }}
             {{- if .Values.networkInterface }}
             - --primary-interface
@@ -139,7 +149,7 @@ spec:
               mountPath: /data
             - name: tmp
               mountPath: /tmp
-          {{- if .Values.bluetoothCommissioning.enabled }}
+          {{- if and .Values.bluetoothCommissioning.enabled (eq .Values.bluetoothCommissioning.mode "adapter") }}
             - name: dbus
               mountPath: /run/dbus
           {{- end }}
@@ -149,7 +159,7 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
-      {{- if .Values.bluetoothCommissioning.enabled }}
+      {{- if and .Values.bluetoothCommissioning.enabled (eq .Values.bluetoothCommissioning.mode "adapter") }}
         - name: dbus
           hostPath:
             path: /run/dbus
