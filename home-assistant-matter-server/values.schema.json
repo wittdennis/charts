@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "home-assistant-matter-server chart values",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "stringMap": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "string" }
+    },
+    "objectList": {
+      "type": ["array", "null"],
+      "items": { "type": "object" }
+    },
+    "quantity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "probe": {
+      "description": "Rendered verbatim, so any Kubernetes Probe field is accepted.",
+      "type": ["object", "null"]
+    }
+  },
+  "required": [
+    "image",
+    "lockFileRemover",
+    "bluetoothCommissioning",
+    "port",
+    "dashboard",
+    "timeSync",
+    "log",
+    "serviceAccount",
+    "service",
+    "route",
+    "ingress",
+    "persistence"
+  ],
+  "properties": {
+    "global": {
+      "description": "Reserved by Helm for values shared with parent or sibling charts.",
+      "type": ["object", "null"]
+    },
+
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registry", "repository"],
+      "properties": {
+        "registry": { "type": "string", "minLength": 1 },
+        "repository": { "type": "string", "minLength": 1 },
+        "pullPolicy": { "type": "string", "enum": ["Always", "Never", "IfNotPresent"] },
+        "tag": {
+          "description": "Empty string falls back to the chart appVersion.",
+          "type": "string"
+        }
+      }
+    },
+
+    "lockFileRemover": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["registry", "repository", "tag"],
+          "properties": {
+            "registry": { "type": "string", "minLength": 1 },
+            "repository": { "type": "string", "minLength": 1 },
+            "tag": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+
+    "bluetoothCommissioning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "mode"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "mode": { "type": "string", "enum": ["adapter", "proxy"] },
+        "adapterId": {
+          "description": "HCI ID of the adapter, e.g. 0 for hci0.",
+          "type": ["integer", "string"],
+          "minimum": 0,
+          "pattern": "^[0-9]+$"
+        }
+      }
+    },
+
+    "enableServiceLinks": { "type": "boolean" },
+
+    "networkInterface": { "type": ["string", "null"] },
+
+    "port": {
+      "description": "Port 0 lets the server pick a free port, which the container port and probes cannot follow.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    },
+
+    "listenAddresses": {
+      "type": ["array", "null"],
+      "items": { "type": "string", "minLength": 1 }
+    },
+
+    "dashboard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "productionMode": {
+          "description": "Null derives the mode from ingress.enabled and route.enabled.",
+          "type": ["boolean", "null"]
+        }
+      }
+    },
+
+    "timeSync": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" }
+      }
+    },
+
+    "log": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "logLevel": {
+          "description": "Empty leaves the server default.",
+          "type": ["string", "null"],
+          "enum": ["critical", "error", "warning", "info", "debug", "verbose", "", null]
+        },
+        "format": {
+          "description": "Empty leaves the image default.",
+          "type": ["string", "null"],
+          "enum": ["plain", "ansi", "", null]
+        }
+      }
+    },
+
+    "extraArgs": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+
+    "extraEnv": { "$ref": "#/$defs/objectList" },
+
+    "imagePullSecrets": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "properties": { "name": { "type": "string" } }
+      }
+    },
+
+    "nameOverride": { "type": "string", "maxLength": 63 },
+    "fullnameOverride": { "type": "string", "maxLength": 63 },
+
+    "serviceAccount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["create"],
+      "properties": {
+        "create": { "type": "boolean" },
+        "automount": { "type": "boolean" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "name": { "type": "string" }
+      }
+    },
+
+    "podAnnotations": { "$ref": "#/$defs/stringMap" },
+    "podLabels": { "$ref": "#/$defs/stringMap" },
+
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "port"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer", "ExternalName"]
+        },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
+      }
+    },
+
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "labels": { "$ref": "#/$defs/stringMap" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "hostnames": { "type": ["array", "null"], "items": { "type": "string" } },
+        "parentRefs": { "$ref": "#/$defs/objectList" },
+        "matches": { "$ref": "#/$defs/objectList" },
+        "filters": { "$ref": "#/$defs/objectList" },
+        "additionalRules": {
+          "description": "Prepended to the HTTPRoute rules list, so it must be a list of rules.",
+          "$ref": "#/$defs/objectList"
+        }
+      }
+    },
+
+    "ingress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "className": { "type": "string" },
+        "annotations": { "$ref": "#/$defs/stringMap" },
+        "hosts": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["host"],
+            "properties": {
+              "host": { "type": "string", "minLength": 1 },
+              "paths": {
+                "type": ["array", "null"],
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["path"],
+                  "properties": {
+                    "path": { "type": "string", "minLength": 1 },
+                    "pathType": {
+                      "type": "string",
+                      "enum": ["Exact", "Prefix", "ImplementationSpecific"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "secretName": { "type": "string" },
+              "hosts": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+
+    "resources": {
+      "description": "Rendered verbatim, so any Kubernetes ResourceRequirements field is accepted.",
+      "type": ["object", "null"]
+    },
+
+    "persistence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["size"],
+      "properties": {
+        "storageClassName": { "type": ["string", "null"] },
+        "size": { "$ref": "#/$defs/quantity" }
+      }
+    },
+
+    "livenessProbe": { "$ref": "#/$defs/probe" },
+    "readinessProbe": { "$ref": "#/$defs/probe" },
+    "startupProbe": { "$ref": "#/$defs/probe" },
+
+    "volumes": { "$ref": "#/$defs/objectList" },
+    "volumeMounts": { "$ref": "#/$defs/objectList" },
+    "nodeSelector": { "$ref": "#/$defs/stringMap" },
+    "tolerations": { "$ref": "#/$defs/objectList" },
+    "affinity": {
+      "description": "Rendered verbatim, so any Kubernetes Affinity field is accepted.",
+      "type": ["object", "null"]
+    }
+  }
+}
