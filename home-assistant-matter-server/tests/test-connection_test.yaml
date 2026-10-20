@@ -1,0 +1,16 @@
+suite: home-assistant-matter-server.test-connection value dependencies
+templates:
+  - templates/tests/test-connection.yaml
+tests:
+  # / is only served by the dashboard, so the health endpoint is the one that always answers
+  - it: checks the health endpoint through the service
+    set:
+      service.port: 8080
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: test
+      - equal:
+          path: spec.containers[0].args
+          value:
+            - RELEASE-NAME-home-assistant-matter-server:8080/health

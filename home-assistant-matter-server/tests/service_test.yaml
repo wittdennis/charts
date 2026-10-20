@@ -1,0 +1,31 @@
+suite: home-assistant-matter-server.service value dependencies
+templates:
+  - templates/service.yaml
+tests:
+  # The target port is referenced by name so it follows the container port
+  - it: targets the named container port
+    set:
+      port: 5581
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0]
+          value:
+            port: 80
+            targetPort: http
+            protocol: TCP
+            name: http
+
+  - it: renders the service type and port
+    set:
+      service:
+        type: LoadBalancer
+        port: 5580
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.ports[0].port
+          value: 5580
