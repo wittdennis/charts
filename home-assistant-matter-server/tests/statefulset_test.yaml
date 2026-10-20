@@ -1,0 +1,414 @@
+suite: home-assistant-matter-server.statefulset value dependencies
+templates:
+  - templates/statefulset.yaml
+tests:
+  - it: renders with the default values
+    asserts:
+      - notFailedTemplate: {}
+      - isKind:
+          of: StatefulSet
+      - equal:
+          path: spec.replicas
+          value: 1
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --storage-path
+            - /data
+            - --port
+            - "5580"
+            - --log-level
+            - info
+
+  # mDNS discovery and IPv6 link-local traffic to Matter devices only work on the node's network
+  - it: runs on the host network with cluster dns
+    asserts:
+      - equal:
+          path: spec.template.spec.hostNetwork
+          value: true
+      - equal:
+          path: spec.template.spec.dnsPolicy
+          value: ClusterFirstWithHostNet
+
+  - it: defaults the image tag to the chart appVersion
+    chart:
+      appVersion: 9.9.9
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/matter-js/matterjs-server:9.9.9
+
+  - it: prefers an explicit image tag over the appVersion
+    chart:
+      appVersion: 9.9.9
+    set:
+      image.tag: 1.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/matter-js/matterjs-server:1.0.0
+
+  - it: removes stale lock files before the server starts
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[0].name
+          value: lock-remover
+      - equal:
+          path: spec.template.spec.initContainers[0].image
+          value: docker.io/library/busybox:1.38.0
+      - contains:
+          path: spec.template.spec.initContainers[0].volumeMounts
+          content:
+            name: data
+            mountPath: /data
+
+  - it: renders no init container when the lock file remover is disabled
+    set:
+      lockFileRemover.enabled: false
+    asserts:
+      - notExists:
+          path: spec.template.spec.initContainers
+
+  # With host networking the container port is the node port, so all three have to move together
+  - it: moves the listen port, container port and probes together
+    set:
+      port: 5581
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: "5581"
+      - equal:
+          path: spec.template.spec.containers[0].ports[0]
+          value:
+            name: http
+            containerPort: 5581
+            protocol: TCP
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: http
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: http
+
+  # / is only served by the dashboard, so probing it would fail with the dashboard disabled
+  - it: probes the health endpoint
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /health
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /health
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: renders the startup probe once it is set
+    set:
+      startupProbe:
+        httpGet:
+          path: /health
+          port: http
+        failureThreshold: 30
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.failureThreshold
+          value: 30
+
+  - it: repeats the listen address flag per entry
+    set:
+      listenAddresses:
+        - eth0
+        - /run/matter/ws.sock
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --storage-path
+            - /data
+            - --port
+            - "5580"
+            - --listen-address
+            - eth0
+            - --listen-address
+            - /run/matter/ws.sock
+            - --log-level
+            - info
+
+  - it: serves the dashboard in development mode without a reverse proxy
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --production-mode
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --disable-dashboard
+
+  - it: switches the dashboard to production mode behind an ingress
+    set:
+      ingress.enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --production-mode
+
+  - it: switches the dashboard to production mode behind a route
+    set:
+      route.enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --production-mode
+
+  - it: keeps an explicit development mode behind a route
+    set:
+      route.enabled: true
+      dashboard.productionMode: false
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --production-mode
+
+  - it: forces production mode without a reverse proxy
+    set:
+      dashboard.productionMode: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --production-mode
+
+  # --production-mode only configures the dashboard, so it has no meaning once it is disabled
+  - it: disables the dashboard without a production mode flag
+    set:
+      route.enabled: true
+      dashboard:
+        enabled: false
+        productionMode: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --disable-dashboard
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --production-mode
+
+  - it: enables time sync
+    set:
+      timeSync.enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --enable-time-sync
+
+  - it: leaves the log level to the server when it is empty
+    set:
+      log.logLevel: ""
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --log-level
+
+  - it: sets the primary interface
+    set:
+      networkInterface: eth0
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --primary-interface
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: eth0
+
+  - it: appends extra args after the generated ones
+    set:
+      extraArgs:
+        - --disable-ota
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --storage-path
+            - /data
+            - --port
+            - "5580"
+            - --log-level
+            - info
+            - --disable-ota
+
+  - it: sets the log format by default
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: MATTER_LOG_FORMAT
+              value: plain
+
+  - it: renders no env when neither log format nor extra env is set
+    set:
+      log.format: ""
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].env
+
+  # Later entries win in Kubernetes, so extra env can still override the log format
+  - it: appends extra env after the log format
+    set:
+      extraEnv:
+        - name: MATTER_LOG_FORMAT
+          value: ansi
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: MATTER_LOG_FORMAT
+              value: plain
+            - name: MATTER_LOG_FORMAT
+              value: ansi
+
+  - it: neither commissions over bluetooth nor mounts dbus by default
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --bluetooth-adapter
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --ble-proxy
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: dbus
+          any: true
+
+  # BlueZ is reached through the host's system bus
+  - it: commissions over the local adapter through the host dbus
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        adapterId: 1
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --bluetooth-adapter
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: "1"
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: dbus
+            mountPath: /run/dbus
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: dbus
+            hostPath:
+              path: /run/dbus
+
+  - it: commissions over a ble proxy without the host dbus
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        mode: proxy
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --ble-proxy
+      - notContains:
+          path: spec.template.spec.containers[0].args
+          content: --bluetooth-adapter
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: dbus
+          any: true
+
+  # The read-only root filesystem needs somewhere to write scratch files
+  - it: keeps tmp writable
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: tmp
+            emptyDir: {}
+
+  - it: appends extra volumes and mounts
+    set:
+      volumes:
+        - name: certs
+          configMap:
+            name: paa-certs
+      volumeMounts:
+        - name: certs
+          mountPath: /certs
+          readOnly: true
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: certs
+            configMap:
+              name: paa-certs
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: certs
+            mountPath: /certs
+            readOnly: true
+
+  - it: requests the configured storage size
+    set:
+      persistence.size: 5Gi
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].metadata.name
+          value: data
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 5Gi
+
+  # An unset storage class has to stay unset rather than become "", which would pin the
+  # claim to a class-less volume instead of the cluster default
+  - it: leaves the storage class to the cluster default
+    asserts:
+      - notExists:
+          path: spec.volumeClaimTemplates[0].spec.storageClassName
+
+  - it: pins the storage class once it is set
+    set:
+      persistence.storageClassName: fast
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.storageClassName
+          value: fast
+
+  - it: uses the generated service account name when the chart creates one
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: RELEASE-NAME-home-assistant-matter-server
+
+  - it: falls back to the default service account when the chart creates none
+    set:
+      serviceAccount.create: false
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: default
+
+  - it: renders scheduling constraints
+    set:
+      nodeSelector:
+        kubernetes.io/hostname: node-1
+      tolerations:
+        - key: dedicated
+          operator: Exists
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            kubernetes.io/hostname: node-1
+      - equal:
+          path: spec.template.spec.tolerations[0].key
+          value: dedicated

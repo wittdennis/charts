@@ -1,0 +1,61 @@
+suite: home-assistant-matter-server.ingress value dependencies
+templates:
+  - templates/ingress.yaml
+tests:
+  - it: renders nothing while the ingress is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: routes every host path to the service port
+    set:
+      ingress:
+        enabled: true
+        className: nginx
+        hosts:
+          - host: matter.example.com
+            paths:
+              - path: /
+                pathType: Prefix
+    asserts:
+      - isKind:
+          of: Ingress
+      - equal:
+          path: spec.ingressClassName
+          value: nginx
+      - equal:
+          path: spec.rules[0]
+          value:
+            host: matter.example.com
+            http:
+              paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: RELEASE-NAME-home-assistant-matter-server
+                      port:
+                        number: 80
+
+  - it: leaves the ingress class to the cluster default
+    set:
+      ingress.enabled: true
+    asserts:
+      - notExists:
+          path: spec.ingressClassName
+
+  - it: renders tls only once it is configured
+    set:
+      ingress:
+        enabled: true
+        tls:
+          - secretName: matter-tls
+            hosts:
+              - matter.example.com
+    asserts:
+      - equal:
+          path: spec.tls
+          value:
+            - secretName: matter-tls
+              hosts:
+                - matter.example.com

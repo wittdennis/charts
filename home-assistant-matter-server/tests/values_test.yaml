@@ -1,0 +1,67 @@
+suite: home-assistant-matter-server values validation
+templates:
+  - templates/statefulset.yaml
+tests:
+  - it: rejects an unknown bluetooth commissioning mode
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        mode: usb
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/bluetoothCommissioning/mode': value must be one of"
+
+  # Port 0 binds a random port that the container port and probes cannot follow
+  - it: rejects port 0
+    set:
+      port: 0
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/port': minimum"
+
+  - it: rejects an unknown log format
+    set:
+      log.format: json
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/log/format': value must be one of"
+
+  - it: rejects an unknown log level
+    set:
+      log.logLevel: trace
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/log/logLevel': value must be one of"
+
+  - it: rejects unknown top level values
+    set:
+      unknown: true
+    asserts:
+      - failedTemplate:
+          errorPattern: "additional properties 'unknown' not allowed"
+
+  # additionalRules is rendered as a list of rules, so a map would produce an invalid route
+  - it: rejects route rules given as a map
+    set:
+      route.additionalRules:
+        name: other
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/route/additionalRules': got object"
+
+  - it: rejects an adapter id that is not an hci number
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        adapterId: hci0
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/bluetoothCommissioning/adapterId'"
+
+  - it: accepts a numeric string as adapter id
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        adapterId: "1"
+    asserts:
+      - notFailedTemplate: {}
