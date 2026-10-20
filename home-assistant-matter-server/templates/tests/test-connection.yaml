@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
     - name: wget
-      image: busybox
+      image: docker.io/library/busybox:1.38.0 # renovate: datasource=docker depName=docker.io/library/busybox versioning=docker
       command: ['wget']
-      args: ['{{ include "home-assistant-matter-server.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "home-assistant-matter-server.fullname" . }}:{{ .Values.service.port }}/health']
   restartPolicy: Never
