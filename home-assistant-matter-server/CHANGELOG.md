@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.4.1](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.4.0...home-assistant-matter-server-4.4.1) (2026-10-22)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/matter-js/matterjs-server docker tag to v1.5.1 ([79e8251](https://github.com/wittdennis/charts/commit/79e8251158221412696da204099e75c834824164))
+* **deps:** update ghcr.io/matter-js/matterjs-server docker tag to v1.5.2 ([6bd17e1](https://github.com/wittdennis/charts/commit/6bd17e1c97484e6eb4bfa939c66c587a13c23fe9))
+
 ## [4.4.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.3.0...home-assistant-matter-server-4.4.0) (2026-10-20)
 
 
