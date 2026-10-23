@@ -18,7 +18,7 @@ version: 4.4.1
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.5.2" # renovate: datasource=docker depName=ghcr.io/matter-js/matterjs-server versioning=docker
+appVersion: "1.5.3" # renovate: datasource=docker depName=ghcr.io/matter-js/matterjs-server versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/home-assistant-matter-server
   - https://github.com/matter-js/matterjs-server
@@ -34,7 +34,7 @@ annotations:
   artifacthub.io/license: MIT
   artifacthub.io/images: |
     - name: home-assistant-matter-server
-      image: ghcr.io/matter-js/matterjs-server:1.5.2 # renovate
+      image: ghcr.io/matter-js/matterjs-server:1.5.3 # renovate
     - name: lock-file-remover
       image: docker.io/library/busybox:1.38.0 # renovate
 maintainers:
