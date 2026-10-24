@@ -580,6 +580,13 @@ All notable changes to this project will be documented in this file. See [conven
 
 - - -
 
+## [15.2.6](https://github.com/wittdennis/charts/compare/foundryvtt-15.2.5...foundryvtt-15.2.6) (2026-10-24)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/felddy/foundryvtt docker tag to v14.369.1 ([4538085](https://github.com/wittdennis/charts/commit/45380859b1948027e5e62abf6f07ec878d600ceb))
+
 ## [15.2.5](https://github.com/wittdennis/charts/compare/foundryvtt-15.2.4...foundryvtt-15.2.5) (2026-10-16)
 
 
