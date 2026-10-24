@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.7](https://github.com/wittdennis/charts/compare/home-assistant-otbr-2.1.6...home-assistant-otbr-2.1.7) (2026-10-24)
+
+
+### Bug Fixes
+
+* **home-assistant-otbr:** HTTPRoute name templating ([#863](https://github.com/wittdennis/charts/issues/863)) ([a9869e6](https://github.com/wittdennis/charts/commit/a9869e69e09265cbef412cf50c8f2854d17ad2ed))
+
 ## [2.1.6](https://github.com/wittdennis/charts/compare/home-assistant-otbr-2.1.5...home-assistant-otbr-2.1.6) (2026-10-07)
 
 
