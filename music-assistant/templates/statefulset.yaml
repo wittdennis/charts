@@ -30,31 +30,16 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "music-assistant.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 0
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
+          {{- with .Values.securityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            seccompProfile:
-              type: RuntimeDefault
-            runAsUser: 0
-            runAsGroup: 0
-            runAsNonRoot: false
-            privileged: false
-            capabilities:
-              drop:
-                - ALL
-              # AirPlay 2 multi-room sync runs a PTP daemon on UDP 319/320
-              add:
-                - NET_BIND_SERVICE
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if or .Values.log.logLevel .Values.safeMode .Values.extraArgs }}

@@ -105,6 +105,15 @@
       }
     },
 
+    "podSecurityContext": {
+      "description": "Rendered verbatim, so any Kubernetes PodSecurityContext field is accepted.",
+      "type": ["object", "null"]
+    },
+    "securityContext": {
+      "description": "Rendered verbatim, so any Kubernetes SecurityContext field is accepted.",
+      "type": ["object", "null"]
+    },
+
     "podAnnotations": { "$ref": "#/$defs/stringMap" },
     "podLabels": { "$ref": "#/$defs/stringMap" },
 

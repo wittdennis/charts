@@ -9,11 +9,45 @@ Helm chart for Music Assistant server
 | Name | Email | Url |
 | ---- | ------ | --- |
 | Dennis Witt |  | <https://github.com/wittdennis> |
-
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/music-assistant>
 * <https://github.com/music-assistant/server>
+
+## AirPlay
+
+The server runs as an unprivileged user with all capabilities dropped. AirPlay playback works, but AirPlay 2 multi-room sync does not: it relies on a PTP clock daemon that binds the privileged UDP ports 319 and 320. The server logs a warning on startup and falls back to NTP timing, so grouped AirPlay 2 speakers may drift apart.
+
+An added capability is not effective for a non-root user, because Kubernetes grants no ambient capabilities. The unprivileged port range cannot be lowered per pod either, because `net.ipv4.ip_unprivileged_port_start` belongs to the node's network namespace on the host network.
+
+### Lowering the unprivileged port range on the node
+
+This keeps the server unprivileged. Set the sysctl on every node the server can be scheduled on, and persist it across reboots:
+
+```sh
+sysctl -w net.ipv4.ip_unprivileged_port_start=319
+echo 'net.ipv4.ip_unprivileged_port_start = 319' > /etc/sysctl.d/90-music-assistant.conf
+```
+
+The sysctl is scoped to a network namespace, so it applies only to processes on the node's host network. Pods with their own network keep the default of 1024. It covers IPv6 as well. UDP 319 and 320 have to be free on the node, so nothing else, such as `ptp4l`, may already listen on them.
+
+### Running as root
+
+If the node cannot be changed, run the server as root and add the `NET_BIND_SERVICE` capability:
+
+```yaml
+podSecurityContext:
+  runAsNonRoot: false
+  runAsUser: 0
+  runAsGroup: 0
+securityContext:
+  runAsNonRoot: false
+  capabilities:
+    add:
+      - NET_BIND_SERVICE
+```
+
+Helm merges these into the defaults, so `runAsNonRoot` has to be set to `false` explicitly in both contexts, otherwise the kubelet refuses to start a root container. Everything else stays in place: all other capabilities remain dropped, privilege escalation stays disabled and the root filesystem stays read-only. UDP 319 and 320 have to be free on the node here as well.
 
 ## Values
 
@@ -40,6 +74,7 @@ Helm chart for Music Assistant server
 | persistence.storageClassName | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |
 | podAnnotations | object | `{}` | This is for setting Kubernetes Annotations to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
 | podLabels | object | `{}` | This is for setting Kubernetes Labels to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
+| podSecurityContext | object | `{"fsGroup":1000,"fsGroupChangePolicy":"OnRootMismatch","runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}` | Security context of the pod. More information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/ |
 | port | int | `8095` | Port of the web server and API. Binds on the node directly because the pod uses the host network. The server reads the port from its own settings, so this has to match Settings > System > Web Server |
 | readinessProbe.httpGet.path | string | `"/info"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
@@ -54,6 +89,7 @@ Helm chart for Music Assistant server
 | route.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
 | route.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
 | safeMode | bool | `false` | Start in safe mode, which only loads the core controllers and no providers. Useful to recover from a misbehaving provider |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true}` | Security context of the server container. AirPlay 2 multi-room PTP sync binds the privileged UDP ports 319/320 and otherwise falls back to NTP timing. See the AirPlay section of the README for the options |
 | service | object | `{"port":80,"type":"ClusterIP"}` | This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/ |
 | service.port | int | `80` | This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports |
 | service.type | string | `"ClusterIP"` | This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types |

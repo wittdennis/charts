@@ -54,6 +54,28 @@ podAnnotations: {}
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
 
+# -- Security context of the pod. More information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Security context of the server container.
+# AirPlay 2 multi-room PTP sync binds the privileged UDP ports 319/320 and otherwise falls back to NTP timing.
+# See the AirPlay section of the README for the options
+securityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
 # -- This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # -- This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types

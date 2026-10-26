@@ -139,21 +139,59 @@ tests:
             - name: TZ
               value: Europe/Berlin
 
-  - it: drops all capabilities except binding privileged ports
+  - it: runs as an unprivileged user by default
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].securityContext.capabilities
+          path: spec.template.spec.securityContext
           value:
-            drop:
-              - ALL
-            add:
-              - NET_BIND_SERVICE
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
       - equal:
-          path: spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation
-          value: false
+          path: spec.template.spec.containers[0].securityContext
+          value:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+  # AirPlay 2 PTP sync binds privileged ports, which an unprivileged user cannot
+  - it: replaces the security contexts with the given ones
+    set:
+      podSecurityContext:
+        runAsUser: 0
+      securityContext:
+        runAsUser: 0
+        capabilities:
+          drop:
+            - ALL
+          add:
+            - NET_BIND_SERVICE
+    asserts:
       - equal:
-          path: spec.template.spec.containers[0].securityContext.privileged
-          value: false
+          path: spec.template.spec.securityContext.runAsUser
+          value: 0
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.capabilities.add
+          value:
+            - NET_BIND_SERVICE
+
+  - it: renders no security contexts once they are cleared
+    set:
+      podSecurityContext: null
+      securityContext: null
+    asserts:
+      - notExists:
+          path: spec.template.spec.securityContext
+      - notExists:
+          path: spec.template.spec.containers[0].securityContext
 
   # The read-only root filesystem needs somewhere to write scratch files
   - it: keeps tmp writable
