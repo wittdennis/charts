@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.5](https://github.com/wittdennis/charts/compare/radicale-2.1.4...radicale-2.1.5) (2026-10-26)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/kozea/radicale docker tag to v3.9.0 ([054c1d1](https://github.com/wittdennis/charts/commit/054c1d1a6666e8f7f58795adabeb0409a422a7f2))
+
 ## [2.1.4](https://github.com/wittdennis/charts/compare/radicale-2.1.3...radicale-2.1.4) (2026-10-08)
 
 
