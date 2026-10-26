@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.5.0](https://github.com/wittdennis/charts/compare/garage-2.4.2...garage-2.5.0) (2026-10-26)
+
+
+### Features
+
+* **garage:** add public endpoint, optional root domains and admin service ([7a3fe7c](https://github.com/wittdennis/charts/commit/7a3fe7ca411672cbe7b9c28c25135b1bdbeae736))
+
+
+### Bug Fixes
+
+* **deps:** update dxflrs/amd64_garage docker tag to v2.5.0 ([b7067d6](https://github.com/wittdennis/charts/commit/b7067d628a2381dab239031c3f463eb0cdaa33ff))
+* **garage:** admin token secret value and lookup key ([c860f17](https://github.com/wittdennis/charts/commit/c860f179ee258fa9583e150df155ebb3234d231b))
+
 ## [2.4.2](https://github.com/wittdennis/charts/compare/garage-2.4.1...garage-2.4.2) (2026-09-08)
 
 
