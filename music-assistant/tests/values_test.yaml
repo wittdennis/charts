@@ -1,0 +1,34 @@
+suite: music-assistant values validation
+templates:
+  - templates/statefulset.yaml
+tests:
+  # Port 0 is not a port the server can be configured to listen on
+  - it: rejects port 0
+    set:
+      port: 0
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/port': minimum"
+
+  - it: rejects an unknown log level
+    set:
+      log.logLevel: trace
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/log/logLevel': value must be one of"
+
+  - it: rejects unknown top level values
+    set:
+      unknown: true
+    asserts:
+      - failedTemplate:
+          errorPattern: "additional properties 'unknown' not allowed"
+
+  # additionalRules is rendered as a list of rules, so a map would produce an invalid route
+  - it: rejects route rules given as a map
+    set:
+      route.additionalRules:
+        name: other
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/route/additionalRules': got object"

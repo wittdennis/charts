@@ -1,0 +1,16 @@
+suite: music-assistant.test-connection value dependencies
+templates:
+  - templates/tests/test-connection.yaml
+tests:
+  # / redirects to the setup or login page, /info answers without authentication
+  - it: checks the info endpoint through the service
+    set:
+      service.port: 8080
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: test
+      - equal:
+          path: spec.containers[0].args
+          value:
+            - RELEASE-NAME-music-assistant:8080/info

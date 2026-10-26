@@ -1,0 +1,31 @@
+suite: music-assistant.service value dependencies
+templates:
+  - templates/service.yaml
+tests:
+  # The target port is referenced by name so it follows the container port
+  - it: targets the named container port
+    set:
+      port: 8096
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.ports[0]
+          value:
+            port: 80
+            targetPort: http
+            protocol: TCP
+            name: http
+
+  - it: renders the service type and port
+    set:
+      service:
+        type: LoadBalancer
+        port: 8095
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+      - equal:
+          path: spec.ports[0].port
+          value: 8095
