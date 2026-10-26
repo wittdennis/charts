@@ -1,6 +1,6 @@
 # garage
 
-![Version: 2.4.2](https://img.shields.io/badge/Version-2.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.4.1](https://img.shields.io/badge/AppVersion-v2.4.1-informational?style=flat-square)
+![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.5.0](https://img.shields.io/badge/AppVersion-v2.5.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments.
 
@@ -52,10 +52,12 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | garage.rpc.secret.create | bool | `true` | Flag to control if a rpc kubernetes secret should be created during deployment |
 | garage.rpc.secret.name | string | `""` | Name of the rpc secret. If you want to use a pre-existing kubernetes secret use the name of an already existing secret and set rpc.secret.create to false. Secret has to contain a 'rpcSecret' value |
 | garage.rpc.secret.value | string | `""` | If not given, a random secret will be generated and stored in a Secret object |
+| garage.s3.api.publicEndpoint | string | `""` | Publicly reachable endpoint including scheme (e.g. `https://s3.garage.tld`). Used for generated object URLs and connection parameters reported by the admin API https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#s3_api_public_endpoint |
+| garage.s3.api.publicEndpointPathStyle | string | `nil` | Advertise path-style URLs for the public endpoint. Must not be false when rootDomain is empty https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#s3_api_public_endpoint_path_style |
 | garage.s3.api.region | string | `"garage"` |  |
-| garage.s3.api.rootDomain | string | `".s3.garage.tld"` |  |
+| garage.s3.api.rootDomain | string | `".s3.garage.tld"` | Suffix for vhost-style bucket access. Empty disables vhost-style requests |
 | garage.s3.web.index | string | `"index.html"` |  |
-| garage.s3.web.rootDomain | string | `".web.garage.tld"` |  |
+| garage.s3.web.rootDomain | string | `".web.garage.tld"` | Suffix for bucket hostnames. Empty requires the bucket name to match the requested hostname |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"dxflrs/amd64_garage"` | default to amd64 docker image |
 | image.tag | string | `""` | set the image tag, please prefer using the chart version and not this to avoid compatibility issues |
@@ -124,6 +126,9 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | routes.s3.web.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
 | securityContext.capabilities | object | `{"drop":["ALL"]}` | The default security context is heavily restricted, feel free to tune it to your requirements |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| service.admin.annotations | object | `{}` | Annotations to add to the admin API service |
+| service.admin.enabled | bool | `false` | Expose the admin API as a ClusterIP service. The admin API is not consistent across nodes, requests may hit any pod |
+| service.admin.port | int | `3903` | Port of the admin API service |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.s3.api.port | int | `3900` |  |
 | service.s3.web.port | int | `3902` |  |
