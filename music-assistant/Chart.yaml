@@ -1,0 +1,42 @@
+apiVersion: v2
+name: music-assistant
+description: Helm chart for Music Assistant server
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.0.0
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
+appVersion: "2.10.8" # renovate: datasource=docker depName=ghcr.io/music-assistant/server versioning=docker
+sources:
+  - https://github.com/wittdennis/charts/tree/main/music-assistant
+  - https://github.com/music-assistant/server
+icon: https://raw.githubusercontent.com/wittdennis/charts/refs/heads/main/music-assistant/assets/icon.png
+keywords:
+  - music-assistant
+  - home-assistant
+  - music
+  - audio
+  - streaming
+annotations:
+  org.opencontainers.image.source: https://github.com/wittdennis/charts
+  org.opencontainers.image.licenses: MIT
+  org.opencontainers.image.documentation: https://github.com/wittdennis/charts/tree/main/music-assistant
+  artifacthub.io/license: MIT
+  artifacthub.io/images: |
+    - name: music-assistant
+      image: ghcr.io/music-assistant/server:2.10.8 # renovate
+maintainers:
+  - name: Dennis Witt
+    url: https://github.com/wittdennis

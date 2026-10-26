@@ -1,0 +1,260 @@
+suite: music-assistant.statefulset value dependencies
+templates:
+  - templates/statefulset.yaml
+tests:
+  - it: renders with the default values
+    asserts:
+      - notFailedTemplate: {}
+      - isKind:
+          of: StatefulSet
+      - equal:
+          path: spec.replicas
+          value: 1
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --log-level
+            - info
+
+  # mDNS discovery of players and the stream server only work on the node's network
+  - it: runs on the host network with cluster dns
+    asserts:
+      - equal:
+          path: spec.template.spec.hostNetwork
+          value: true
+      - equal:
+          path: spec.template.spec.dnsPolicy
+          value: ClusterFirstWithHostNet
+
+  - it: defaults the image tag to the chart appVersion
+    chart:
+      appVersion: 9.9.9
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/music-assistant/server:9.9.9
+
+  - it: prefers an explicit image tag over the appVersion
+    chart:
+      appVersion: 9.9.9
+    set:
+      image.tag: 1.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/music-assistant/server:1.0.0
+
+  # The image entrypoint already passes --data-dir and --cache-dir, so the chart must not override it
+  - it: keeps the image entrypoint
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].command
+
+  - it: moves the container port with the configured port
+    set:
+      port: 8096
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].ports[0]
+          value:
+            name: http
+            containerPort: 8096
+            protocol: TCP
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.port
+          value: http
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.port
+          value: http
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet.port
+          value: http
+
+  # / redirects to the setup or login page, /info answers without authentication
+  - it: probes the info endpoint
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /info
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /info
+      - equal:
+          path: spec.template.spec.containers[0].startupProbe.httpGet.path
+          value: /info
+
+  - it: renders no startup probe once it is cleared
+    set:
+      startupProbe: null
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].startupProbe
+
+  - it: starts in safe mode
+    set:
+      safeMode: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --log-level
+            - info
+            - --safe-mode
+
+  - it: leaves the log level to the server when it is empty
+    set:
+      log.logLevel: ""
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].args
+
+  - it: appends extra args after the generated ones
+    set:
+      safeMode: true
+      extraArgs:
+        - --foo
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].args
+          value:
+            - --log-level
+            - info
+            - --safe-mode
+            - --foo
+
+  - it: renders no env by default
+    asserts:
+      - notExists:
+          path: spec.template.spec.containers[0].env
+
+  - it: renders extra env
+    set:
+      extraEnv:
+        - name: TZ
+          value: Europe/Berlin
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env
+          value:
+            - name: TZ
+              value: Europe/Berlin
+
+  - it: drops all capabilities except binding privileged ports
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.capabilities
+          value:
+            drop:
+              - ALL
+            add:
+              - NET_BIND_SERVICE
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation
+          value: false
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.privileged
+          value: false
+
+  # The read-only root filesystem needs somewhere to write scratch files
+  - it: keeps tmp writable
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: tmp
+            emptyDir: {}
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: tmp
+            mountPath: /tmp
+
+  - it: appends extra volumes and mounts
+    set:
+      volumes:
+        - name: music
+          nfs:
+            server: nas.example.com
+            path: /music
+      volumeMounts:
+        - name: music
+          mountPath: /media/music
+          readOnly: true
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: music
+            nfs:
+              server: nas.example.com
+              path: /music
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: music
+            mountPath: /media/music
+            readOnly: true
+
+  - it: requests the configured storage size
+    set:
+      persistence.size: 10Gi
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].metadata.name
+          value: data
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 10Gi
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: data
+            mountPath: /data
+
+  # An unset storage class has to stay unset rather than become "", which would pin the
+  # claim to a class-less volume instead of the cluster default
+  - it: leaves the storage class to the cluster default
+    asserts:
+      - notExists:
+          path: spec.volumeClaimTemplates[0].spec.storageClassName
+
+  - it: pins the storage class once it is set
+    set:
+      persistence.storageClassName: fast
+    asserts:
+      - equal:
+          path: spec.volumeClaimTemplates[0].spec.storageClassName
+          value: fast
+
+  - it: uses the generated service account name when the chart creates one
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: RELEASE-NAME-music-assistant
+
+  - it: falls back to the default service account when the chart creates none
+    set:
+      serviceAccount.create: false
+    asserts:
+      - equal:
+          path: spec.template.spec.serviceAccountName
+          value: default
+
+  - it: renders scheduling constraints
+    set:
+      nodeSelector:
+        kubernetes.io/hostname: node-1
+      tolerations:
+        - key: dedicated
+          operator: Exists
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            kubernetes.io/hostname: node-1
+      - equal:
+          path: spec.template.spec.tolerations[0].key
+          value: dedicated

@@ -31,6 +31,7 @@
     "home-assistant-otbr": { "component": "home-assistant-otbr" },
     "linkwarden": { "component": "linkwarden" },
     "memos": { "component": "memos" },
+    "music-assistant": { "component": "music-assistant" },
     "node-red": { "component": "node-red" },
     "paperless-ngx": { "component": "paperless-ngx" },
     "radicale": { "component": "radicale" }
