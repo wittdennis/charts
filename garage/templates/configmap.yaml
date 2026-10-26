@@ -44,11 +44,21 @@ data:
     [s3_api]
     s3_region = "{{ .Values.garage.s3.api.region }}"
     api_bind_addr = "[::]:3900"
-    root_domain = "{{ .Values.garage.s3.api.rootDomain }}"
+    {{- with .Values.garage.s3.api.rootDomain }}
+    root_domain = {{ . | quote }}
+    {{- end }}
+    {{- with .Values.garage.s3.api.publicEndpoint }}
+    public_endpoint = {{ . | quote }}
+    {{- end }}
+    {{- if not (kindIs "invalid" .Values.garage.s3.api.publicEndpointPathStyle) }}
+    public_endpoint_path_style = {{ .Values.garage.s3.api.publicEndpointPathStyle }}
+    {{- end }}
 
     [s3_web]
     bind_addr = "[::]:3902"
-    root_domain = "{{ .Values.garage.s3.web.rootDomain }}"
+    {{- with .Values.garage.s3.web.rootDomain }}
+    root_domain = {{ . | quote }}
+    {{- end }}
     index = "{{ .Values.garage.s3.web.index }}"
 
     [admin]

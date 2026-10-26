@@ -67,8 +67,17 @@ garage:
   s3:
     api:
       region: "garage"
+      # -- Suffix for vhost-style bucket access. Empty disables vhost-style requests
       rootDomain: ".s3.garage.tld"
+      # -- Publicly reachable endpoint including scheme (e.g. `https://s3.garage.tld`).
+      # Used for generated object URLs and connection parameters reported by the admin API
+      # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#s3_api_public_endpoint
+      publicEndpoint: ""
+      # -- Advertise path-style URLs for the public endpoint. Must not be false when rootDomain is empty
+      # https://garagehq.deuxfleurs.fr/documentation/reference-manual/configuration/#s3_api_public_endpoint_path_style
+      publicEndpointPathStyle: ~
     web:
+      # -- Suffix for bucket hostnames. Empty requires the bucket name to match the requested hostname
       rootDomain: ".web.garage.tld"
       index: "index.html"
 
@@ -166,7 +175,14 @@ service:
       port: 3900
     web:
       port: 3902
-    # NOTE: the admin API is excluded for now as it is not consistent across nodes
+  admin:
+    # -- Expose the admin API as a ClusterIP service.
+    # The admin API is not consistent across nodes, requests may hit any pod
+    enabled: false
+    # -- Annotations to add to the admin API service
+    annotations: {}
+    # -- Port of the admin API service
+    port: 3903
 
 ingress:
   s3:
