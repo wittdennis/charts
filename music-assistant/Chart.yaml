@@ -18,7 +18,7 @@ version: 1.0.1
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "2.10.8" # renovate: datasource=docker depName=ghcr.io/music-assistant/server versioning=docker
+appVersion: "2.10.9" # renovate: datasource=docker depName=ghcr.io/music-assistant/server versioning=docker
 sources:
   - https://github.com/wittdennis/charts/tree/main/music-assistant
   - https://github.com/music-assistant/server
@@ -36,7 +36,7 @@ annotations:
   artifacthub.io/license: MIT
   artifacthub.io/images: |
     - name: music-assistant
-      image: ghcr.io/music-assistant/server:2.10.8 # renovate
+      image: ghcr.io/music-assistant/server:2.10.9 # renovate
 maintainers:
   - name: Dennis Witt
     url: https://github.com/wittdennis
