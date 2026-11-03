@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/wittdennis/charts/compare/memos-2.0.0...memos-3.0.0) (2026-11-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **memos:** memos 26.x invalidates cached access tokens, so API clients have to sign in again. The upload and memo length instance settings are removed without migration and fall back to 32 MiB per file and 8 KiB per memo; set them again under Settings > Usage limits. /etc/secrets is no longer read, config moves to /etc/memos/config. The API moves from /api/v1 to /api. Upgrading from versions older than 0.31.0 requires running 0.31.0 first.
+
+### Bug Fixes
+
+* **deps:** update neosmemo/memos docker tag to v26 ([be78002](https://github.com/wittdennis/charts/commit/be7800262ef203df4b245974331f8e673b71eae7))
+* **memos:** use healthz endpoint for readiness probe ([8b7d587](https://github.com/wittdennis/charts/commit/8b7d5879af8ad895b44d1a218e33968c16626ec7))
+
 ## [2.0.0](https://github.com/wittdennis/charts/compare/memos-1.4.1...memos-2.0.0) (2026-09-26)
 
 
