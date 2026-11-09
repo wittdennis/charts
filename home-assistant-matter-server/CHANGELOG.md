@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.4.4...home-assistant-matter-server-5.0.0) (2026-11-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **home-assistant-matter-server:** pod and containers run as 1000:1000 without privileges. Existing data is handed over through fsGroup; volumes without fsGroup support need `chown -R 1000:1000` on the data. Bluetooth adapter mode uses BlueZ over D-Bus by default, set bluetoothCommissioning.bindings=hci and root security contexts for the raw HCI backend.
+
+### Features
+
+* **home-assistant-matter-server:** run matter server unprivileged as image user ([0eedc22](https://github.com/wittdennis/charts/commit/0eedc226a0d113fbff49cbe2737a1aefe7659fb7))
+
 ## [4.4.4](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.4.3...home-assistant-matter-server-4.4.4) (2026-10-24)
 
 
