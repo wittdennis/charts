@@ -58,6 +58,15 @@ tests:
       - failedTemplate:
           errorPattern: "at '/bluetoothCommissioning/adapterId'"
 
+  - it: rejects an unknown bluetooth backend
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        bindings: usb
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/bluetoothCommissioning/bindings': value must be one of"
+
   - it: accepts a numeric string as adapter id
     set:
       bluetoothCommissioning:

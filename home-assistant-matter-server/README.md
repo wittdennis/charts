@@ -20,8 +20,9 @@ Helm chart for home assistant matter server
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| bluetoothCommissioning | object | `{"adapterId":0,"enabled":false,"mode":"adapter"}` | Bluetooth settings |
+| bluetoothCommissioning | object | `{"adapterId":0,"bindings":"dbus","enabled":false,"mode":"adapter"}` | Bluetooth settings |
 | bluetoothCommissioning.adapterId | int | `0` | Id of the bluetooth adapter e.g.: 0 for hci0. Only used in adapter mode |
+| bluetoothCommissioning.bindings | string | `"dbus"` | Backend used to reach the adapter, possible options are: dbus (BlueZ on the node via the system D-Bus, works unprivileged), hci (raw HCI socket, requires running as root through `podSecurityContext` and `securityContext`). Only used in adapter mode |
 | bluetoothCommissioning.enabled | bool | `false` | Flag to control if bluetooth commissioning should be enabled |
 | bluetoothCommissioning.mode | string | `"adapter"` | Commissioning mode, possible options are: adapter (local bluetooth adapter of the node), proxy (remote BLE proxy client connecting to the `/ble` WebSocket endpoint) |
 | dashboard.enabled | bool | `true` | Flag to control if the web dashboard should be served |
@@ -55,6 +56,7 @@ Helm chart for home assistant matter server
 | persistence.storageClassName | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |
 | podAnnotations | object | `{}` | This is for setting Kubernetes Annotations to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/ |
 | podLabels | object | `{}` | This is for setting Kubernetes Labels to a Pod. For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/ |
+| podSecurityContext | object | `{"fsGroup":1000,"fsGroupChangePolicy":"OnRootMismatch","runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}` | Security context of the pod. The image runs as 1000:1000; fsGroup hands existing data owned by another user over to it. Volumes without fsGroup support (e.g. hostPath) need a manual `chown -R 1000:1000` of the data. |
 | port | int | `5580` | Port of the WebSocket server and dashboard. Binds on the node directly because the pod uses the host network |
 | readinessProbe.httpGet.path | string | `"/health"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
@@ -68,6 +70,7 @@ Helm chart for home assistant matter server
 | route.labels | object | `{}` | Additional labels for the HTTPRoute |
 | route.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
 | route.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}` | Security context of the matter server container. Add `NET_RAW` to `capabilities.add` if the node's `net.ipv4.ping_group_range` does not include gid 1000 and device pings are needed. |
 | service | object | `{"port":80,"type":"ClusterIP"}` | This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/ |
 | service.port | int | `80` | This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports |
 | service.type | string | `"ClusterIP"` | This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types |
