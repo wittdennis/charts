@@ -303,6 +303,78 @@ tests:
             hostPath:
               path: /run/dbus
 
+  # The raw HCI backend needs root, BlueZ over D-Bus works as the image user
+  - it: reaches the local adapter through bluez by default
+    set:
+      bluetoothCommissioning.enabled: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: NOBLE_BINDINGS
+            value: dbus
+
+  - it: reaches the local adapter through the raw hci socket
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        bindings: hci
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: NOBLE_BINDINGS
+            value: hci
+
+  - it: does not select a noble backend in proxy mode
+    set:
+      bluetoothCommissioning:
+        enabled: true
+        mode: proxy
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: NOBLE_BINDINGS
+          any: true
+
+  - it: runs unprivileged as the image user by default
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext.runAsUser
+          value: 1000
+      - equal:
+          path: spec.template.spec.securityContext.fsGroup
+          value: 1000
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.privileged
+          value: false
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.allowPrivilegeEscalation
+          value: false
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.capabilities.drop
+          value: [ALL]
+      - notExists:
+          path: spec.template.spec.initContainers[0].securityContext.runAsUser
+
+  - it: renders overridden security contexts verbatim
+    set:
+      podSecurityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+      securityContext:
+        runAsUser: 0
+        capabilities:
+          add: [NET_RAW]
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext.runAsUser
+          value: 0
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.capabilities.add
+          value: [NET_RAW]
+
   - it: commissions over a ble proxy without the host dbus
     set:
       bluetoothCommissioning:

@@ -16,6 +16,13 @@
       "type": "string",
       "minLength": 1
     },
+    "seccompProfile": {
+      "type": ["object", "null"],
+      "properties": {
+        "type": { "type": "string", "enum": ["RuntimeDefault", "Unconfined", "Localhost"] },
+        "localhostProfile": { "type": ["string", "null"] }
+      }
+    },
     "probe": {
       "description": "Rendered verbatim, so any Kubernetes Probe field is accepted.",
       "type": ["object", "null"]
@@ -87,7 +94,8 @@
           "type": ["integer", "string"],
           "minimum": 0,
           "pattern": "^[0-9]+$"
-        }
+        },
+        "bindings": { "type": "string", "enum": ["dbus", "hci"] }
       }
     },
 
@@ -178,6 +186,40 @@
 
     "podAnnotations": { "$ref": "#/$defs/stringMap" },
     "podLabels": { "$ref": "#/$defs/stringMap" },
+
+    "podSecurityContext": {
+      "description": "Rendered verbatim into the pod spec, so any Kubernetes PodSecurityContext field is accepted.",
+      "type": ["object", "null"],
+      "properties": {
+        "runAsNonRoot": { "type": "boolean" },
+        "runAsUser": { "type": "integer" },
+        "runAsGroup": { "type": "integer" },
+        "fsGroup": { "type": "integer" },
+        "fsGroupChangePolicy": { "type": "string", "enum": ["OnRootMismatch", "Always"] },
+        "seccompProfile": { "$ref": "#/$defs/seccompProfile" }
+      }
+    },
+
+    "securityContext": {
+      "description": "Rendered verbatim into the container spec, so any Kubernetes SecurityContext field is accepted. The server only writes to /data and /tmp, so readOnlyRootFilesystem can stay true.",
+      "type": ["object", "null"],
+      "properties": {
+        "allowPrivilegeEscalation": { "type": "boolean" },
+        "readOnlyRootFilesystem": { "type": "boolean" },
+        "seccompProfile": { "$ref": "#/$defs/seccompProfile" },
+        "runAsUser": { "type": "integer" },
+        "runAsGroup": { "type": "integer" },
+        "runAsNonRoot": { "type": "boolean" },
+        "privileged": { "type": "boolean" },
+        "capabilities": {
+          "type": ["object", "null"],
+          "properties": {
+            "drop": { "type": "array", "items": { "type": "string" } },
+            "add": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
 
     "service": {
       "type": "object",

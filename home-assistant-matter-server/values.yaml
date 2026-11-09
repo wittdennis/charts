@@ -30,6 +30,9 @@ bluetoothCommissioning:
   mode: adapter
   # -- Id of the bluetooth adapter e.g.: 0 for hci0. Only used in adapter mode
   adapterId: 0
+  # -- Backend used to reach the adapter, possible options are: dbus (BlueZ on the node via the system D-Bus, works unprivileged),
+  # hci (raw HCI socket, requires running as root through `podSecurityContext` and `securityContext`). Only used in adapter mode
+  bindings: dbus
 
 # -- Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links
 enableServiceLinks: true
@@ -92,6 +95,32 @@ podAnnotations: {}
 # -- This is for setting Kubernetes Labels to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
 podLabels: {}
+
+# -- Security context of the pod. The image runs as 1000:1000; fsGroup hands existing data owned by another user over to it.
+# Volumes without fsGroup support (e.g. hostPath) need a manual `chown -R 1000:1000` of the data.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Security context of the matter server container. Add `NET_RAW` to `capabilities.add` if the node's
+# `net.ipv4.ping_group_range` does not include gid 1000 and device pings are needed.
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  privileged: false
+  capabilities:
+    drop:
+      - ALL
 
 # -- This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
