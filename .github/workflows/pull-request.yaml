@@ -11,7 +11,7 @@ on:
 jobs:
   conventional-compliance:
     name: conventional commits
-    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@be31b78158f4d9b8cb895140b93985edd8444ef8 # 2.0.72
+    uses: wittdennis/pipelines/.github/workflows/cog-validate.yaml@1f27a7a832117a4fdea6b2763fe65e675bc75420 # 2.0.73
     with:
       ignore-merge-commits: true
 
