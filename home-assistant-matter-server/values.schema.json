@@ -35,6 +35,8 @@
     "port",
     "dashboard",
     "timeSync",
+    "ota",
+    "dcl",
     "log",
     "serviceAccount",
     "service",
@@ -134,6 +136,31 @@
       "required": ["enabled"],
       "properties": {
         "enabled": { "type": "boolean" }
+      }
+    },
+
+    "ota": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "providerDir": { "type": ["string", "null"] },
+        "providerVolume": {
+          "description": "Kubernetes volume source without name.",
+          "type": ["object", "null"]
+        },
+        "uploadMaxInFlight": { "type": ["integer", "null"], "minimum": 1 },
+        "uploadMaxSizeMb": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+
+    "dcl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["testNet"],
+      "properties": {
+        "testNet": { "type": "boolean" }
       }
     },
 

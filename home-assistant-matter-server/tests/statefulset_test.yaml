@@ -199,6 +199,84 @@ tests:
           path: spec.template.spec.containers[0].args
           content: --enable-time-sync
 
+  - it: disables ota
+    set:
+      ota.enabled: false
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --disable-ota
+
+  - it: sets the ota provider dir
+    set:
+      ota.providerDir: /data/ota
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --ota-provider-dir
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: /data/ota
+
+  - it: enables the test-net dcl
+    set:
+      dcl.testNet: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --enable-test-net-dcl
+
+  - it: mounts the ota provider volume at the provider dir
+    set:
+      ota.providerDir: /ota
+      ota.providerVolume:
+        persistentVolumeClaim:
+          claimName: ota-images
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: ota-provider
+            persistentVolumeClaim:
+              claimName: ota-images
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: ota-provider
+            mountPath: /ota
+
+  - it: mounts the ota provider volume at the default dir
+    set:
+      ota.providerVolume:
+        emptyDir: {}
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: ota-provider
+            mountPath: /ota
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: /ota
+
+  - it: sets the ota upload limits
+    set:
+      ota.uploadMaxInFlight: 2
+      ota.uploadMaxSizeMb: 128
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --ota-upload-max-in-flight
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: "2"
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --ota-upload-max-size-mb
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: "128"
+
   - it: leaves the log level to the server when it is empty
     set:
       log.logLevel: ""
