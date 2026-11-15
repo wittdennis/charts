@@ -1,6 +1,6 @@
 # home-assistant-matter-server
 
-![Version: 5.0.0](https://img.shields.io/badge/Version-5.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.5](https://img.shields.io/badge/AppVersion-1.5.5-informational?style=flat-square)
+![Version: 5.0.0](https://img.shields.io/badge/Version-5.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.6.0](https://img.shields.io/badge/AppVersion-1.6.0-informational?style=flat-square)
 
 Helm chart for home assistant matter server
 
@@ -9,11 +9,29 @@ Helm chart for home assistant matter server
 | Name | Email | Url |
 | ---- | ------ | --- |
 | Dennis Witt |  | <https://github.com/wittdennis> |
-
 ## Source Code
 
 * <https://github.com/wittdennis/charts/tree/main/home-assistant-matter-server>
 * <https://github.com/matter-js/matterjs-server>
+
+## Local OTA images
+
+The server serves local firmware images, from the provider directory or uploaded through the dashboard or WebSocket API, only with `dcl.testNet` enabled. Besides OTA, this also checks the test-net DCL for certificates and commissions devices that do not report the vendor or product id their Certification Declaration is checked against.
+
+Uploads are staged in an `ota-uploads` subdirectory of the provider directory, so the directory has to be writable by the server. The root filesystem is read-only, so it has to live on a volume: either a path below `/data`, or `ota.providerVolume`, which the chart mounts at `/ota` or at `ota.providerDir` if set:
+
+```yaml
+dcl:
+  testNet: true
+ota:
+  providerVolume:
+    persistentVolumeClaim:
+      claimName: ota-images
+```
+
+`ota.providerVolume` takes any Kubernetes volume source. The server runs as 1000:1000. Volumes with `fsGroup` support, such as most PVCs, are handed over through `podSecurityContext.fsGroup`. Volumes without it, such as `hostPath` or NFS, need the directory owned by 1000:1000.
+
+Without `ota.providerDir` or `ota.providerVolume`, uploads are staged in the storage path `/data`.
 
 ## Values
 
@@ -27,8 +45,9 @@ Helm chart for home assistant matter server
 | bluetoothCommissioning.mode | string | `"adapter"` | Commissioning mode, possible options are: adapter (local bluetooth adapter of the node), proxy (remote BLE proxy client connecting to the `/ble` WebSocket endpoint) |
 | dashboard.enabled | bool | `true` | Flag to control if the web dashboard should be served |
 | dashboard.productionMode | string | `nil` | Force dashboard production mode, required when served through a reverse proxy. Defaults to true if ingress or route is enabled |
+| dcl.testNet | bool | `false` | Check the test-net DCL for certificates and firmware updates in addition to the production DCL. Required to serve local OTA images and accept OTA uploads. Also commissions devices that do not report the vendor or product id their Certification Declaration is checked against |
 | enableServiceLinks | bool | `true` | Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links |
-| extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--disable-ota"]` |
+| extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--thread-rest-probe-port", "8082"]` |
 | extraEnv | list | `[]` | Additional environment variables for the matter server container, e.g. `[{"name": "DEFAULT_FABRIC_LABEL", "value": "Home"}]` |
 | fullnameOverride | string | `""` |  |
 | image | object | `{"pullPolicy":"IfNotPresent","registry":"ghcr.io","repository":"matter-js/matterjs-server","tag":""}` | This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/ |
@@ -51,6 +70,11 @@ Helm chart for home assistant matter server
 | nameOverride | string | `""` | This is to override the chart name. |
 | networkInterface | string | `nil` | Name of the network interface that should be used |
 | nodeSelector | object | `{}` | Selector to control on which node the pods should be running |
+| ota.enabled | bool | `true` | Flag to control if firmware updates are offered to devices |
+| ota.providerDir | string | `nil` | Directory with local OTA images, e.g. below `/data`. Defaults to `/ota` if `ota.providerVolume` is set. Only read when `dcl.testNet` is enabled. OTA uploads are staged in it, so it has to be writable |
+| ota.providerVolume | object | `{}` | Volume source mounted at the OTA provider directory, e.g. `{"persistentVolumeClaim": {"claimName": "ota-images"}}` |
+| ota.uploadMaxInFlight | string | `nil` | Maximum number of OTA uploads reserved or transferring at once. Uses the server default (5) if empty |
+| ota.uploadMaxSizeMb | string | `nil` | Maximum size in MB of an uploaded OTA image. Uses the server default (64) if empty |
 | persistence | object | `{"size":"2Gi","storageClassName":null}` | Settings for storage |
 | persistence.size | string | `"2Gi"` | Size for the persistent volume claim. |
 | persistence.storageClassName | string | `nil` | Storage class to use for persistent storage. If left empty default storage class will be used. |

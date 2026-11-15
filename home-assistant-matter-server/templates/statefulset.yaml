@@ -57,6 +57,7 @@ spec:
             - name: data
               mountPath: /data
       {{- end }}
+      {{- $otaDir := .Values.ota.providerDir | default (and .Values.ota.providerVolume "/ota") }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -85,6 +86,25 @@ spec:
             {{- end }}
             {{- if .Values.timeSync.enabled }}
             - --enable-time-sync
+            {{- end }}
+            {{- if .Values.ota.enabled }}
+            {{- with $otaDir }}
+            - --ota-provider-dir
+            - {{ . | quote }}
+            {{- end }}
+            {{- with .Values.ota.uploadMaxInFlight }}
+            - --ota-upload-max-in-flight
+            - {{ . | quote }}
+            {{- end }}
+            {{- with .Values.ota.uploadMaxSizeMb }}
+            - --ota-upload-max-size-mb
+            - {{ . | quote }}
+            {{- end }}
+            {{- else }}
+            - --disable-ota
+            {{- end }}
+            {{- if .Values.dcl.testNet }}
+            - --enable-test-net-dcl
             {{- end }}
             {{- if .Values.log.logLevel }}
             - --log-level
@@ -141,6 +161,10 @@ spec:
               mountPath: /data
             - name: tmp
               mountPath: /tmp
+          {{- if and .Values.ota.enabled .Values.ota.providerVolume }}
+            - name: ota-provider
+              mountPath: {{ $otaDir }}
+          {{- end }}
           {{- if and .Values.bluetoothCommissioning.enabled (eq .Values.bluetoothCommissioning.mode "adapter") }}
             - name: dbus
               mountPath: /run/dbus
@@ -151,6 +175,12 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
+      {{- if .Values.ota.enabled }}
+      {{- with .Values.ota.providerVolume }}
+        - name: ota-provider
+          {{- toYaml . | nindent 10 }}
+      {{- end }}
+      {{- end }}
       {{- if and .Values.bluetoothCommissioning.enabled (eq .Values.bluetoothCommissioning.mode "adapter") }}
         - name: dbus
           hostPath:

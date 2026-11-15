@@ -1,0 +1,32 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+{{ template "chart.maintainersSection" . }}
+{{ template "chart.sourcesSection" . }}
+
+## Local OTA images
+
+The server serves local firmware images, from the provider directory or uploaded through the dashboard or WebSocket API, only with `dcl.testNet` enabled. Besides OTA, this also checks the test-net DCL for certificates and commissions devices that do not report the vendor or product id their Certification Declaration is checked against.
+
+Uploads are staged in an `ota-uploads` subdirectory of the provider directory, so the directory has to be writable by the server. The root filesystem is read-only, so it has to live on a volume: either a path below `/data`, or `ota.providerVolume`, which the chart mounts at `/ota` or at `ota.providerDir` if set:
+
+```yaml
+dcl:
+  testNet: true
+ota:
+  providerVolume:
+    persistentVolumeClaim:
+      claimName: ota-images
+```
+
+`ota.providerVolume` takes any Kubernetes volume source. The server runs as 1000:1000. Volumes with `fsGroup` support, such as most PVCs, are handed over through `podSecurityContext.fsGroup`. Volumes without it, such as `hostPath` or NFS, need the directory owned by 1000:1000.
+
+Without `ota.providerDir` or `ota.providerVolume`, uploads are staged in the storage path `/data`.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}

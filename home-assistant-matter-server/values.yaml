@@ -59,13 +59,32 @@ timeSync:
   # -- Push UTC time, time zone and DST to devices that support it. Only enable when the node clock is reliably synced
   enabled: false
 
+ota:
+  # -- Flag to control if firmware updates are offered to devices
+  enabled: true
+  # -- Directory with local OTA images, e.g. below `/data`. Defaults to `/ota` if `ota.providerVolume` is set. Only read when `dcl.testNet` is enabled.
+  # OTA uploads are staged in it, so it has to be writable
+  providerDir: ~
+  # -- Volume source mounted at the OTA provider directory, e.g. `{"persistentVolumeClaim": {"claimName": "ota-images"}}`
+  providerVolume: {}
+  # -- Maximum number of OTA uploads reserved or transferring at once. Uses the server default (5) if empty
+  uploadMaxInFlight: ~
+  # -- Maximum size in MB of an uploaded OTA image. Uses the server default (64) if empty
+  uploadMaxSizeMb: ~
+
+dcl:
+  # -- Check the test-net DCL for certificates and firmware updates in addition to the production DCL.
+  # Required to serve local OTA images and accept OTA uploads. Also commissions devices that do not report the vendor or product id
+  # their Certification Declaration is checked against
+  testNet: false
+
 log:
   # -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
   logLevel: info
   # -- Console log format, possible options are: plain, ansi
   format: plain
 
-# -- Additional command line arguments appended to the matter server container args, e.g. `["--disable-ota"]`
+# -- Additional command line arguments appended to the matter server container args, e.g. `["--thread-rest-probe-port", "8082"]`
 extraArgs: []
 
 # -- Additional environment variables for the matter server container, e.g. `[{"name": "DEFAULT_FABRIC_LABEL", "value": "Home"}]`
