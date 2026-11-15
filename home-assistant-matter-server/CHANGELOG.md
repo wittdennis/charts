@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.1.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-5.0.0...home-assistant-matter-server-5.1.0) (2026-11-15)
+
+
+### Features
+
+* **home-assistant-matter-server:** add auto subscription and custom cluster poll interval values ([267b3b1](https://github.com/wittdennis/charts/commit/267b3b1a993ba607c8cac4ef5cb6bd3d8641abd9))
+* **home-assistant-matter-server:** add dcl attestation values ([74a6317](https://github.com/wittdennis/charts/commit/74a63170f496aec562cef1927e0142132224169f))
+* **home-assistant-matter-server:** add ota and test-net dcl values ([18e73a4](https://github.com/wittdennis/charts/commit/18e73a406e687edbbff581afcdc4e5bb07b9156c))
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/matter-js/matterjs-server docker tag to v1.6.0 ([170629c](https://github.com/wittdennis/charts/commit/170629c13f44d5f3c9acf651d0eb095efba6bcfc))
+
 ## [5.0.0](https://github.com/wittdennis/charts/compare/home-assistant-matter-server-4.4.4...home-assistant-matter-server-5.0.0) (2026-11-09)
 
 
