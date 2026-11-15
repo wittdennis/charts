@@ -158,9 +158,21 @@
     "dcl": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["testNet"],
+      "required": ["testNet", "offline", "disableSeed"],
       "properties": {
-        "testNet": { "type": "boolean" }
+        "testNet": { "type": "boolean" },
+        "offline": { "type": "boolean" },
+        "disableSeed": { "type": "boolean" },
+        "revocationSetsDir": { "type": ["string", "null"] },
+        "revocationSetsVolume": {
+          "description": "Kubernetes volume source without name.",
+          "type": ["object", "null"]
+        },
+        "certificatesDir": { "type": ["string", "null"] },
+        "certificatesVolume": {
+          "description": "Kubernetes volume source without name.",
+          "type": ["object", "null"]
+        }
       }
     },
 

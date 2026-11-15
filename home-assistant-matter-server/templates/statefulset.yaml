@@ -58,6 +58,8 @@ spec:
               mountPath: /data
       {{- end }}
       {{- $otaDir := .Values.ota.providerDir | default (and .Values.ota.providerVolume "/ota") }}
+      {{- $revocationSetsDir := .Values.dcl.revocationSetsDir | default (and .Values.dcl.revocationSetsVolume "/revocation-sets") }}
+      {{- $certificatesDir := .Values.dcl.certificatesDir | default (and .Values.dcl.certificatesVolume "/certificates") }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -105,6 +107,23 @@ spec:
             {{- end }}
             {{- if .Values.dcl.testNet }}
             - --enable-test-net-dcl
+            {{- end }}
+            {{- if and .Values.dcl.offline .Values.dcl.disableSeed }}
+            {{- fail "dcl.offline and dcl.disableSeed cannot be combined" }}
+            {{- end }}
+            {{- if .Values.dcl.offline }}
+            - --dcl-offline
+            {{- end }}
+            {{- if .Values.dcl.disableSeed }}
+            - --disable-dcl-seed
+            {{- end }}
+            {{- with $revocationSetsDir }}
+            - --revocation-sets-dir
+            - {{ . | quote }}
+            {{- end }}
+            {{- with $certificatesDir }}
+            - --certificates-dir
+            - {{ . | quote }}
             {{- end }}
             {{- if .Values.log.logLevel }}
             - --log-level
@@ -165,6 +184,15 @@ spec:
             - name: ota-provider
               mountPath: {{ $otaDir }}
           {{- end }}
+          {{- if .Values.dcl.revocationSetsVolume }}
+            - name: revocation-sets
+              mountPath: {{ $revocationSetsDir }}
+              readOnly: true
+          {{- end }}
+          {{- if .Values.dcl.certificatesVolume }}
+            - name: certificates
+              mountPath: {{ $certificatesDir }}
+          {{- end }}
           {{- if and .Values.bluetoothCommissioning.enabled (eq .Values.bluetoothCommissioning.mode "adapter") }}
             - name: dbus
               mountPath: /run/dbus
@@ -180,6 +208,14 @@ spec:
         - name: ota-provider
           {{- toYaml . | nindent 10 }}
       {{- end }}
+      {{- end }}
+      {{- with .Values.dcl.revocationSetsVolume }}
+        - name: revocation-sets
+          {{- toYaml . | nindent 10 }}
+      {{- end }}
+      {{- with .Values.dcl.certificatesVolume }}
+        - name: certificates
+          {{- toYaml . | nindent 10 }}
       {{- end }}
       {{- if and .Values.bluetoothCommissioning.enabled (eq .Values.bluetoothCommissioning.mode "adapter") }}
         - name: dbus
