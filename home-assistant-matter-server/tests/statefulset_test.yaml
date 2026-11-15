@@ -277,6 +277,108 @@ tests:
           path: spec.template.spec.containers[0].args
           content: "128"
 
+  - it: runs without contacting the dcl
+    set:
+      dcl.offline: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --dcl-offline
+
+  - it: disables the bundled dcl data
+    set:
+      dcl.disableSeed: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --disable-dcl-seed
+
+  - it: rejects an offline dcl without the bundled dcl data
+    set:
+      dcl.offline: true
+      dcl.disableSeed: true
+    asserts:
+      - failedTemplate:
+          errorMessage: dcl.offline and dcl.disableSeed cannot be combined
+
+  - it: sets the attestation directories
+    set:
+      dcl.revocationSetsDir: /revocation-sets
+      dcl.certificatesDir: /certificates
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --revocation-sets-dir
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: /revocation-sets
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --certificates-dir
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: /certificates
+
+  - it: mounts the attestation volumes at their directories
+    set:
+      dcl.revocationSetsDir: /revocation-sets
+      dcl.revocationSetsVolume:
+        configMap:
+          name: revocation-sets
+      dcl.certificatesDir: /certificates
+      dcl.certificatesVolume:
+        secret:
+          secretName: paa-certificates
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: revocation-sets
+            configMap:
+              name: revocation-sets
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: revocation-sets
+            mountPath: /revocation-sets
+            readOnly: true
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: certificates
+            secret:
+              secretName: paa-certificates
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: certificates
+            mountPath: /certificates
+
+  - it: mounts the attestation volumes at the default dirs
+    set:
+      dcl.revocationSetsVolume:
+        emptyDir: {}
+      dcl.certificatesVolume:
+        emptyDir: {}
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: revocation-sets
+            mountPath: /revocation-sets
+            readOnly: true
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: /revocation-sets
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: certificates
+            mountPath: /certificates
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: /certificates
+
   - it: leaves the log level to the server when it is empty
     set:
       log.logLevel: ""

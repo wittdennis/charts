@@ -77,6 +77,20 @@ dcl:
   # Required to serve local OTA images and accept OTA uploads. Also commissions devices that do not report the vendor or product id
   # their Certification Declaration is checked against
   testNet: false
+  # -- Never contact the DCL. Attestation trusts the bundled DCL data and certificates stored by earlier runs,
+  # DCL revocation checks are skipped and firmware update checks do not query the DCL
+  offline: false
+  # -- Disable the bundled offline DCL data and rely on the network DCL only. Cannot be combined with `dcl.offline`
+  disableSeed: false
+  # -- Directory with device attestation revocation sets (`*.json`), installed at every start. Defaults to `/revocation-sets` if `dcl.revocationSetsVolume` is set
+  revocationSetsDir: ~
+  # -- Volume source mounted read-only at the revocation sets directory, e.g. `{"configMap": {"name": "revocation-sets"}}`
+  revocationSetsVolume: {}
+  # -- Directory with PAA certificates (`*.paa.der`, `*.paa.pem`) imported at every start. Defaults to `/certificates` if `dcl.certificatesVolume` is set.
+  # Imported files are deleted, a read-only directory logs a warning per file at every start
+  certificatesDir: ~
+  # -- Volume source mounted at the certificates directory, e.g. `{"secret": {"secretName": "paa-certificates"}}`
+  certificatesVolume: {}
 
 log:
   # -- Global logging level, possible options are: critical, error, warning, info, debug, verbose

@@ -33,6 +33,34 @@ ota:
 
 Without `ota.providerDir` or `ota.providerVolume`, uploads are staged in the storage path `/data`.
 
+## Custom PAA certificates
+
+The server imports PAA certificates from `*.paa.der` and `*.paa.pem` files in `dcl.certificatesDir` at every start, so devices with a vendor's own PAA can be commissioned. Files ending in `.prod.paa.der` or `.prod.paa.pem` are imported as production certificates, all others as test certificates that are only trusted with `dcl.testNet` enabled.
+
+Imported certificates are kept in the storage path `/data`, and each file is deleted after a successful import. A file that cannot be read or holds an invalid certificate is logged as an error and kept.
+
+`dcl.certificatesVolume` takes any Kubernetes volume source and is mounted at `/certificates`, or at `dcl.certificatesDir` if set. A read-only source such as a Secret or ConfigMap works: the import is the same, but the files cannot be deleted, so every start logs a warning per file and reports their certificates as already stored:
+
+```yaml
+dcl:
+  certificatesVolume:
+    secret:
+      secretName: paa-certificates
+```
+
+DER files are binary, so in a ConfigMap they go into `binaryData`. To avoid the warnings, use a writable volume or a path below `/data`. The same ownership rules as for local OTA images apply.
+
+## Revocation sets
+
+The server installs the device attestation revocation sets from the `*.json` files in `dcl.revocationSetsDir` at every start and refuses devices whose certificates they list. The files are only read, so `dcl.revocationSetsVolume` is mounted read-only at `/revocation-sets`, or at `dcl.revocationSetsDir` if set:
+
+```yaml
+dcl:
+  revocationSetsVolume:
+    configMap:
+      name: revocation-sets
+```
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -45,6 +73,12 @@ Without `ota.providerDir` or `ota.providerVolume`, uploads are staged in the sto
 | bluetoothCommissioning.mode | string | `"adapter"` | Commissioning mode, possible options are: adapter (local bluetooth adapter of the node), proxy (remote BLE proxy client connecting to the `/ble` WebSocket endpoint) |
 | dashboard.enabled | bool | `true` | Flag to control if the web dashboard should be served |
 | dashboard.productionMode | string | `nil` | Force dashboard production mode, required when served through a reverse proxy. Defaults to true if ingress or route is enabled |
+| dcl.certificatesDir | string | `nil` | Directory with PAA certificates (`*.paa.der`, `*.paa.pem`) imported at every start. Defaults to `/certificates` if `dcl.certificatesVolume` is set. Imported files are deleted, a read-only directory logs a warning per file at every start |
+| dcl.certificatesVolume | object | `{}` | Volume source mounted at the certificates directory, e.g. `{"secret": {"secretName": "paa-certificates"}}` |
+| dcl.disableSeed | bool | `false` | Disable the bundled offline DCL data and rely on the network DCL only. Cannot be combined with `dcl.offline` |
+| dcl.offline | bool | `false` | Never contact the DCL. Attestation trusts the bundled DCL data and certificates stored by earlier runs, DCL revocation checks are skipped and firmware update checks do not query the DCL |
+| dcl.revocationSetsDir | string | `nil` | Directory with device attestation revocation sets (`*.json`), installed at every start. Defaults to `/revocation-sets` if `dcl.revocationSetsVolume` is set |
+| dcl.revocationSetsVolume | object | `{}` | Volume source mounted read-only at the revocation sets directory, e.g. `{"configMap": {"name": "revocation-sets"}}` |
 | dcl.testNet | bool | `false` | Check the test-net DCL for certificates and firmware updates in addition to the production DCL. Required to serve local OTA images and accept OTA uploads. Also commissions devices that do not report the vendor or product id their Certification Declaration is checked against |
 | enableServiceLinks | bool | `true` | Indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links |
 | extraArgs | list | `[]` | Additional command line arguments appended to the matter server container args, e.g. `["--thread-rest-probe-port", "8082"]` |
