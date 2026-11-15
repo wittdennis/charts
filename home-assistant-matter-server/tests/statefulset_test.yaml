@@ -379,6 +379,25 @@ tests:
           path: spec.template.spec.containers[0].args
           content: /certificates
 
+  - it: disables auto subscription
+    set:
+      autoSubscription.enabled: false
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --disable-auto-subscription
+
+  - it: sets the custom cluster poll interval
+    set:
+      customClusterPollInterval: 300
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: --custom-cluster-poll-interval
+      - contains:
+          path: spec.template.spec.containers[0].args
+          content: "300"
+
   - it: leaves the log level to the server when it is empty
     set:
       log.logLevel: ""

@@ -66,11 +66,13 @@ dcl:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
+| autoSubscription.enabled | bool | `true` | Subscribe to nodes and run background jobs automatically. Only disable for special use cases |
 | bluetoothCommissioning | object | `{"adapterId":0,"bindings":"dbus","enabled":false,"mode":"adapter"}` | Bluetooth settings |
 | bluetoothCommissioning.adapterId | int | `0` | Id of the bluetooth adapter e.g.: 0 for hci0. Only used in adapter mode |
 | bluetoothCommissioning.bindings | string | `"dbus"` | Backend used to reach the adapter, possible options are: dbus (BlueZ on the node via the system D-Bus, works unprivileged), hci (raw HCI socket, requires running as root through `podSecurityContext` and `securityContext`). Only used in adapter mode |
 | bluetoothCommissioning.enabled | bool | `false` | Flag to control if bluetooth commissioning should be enabled |
 | bluetoothCommissioning.mode | string | `"adapter"` | Commissioning mode, possible options are: adapter (local bluetooth adapter of the node), proxy (remote BLE proxy client connecting to the `/ble` WebSocket endpoint) |
+| customClusterPollInterval | string | `nil` | Polling interval in seconds (60 to 86400) for custom cluster attributes without subscription support. Uses the server default (60) if empty |
 | dashboard.enabled | bool | `true` | Flag to control if the web dashboard should be served |
 | dashboard.productionMode | string | `nil` | Force dashboard production mode, required when served through a reverse proxy. Defaults to true if ingress or route is enabled |
 | dcl.certificatesDir | string | `nil` | Directory with PAA certificates (`*.paa.der`, `*.paa.pem`) imported at every start. Defaults to `/certificates` if `dcl.certificatesVolume` is set. Imported files are deleted, a read-only directory logs a warning per file at every start |

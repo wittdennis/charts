@@ -125,6 +125,13 @@ spec:
             - --certificates-dir
             - {{ . | quote }}
             {{- end }}
+            {{- if not .Values.autoSubscription.enabled }}
+            - --disable-auto-subscription
+            {{- end }}
+            {{- with .Values.customClusterPollInterval }}
+            - --custom-cluster-poll-interval
+            - {{ . | quote }}
+            {{- end }}
             {{- if .Values.log.logLevel }}
             - --log-level
             - {{ .Values.log.logLevel }}

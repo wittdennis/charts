@@ -19,6 +19,13 @@ tests:
       - failedTemplate:
           errorPattern: "at '/port': minimum"
 
+  - it: rejects a custom cluster poll interval below 60 seconds
+    set:
+      customClusterPollInterval: 30
+    asserts:
+      - failedTemplate:
+          errorPattern: "at '/customClusterPollInterval': minimum"
+
   - it: rejects an unknown log format
     set:
       log.format: json
