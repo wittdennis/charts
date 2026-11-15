@@ -92,6 +92,13 @@ dcl:
   # -- Volume source mounted at the certificates directory, e.g. `{"secret": {"secretName": "paa-certificates"}}`
   certificatesVolume: {}
 
+autoSubscription:
+  # -- Subscribe to nodes and run background jobs automatically. Only disable for special use cases
+  enabled: true
+
+# -- Polling interval in seconds (60 to 86400) for custom cluster attributes without subscription support. Uses the server default (60) if empty
+customClusterPollInterval: ~
+
 log:
   # -- Global logging level, possible options are: critical, error, warning, info, debug, verbose
   logLevel: info

@@ -37,6 +37,7 @@
     "timeSync",
     "ota",
     "dcl",
+    "autoSubscription",
     "log",
     "serviceAccount",
     "service",
@@ -174,6 +175,21 @@
           "type": ["object", "null"]
         }
       }
+    },
+
+    "autoSubscription": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled"],
+      "properties": {
+        "enabled": { "type": "boolean" }
+      }
+    },
+
+    "customClusterPollInterval": {
+      "type": ["integer", "null"],
+      "minimum": 60,
+      "maximum": 86400
     },
 
     "log": {
