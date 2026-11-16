@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/wittdennis/charts/compare/memos-3.0.0...memos-3.0.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency usememos/memos to v26.11.1 ([e695cb7](https://github.com/wittdennis/charts/commit/e695cb7fc3e28aea6781c08ce0320370d4b89e44))
+
 ## [3.0.0](https://github.com/wittdennis/charts/compare/memos-2.0.0...memos-3.0.0) (2026-11-03)
 
 

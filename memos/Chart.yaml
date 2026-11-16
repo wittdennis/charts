@@ -2,7 +2,7 @@ apiVersion: v2
 name: memos
 description: A Helm chart for memos (https://usememos.com)
 type: application
-version: 3.0.0
+version: 3.0.1
 appVersion: "26.11.1" # renovate: datasource=github-releases depName=usememos/memos versioning=semver
 sources:
   - https://github.com/wittdennis/charts/tree/main/memos
