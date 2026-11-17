@@ -131,7 +131,11 @@
           "type": ["array", "null"],
           "items": { "type": "string" }
         },
-        "trustedClientIpHeader": { "type": ["string", "null"] }
+        "trustedClientIpHeader": { "type": ["string", "null"] },
+        "allowedHosts": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        }
       }
     },
 

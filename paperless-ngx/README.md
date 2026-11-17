@@ -1,6 +1,6 @@
 # paperless-ngx
 
-![Version: 2.1.13](https://img.shields.io/badge/Version-2.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.4.2](https://img.shields.io/badge/AppVersion-3.4.2-informational?style=flat-square)
+![Version: 2.1.13](https://img.shields.io/badge/Version-2.1.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.5.0](https://img.shields.io/badge/AppVersion-3.5.0-informational?style=flat-square)
 
 A Helm chart for paperless-ngx (https://docs.paperless-ngx.com/)
 
@@ -188,7 +188,8 @@ The `huggingface` backend is different from the other two: it runs the embedding
 | email.sending.useTls | bool | `false` | Use tls for email sending |
 | email.sending.user | string | `nil` | User for authentication |
 | fullnameOverride | string | `""` |  |
-| hosting | object | `{"secretKey":{"create":true,"key":"key","name":null},"trustedClientIpHeader":null,"trustedProxies":[]}` | Settings pertaining to hosting |
+| hosting | object | `{"allowedHosts":[],"secretKey":{"create":true,"key":"key","name":null},"trustedClientIpHeader":null,"trustedProxies":[]}` | Settings pertaining to hosting |
+| hosting.allowedHosts | list | `[]` | Additional hostnames paperless accepts requests for, e.g. the in-cluster service name. `localhost` and the hostname of the ingress or route are always allowed. Use `["*"]` to accept any host. |
 | hosting.secretKey | object | `{"create":true,"key":"key","name":null}` | Paperless uses this to make session tokens. If you expose paperless on the internet, you need to change this, since the default secret is well known. |
 | hosting.secretKey.create | bool | `true` | If set to true secret will be created on deploy. When false expects the secret to already exist |
 | hosting.secretKey.key | string | `"key"` | Key of the secret |
@@ -200,7 +201,7 @@ The `huggingface` backend is different from the other two: it runs the embedding
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/ |
-| livenessProbe | object | `{"failureThreshold":10,"httpGet":{"path":"/","port":"http"},"initialDelaySeconds":30,"periodSeconds":100}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
+| livenessProbe | object | `{"failureThreshold":10,"httpGet":{"httpHeaders":[{"name":"Host","value":"localhost"}],"path":"/","port":"http"},"initialDelaySeconds":30,"periodSeconds":100}` | This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/ |
 | nameOverride | string | `""` | This is to override the chart name. |
 | nodeSelector | object | `{}` |  |
 | ocr | object | `{"archiveFileGeneration":"auto","cleanMode":"clean","colorConversionStrategy":null,"deskew":true,"imageDpi":null,"language":"eng","maxImagePixels":null,"mode":"auto","outputType":"pdfa","pageLimit":null,"rotatePages":true,"rotatePagesThreshold":12,"userArgs":null}` | Settings for ocr |
@@ -250,6 +251,8 @@ The `huggingface` backend is different from the other two: it runs the embedding
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `1000` |  |
 | podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| readinessProbe.httpGet.httpHeaders[0].name | string | `"Host"` |  |
+| readinessProbe.httpGet.httpHeaders[0].value | string | `"localhost"` |  |
 | readinessProbe.httpGet.path | string | `"/"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | readinessProbe.initialDelaySeconds | int | `30` |  |
