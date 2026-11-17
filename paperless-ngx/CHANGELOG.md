@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.14](https://github.com/wittdennis/charts/compare/paperless-ngx-2.1.13...paperless-ngx-2.1.14) (2026-11-17)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/paperless-ngx/paperless-ngx docker tag to v3.5.0 ([9705237](https://github.com/wittdennis/charts/commit/97052377668906b49b46828a85b5b0fe3ef5fe33))
+* **paperless-ngx:** allow probe and in-cluster hosts for 3.5.0 allowed_hosts default ([869afca](https://github.com/wittdennis/charts/commit/869afca5de24b570224a05c9b6eed042febef6b3))
+
 ## [2.1.13](https://github.com/wittdennis/charts/compare/paperless-ngx-2.1.12...paperless-ngx-2.1.13) (2026-11-04)
 
 
