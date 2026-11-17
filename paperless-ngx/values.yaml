@@ -66,6 +66,9 @@ hosting:
   # -- Header containing the real client IP for proxies that don't use `X-Forwarded-For` (e.g. `X-Real-IP`, `CF-Connecting-IP`).
   # Takes precedence over `hosting.trustedProxies`.
   trustedClientIpHeader: ~
+  # -- Additional hostnames paperless accepts requests for, e.g. the in-cluster service name. `localhost` and the hostname of the
+  # ingress or route are always allowed. Use `["*"]` to accept any host.
+  allowedHosts: []
 
 # -- Authentication settings
 auth:
@@ -408,11 +411,17 @@ livenessProbe:
   httpGet:
     path: /
     port: http
+    httpHeaders:
+      - name: Host
+        value: localhost
 readinessProbe:
   initialDelaySeconds: 30
   httpGet:
     path: /
     port: http
+    httpHeaders:
+      - name: Host
+        value: localhost
 
 # -- This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:

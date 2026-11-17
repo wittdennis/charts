@@ -78,6 +78,10 @@ spec:
             - name: PAPERLESS_TRUSTED_PROXIES
               value: {{ join "," . | quote }}
             {{- end }}
+            {{- with .Values.hosting.allowedHosts }}
+            - name: PAPERLESS_ALLOWED_HOSTS
+              value: {{ join "," . | quote }}
+            {{- end }}
             {{- with .Values.hosting.trustedClientIpHeader }}
             - name: PAPERLESS_ALLAUTH_TRUSTED_CLIENT_IP_HEADER
               value: {{ . | quote }}
