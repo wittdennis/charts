@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/wittdennis/charts/compare/audiobookshelf-1.1.4...audiobookshelf-1.1.5) (2026-11-18)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/advplyr/audiobookshelf docker tag to v2.38.0 ([5424f11](https://github.com/wittdennis/charts/commit/5424f11980980e1f57b3970bfa4fc9cdbd3b21a9))
+
 ## [1.1.4](https://github.com/wittdennis/charts/compare/audiobookshelf-1.1.3...audiobookshelf-1.1.4) (2026-10-24)
 
 
