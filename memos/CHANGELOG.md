@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.2](https://github.com/wittdennis/charts/compare/memos-3.0.1...memos-3.0.2) (2026-11-23)
+
+
+### Bug Fixes
+
+* **deps:** update dependency usememos/memos to v26.11.2 ([41d7506](https://github.com/wittdennis/charts/commit/41d75069f8f57520ae8dfaca9cfeb06847b90814))
+* **deps:** update neosmemo/memos docker tag to v26.11.2 ([75bcf69](https://github.com/wittdennis/charts/commit/75bcf6992919a0866d464d9ce21c3ab6495ed108))
+
 ## [3.0.1](https://github.com/wittdennis/charts/compare/memos-3.0.0...memos-3.0.1) (2026-11-16)
 
 
