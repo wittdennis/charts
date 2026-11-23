@@ -1,6 +1,6 @@
 # music-assistant
 
-![Version: 1.0.3](https://img.shields.io/badge/Version-1.0.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.12](https://img.shields.io/badge/AppVersion-2.10.12-informational?style=flat-square)
+![Version: 1.0.4](https://img.shields.io/badge/Version-1.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.13](https://img.shields.io/badge/AppVersion-2.10.13-informational?style=flat-square)
 
 Helm chart for Music Assistant server
 
