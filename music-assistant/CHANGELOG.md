@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/wittdennis/charts/compare/music-assistant-1.0.3...music-assistant-1.0.4) (2026-11-23)
+
+
+### Bug Fixes
+
+* **deps:** update ghcr.io/music-assistant/server docker tag to v2.10.13 ([3a492f7](https://github.com/wittdennis/charts/commit/3a492f70b9bf380aa70a2bd6d7cca74a1cef5d4d))
+
 ## [1.0.3](https://github.com/wittdennis/charts/compare/music-assistant-1.0.2...music-assistant-1.0.3) (2026-11-15)
 
 
