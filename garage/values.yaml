@@ -177,7 +177,8 @@ service:
       port: 3902
   admin:
     # -- Expose the admin API as a ClusterIP service.
-    # The admin API is not consistent across nodes, requests may hit any pod
+    # Any pod can serve admin API v2 calls; node-specific calls select their target via the `node` parameter.
+    # Since garage v2.6.0 this also serves the built-in web admin UI
     enabled: false
     # -- Annotations to add to the admin API service
     annotations: {}
@@ -334,6 +335,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# -- Topology spread constraints for the pods, e.g. to place each node in a separate zone.
+# See https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+topologySpreadConstraints: []
 
 environment: {}
 
