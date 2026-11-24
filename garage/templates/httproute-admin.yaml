@@ -1,0 +1,42 @@
+{{- if .Values.routes.admin.enabled -}}
+{{- $fullName := include "garage.fullname" . -}}
+{{- $svcPort := .Values.service.admin.port -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}-admin
+  labels:
+    {{- include "garage.labels" . | nindent 4 }}
+    {{- with .Values.routes.admin.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.routes.admin.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.routes.admin.hostnames }}
+  hostnames:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  {{- with .Values.routes.admin.parentRefs }}
+  parentRefs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- if .Values.routes.admin.additionalRules }}
+    {{- tpl (toYaml .Values.routes.admin.additionalRules) $ | nindent 4 }}
+    {{- end }}
+    - backendRefs:
+        - name: {{ $fullName }}-admin
+          port: {{ $svcPort }}
+          weight: 100
+      {{- with .Values.routes.admin.matches }}
+      matches:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.routes.admin.filters }}
+      filters:
+        {{- toYaml . | nindent 8 }}
+      {{- end -}}
+{{- end }}
