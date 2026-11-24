@@ -1,4 +1,4 @@
-{{- if .Values.service.admin.enabled }}
+{{- if or .Values.service.admin.enabled .Values.ingress.admin.enabled .Values.routes.admin.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
