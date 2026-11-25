@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.6.0](https://github.com/wittdennis/charts/compare/garage-2.5.0...garage-2.6.0) (2026-11-25)
+
+
+### Features
+
+* **garage:** add ingress and routes for admin UI ([dbe521f](https://github.com/wittdennis/charts/commit/dbe521f20ba3f84bcddb9da78cc09917545902d3))
+* **garage:** add topology spread constraints ([4132004](https://github.com/wittdennis/charts/commit/41320043e9c2d3b9995be51b3c8a2be5c88409be))
+
+
+### Bug Fixes
+
+* **deps:** update dxflrs/amd64_garage docker tag to v2.6.0 ([e58df74](https://github.com/wittdennis/charts/commit/e58df74abe2698eb4d4de50097106376507755fa))
+
 ## [2.5.0](https://github.com/wittdennis/charts/compare/garage-2.4.2...garage-2.5.0) (2026-10-26)
 
 
