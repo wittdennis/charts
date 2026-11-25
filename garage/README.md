@@ -1,6 +1,6 @@
 # garage
 
-![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.5.0](https://img.shields.io/badge/AppVersion-v2.5.0-informational?style=flat-square)
+![Version: 2.6.0](https://img.shields.io/badge/Version-2.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.6.0](https://img.shields.io/badge/AppVersion-v2.6.0-informational?style=flat-square)
 
 S3-compatible object store for small self-hosted geo-distributed deployments.
 
@@ -62,6 +62,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | image.repository | string | `"dxflrs/amd64_garage"` | default to amd64 docker image |
 | image.tag | string | `""` | set the image tag, please prefer using the chart version and not this to avoid compatibility issues |
 | imagePullSecrets | list | `[]` | set if you need credentials to pull your custom image |
+| ingress.admin | object | `{"annotations":{},"enabled":false,"hosts":[{"host":"admin.garage.tld","paths":[{"path":"/","pathType":"Prefix"}]}],"labels":{},"tls":[]}` | Ingress for the admin API and web admin UI. Creates the admin service when enabled. Also exposes the unauthenticated /health, /check and, without metrics_token, /metrics endpoints |
 | ingress.s3.api.annotations | object | `{}` | Rely _either_ on the className or the annotation below but not both! If you want to use the className, set className: "nginx" and replace "nginx" by an Ingress controller name, examples [here](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers). |
 | ingress.s3.api.enabled | bool | `false` |  |
 | ingress.s3.api.hosts[0] | object | `{"host":"s3.garage.tld","paths":[{"path":"/","pathType":"Prefix"}]}` | garage S3 API endpoint, to be used with awscli for example |
@@ -105,7 +106,16 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | podSecurityContext.runAsUser | int | `1000` |  |
 | readinessProbe | object | `{}` | Specifies a readinessProbe |
 | resources | object | `{}` |  |
-| routes | object | `{"s3":{"api":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["s3.garage.ltd","*.s3.garage.ltd"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]},"web":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["*.web.garage.tld"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}}}` | Route configuration for Gateway API |
+| routes | object | `{"admin":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["admin.garage.tld"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]},"s3":{"api":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["s3.garage.ltd","*.s3.garage.ltd"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]},"web":{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["*.web.garage.tld"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}}}` | Route configuration for Gateway API |
+| routes.admin | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["admin.garage.tld"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | Route for the admin API and web admin UI. Creates the admin service when enabled |
+| routes.admin.additionalRules | object | `{}` | Any custom rule you want to specify |
+| routes.admin.annotations | object | `{}` | Additional annotations for the HTTPRoute |
+| routes.admin.enabled | bool | `false` | Flag to control if HTTP route should be created |
+| routes.admin.filters | list | `[]` | Filter that should be added to the default rule |
+| routes.admin.hostnames | list | `["admin.garage.tld"]` | Hostnames of the HTTPRoute |
+| routes.admin.labels | object | `{}` | Additional labels for the HTTPRoute |
+| routes.admin.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matches for the default rule |
+| routes.admin.parentRefs | list | `[]` | Gateway reference that the HTTPRoute should bind against |
 | routes.s3.api | object | `{"additionalRules":{},"annotations":{},"enabled":false,"filters":[],"hostnames":["s3.garage.ltd","*.s3.garage.ltd"],"labels":{},"matches":[{"path":{"type":"PathPrefix","value":"/"}}],"parentRefs":[]}` | Creates route for the S3 api |
 | routes.s3.api.additionalRules | object | `{}` | Any custom rule you want to specify |
 | routes.s3.api.annotations | object | `{}` | Additional annotations for the HTTPRoute |
@@ -127,7 +137,7 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | securityContext.capabilities | object | `{"drop":["ALL"]}` | The default security context is heavily restricted, feel free to tune it to your requirements |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | service.admin.annotations | object | `{}` | Annotations to add to the admin API service |
-| service.admin.enabled | bool | `false` | Expose the admin API as a ClusterIP service. The admin API is not consistent across nodes, requests may hit any pod |
+| service.admin.enabled | bool | `false` | Expose the admin API as a ClusterIP service. Any pod can serve admin API v2 calls; node-specific calls select their target via the `node` parameter. Since garage v2.6.0 this also serves the built-in web admin UI |
 | service.admin.port | int | `3903` | Port of the admin API service |
 | service.annotations | object | `{}` | Annotations to add to the service |
 | service.s3.api.port | int | `3900` |  |
@@ -137,3 +147,4 @@ S3-compatible object store for small self-hosted geo-distributed deployments.
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` |  |
+| topologySpreadConstraints | list | `[]` | Topology spread constraints for the pods, e.g. to place each node in a separate zone. See https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/ |
